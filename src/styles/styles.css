@@ -6,6 +6,10 @@ card-alumno{
     margin-bottom: 50px;
 }
 
+article, p, li{
+  font-size: 20px;
+}
+
 /* Estilos para el cuerpo de la página */
 body {
     font-family: Arial, sans-serif;
