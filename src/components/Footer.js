@@ -1,7 +1,6 @@
 import React from 'react';
 import '../styles/styles.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { MdEmail, MdCall, MdHelpOutline, MdGavel, MdPolicy } from 'react-icons/md';
+import { MdEmail, MdCall, MdHelpOutline, MdGavel, MdPolicy, MdCookie } from 'react-icons/md';
 
 function Footer() {
   return (
@@ -35,22 +34,29 @@ function Footer() {
         <h3>Acerca de</h3>
         <ul>
           <li>
-            <div className="icon-container">
-              <MdGavel size={25} />
-            </div>
-            Términos y condiciones
+            <a href='/terms-cond' className='d-flex'>
+              <div className="icon-container">
+                <MdGavel size={25} />
+              </div>
+              Términos y condiciones
+            </a>
+            
           </li>
           <li>
-            <div className="icon-container">
-              <MdPolicy size={25} />
-            </div>
-            Políticas de privacidad
+            <a href='/privacy-policy' className='d-flex'>
+              <div className="icon-container">
+                <MdPolicy size={25} />
+              </div>
+              Políticas de privacidad
+            </a>
           </li>
           <li>
-            <div className="icon-container">
-              <MdHelpOutline size={25} />
-            </div>
-            Preguntas frecuentes
+            <a href='/cookies' className='d-flex'>
+              <div className="icon-container">
+                <MdCookie size={25} />
+              </div>
+              Cookies
+            </a>
           </li>
         </ul>
       </div>
