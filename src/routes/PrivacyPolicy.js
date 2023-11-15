@@ -8,7 +8,7 @@ const PrivacyPolicy = () => {
         Inicio <MdChevronRight size={25} className="icon-aling" /> Aviso
       </h3>
 
-      <h2 className="title-pag fw-bold mt-3">Aviso de Privacidad</h2>
+      <h2 className="title-pag fw-bold mt-3 text-center">Aviso de Privacidad</h2>
       <hr className="hr-primary" />
       <main className="hoc container clear mt-3">
         {/* main body */}

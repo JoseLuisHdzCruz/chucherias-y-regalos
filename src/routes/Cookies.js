@@ -8,15 +8,12 @@ const Cookies = () => {
         Inicio <MdChevronRight size={25} className="icon-aling" /> Cookies
       </h3>
 
-      <h2 className="title-pag fw-bold mt-3">Cookies</h2>
+      <h2 className="title-pag fw-bold mt-3 text-center">Política de Cookies</h2>
       <hr className="hr-primary" />
       <main className="hoc container clear mt-3">
         {/* main body */}
         <div className="content">
           <div id="comments">
-            <h2>
-              <strong>Política de Cookies</strong>
-            </h2>
             <ul>
               <li>
                 <article>
@@ -354,6 +351,8 @@ const Cookies = () => {
                 </article>
               </li>
             </ul>
+
+            
 
           </div>
         </div>

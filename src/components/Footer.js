@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/styles.css';
-import { MdEmail, MdCall, MdHelpOutline, MdGavel, MdPolicy, MdCookie } from 'react-icons/md';
+import { MdEmail, MdCall, MdHelpOutline, MdGavel, MdPolicy, MdCookie, MdGroup } from 'react-icons/md';
 
 function Footer() {
   return (
@@ -12,7 +12,7 @@ function Footer() {
           juguetes que inspiran sonrisas hasta regalos y accesorios que añaden
           elegancia a la vida de las damas. Celebra la vida con nosotros.
         </p>
-        <a ></a>
+        <a href='/quienes-somos' cla><MdGroup size={25} className='icon-aling' /> <strong>Acerca de nosotros</strong></a>
       </div>
       <div className="column">
         <h3>Contacto</h3>
@@ -27,7 +27,7 @@ function Footer() {
             <div className="icon-container">
               <MdCall size={25} />
             </div>
-            771 002 0231
+            771 342 4284
           </li>
         </ul>
       </div>

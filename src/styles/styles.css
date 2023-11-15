@@ -1,3 +1,11 @@
+card-alumno{
+	background-color: #f9f9f6;
+    border-radius: 20px;
+    width: 600px;
+    padding: 40px;
+    margin-bottom: 50px;
+}
+
 /* Estilos para el cuerpo de la página */
 body {
     font-family: Arial, sans-serif;
