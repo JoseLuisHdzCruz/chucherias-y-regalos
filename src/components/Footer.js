@@ -12,6 +12,7 @@ function Footer() {
           juguetes que inspiran sonrisas hasta regalos y accesorios que añaden
           elegancia a la vida de las damas. Celebra la vida con nosotros.
         </p>
+        <a ></a>
       </div>
       <div className="column">
         <h3>Contacto</h3>

@@ -121,8 +121,8 @@ const PrivacyPolicy = () => {
                     siguiente medio:
                   </p>
                   <p>
-                    Enviando un correo electrónico al contacto@innego.net o vía
-                    telefónica 7711514245
+                    Enviando un correo electrónico al Lizbri1222@gmail.com o vía
+                    telefónica 7713424284
                   </p>
                   <p>
                     Con relación al procedimiento y requisitos para el ejercicio
