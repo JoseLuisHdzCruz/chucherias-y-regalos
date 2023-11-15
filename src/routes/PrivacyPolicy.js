@@ -8,7 +8,9 @@ const PrivacyPolicy = () => {
         Inicio <MdChevronRight size={25} className="icon-aling" /> Aviso
       </h3>
 
-      <h2 className="title-pag fw-bold mt-3 text-center">Aviso de Privacidad</h2>
+      <h2 className="title-pag fw-bold mt-3 text-center">
+        Aviso de Privacidad
+      </h2>
       <hr className="hr-primary" />
       <main className="hoc container clear mt-3">
         {/* main body */}
@@ -353,52 +355,36 @@ const PrivacyPolicy = () => {
 
             <h2>
               <strong>
-              El uso de tecnologías de rastreo en nuestro portal de internet
-
+                El uso de tecnologías de rastreo en nuestro portal de internet
               </strong>
             </h2>
             <ul>
               <li>
                 <article>
                   <p>
-                  Le informamos que en nuestra página de internet utilizamos cookies, web beacons u otras tecnologías, a través de
-las cuales es posible monitorear su comportamiento como usuario de internet, así como brindarle un mejor servicio y
-experiencia al navegar en nuestra página. Los datos personales que recabamos a través de estas tecnologías, los
-utilizaremos para los siguientes fines:
-
+                    Le informamos que en nuestra página de internet utilizamos
+                    cookies, web beacons u otras tecnologías, a través de las
+                    cuales es posible monitorear su comportamiento como usuario
+                    de internet, así como brindarle un mejor servicio y
+                    experiencia al navegar en nuestra página. Los datos
+                    personales que recabamos a través de estas tecnologías, los
+                    utilizaremos para los siguientes fines:
                   </p>
 
-                  <p>
-                  Para mejorar la experiencia del usuario
+                  <p>Para mejorar la experiencia del usuario</p>
+                  <p>Personalización del contenido</p>
 
-                  </p>
-                  <p>
-                  Personalización del contenido
-                  </p>
-
-                  <p>
-                  Publicidad dirigida
-                  </p>
+                  <p>Publicidad dirigida</p>
                   <br />
 
                   <p>
-                  Los datos personales que obtenemos de estas tecnologías de rastreo son los siguientes:
-
+                    Los datos personales que obtenemos de estas tecnologías de
+                    rastreo son los siguientes:
                   </p>
-                  <p>
-                  Páginas web visitadas por un usuario
+                  <p>Páginas web visitadas por un usuario</p>
+                  <p>Búsquedas realizadas por un usuario</p>
 
-
-                  </p>
-                  <p>
-                  Búsquedas realizadas por un usuario
-
-                  </p>
-
-                  <p>
-                  Publicidad revisada por un usuario
-
-                  </p>
+                  <p>Publicidad revisada por un usuario</p>
                   <br />
                 </article>
               </li>
