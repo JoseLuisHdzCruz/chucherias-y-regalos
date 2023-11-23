@@ -4,11 +4,13 @@ import { MdChevronRight } from "react-icons/md";
 
 function AcercaDe() {
   return (
+    
     <div className="wrapper row3 m-5">
+      
       <h3 className="fw-semibold">
         Inicio <MdChevronRight size={25} className="icon-aling" /> Acerca De
       </h3>
-
+      
       <h2 className="title-pag fw-bold mt-3 text-center">Quienes somos?</h2>
       <hr className="hr-primary" />
       <main className="hoc container clear">
