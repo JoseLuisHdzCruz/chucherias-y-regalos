@@ -11,7 +11,7 @@ function Home() {
       <hr className="hr-primary" />
 
       <div className="catalog">
-        <a href="/detailProduct.html">
+        <a href="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/R (1).jpg" className="card-img-top img-catalog" alt="..." />
@@ -28,7 +28,7 @@ function Home() {
           </div>
         </a>
 
-        <a href="/detailProduct.html">
+        <a href="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/R (2).jpg" className="card-img-top img-catalog" alt="..." />
@@ -44,7 +44,7 @@ function Home() {
           </div>
         </a>
 
-        <a href="/detailProduct.html">
+        <a href="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/R.jpg" className="card-img-top img-catalog" alt="..." />
@@ -60,7 +60,7 @@ function Home() {
           </div>
         </a>
 
-        <a href="/detailProduct.html">
+        <a href="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/collar.jpg" className="card-img-top img-catalog" alt="..." />
@@ -81,7 +81,7 @@ function Home() {
       <hr className="hr-primary" />
 
       <div className="catalog">
-        <a href="/detailProduct.html">
+        <a href="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/R (1).jpg" className="card-img-top img-catalog" alt="..." />
@@ -98,7 +98,7 @@ function Home() {
           </div>
         </a>
 
-        <a href="/detailProduct.html">
+        <a href="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/R (2).jpg" className="card-img-top img-catalog" alt="..." />
@@ -114,7 +114,7 @@ function Home() {
           </div>
         </a>
 
-        <a href="/detailProduct.html">
+        <a href="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/R.jpg" className="card-img-top img-catalog" alt="..." />
@@ -130,7 +130,7 @@ function Home() {
           </div>
         </a>
 
-        <a href="/detailProduct.html">
+        <a href="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/collar.jpg" className="card-img-top img-catalog" alt="..." />
