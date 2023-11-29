@@ -26,13 +26,12 @@ const ProductDetail = () => {
           <div className="card mb-3">
             <div className="row g-0">
               <div className="col-md-6">
-                <img src="./images/R (1).jpg" className="img-fluid rounded-start mt-4" alt="..." />
+                <img src="./images/R (1).jpg" className="img-fluid rounded-start mt-4" alt="Caja Registradora de juguete" />
               </div>
               <div className="col-md-6">
                 <div className="card-body">
                   <h5 className="card-title">Caja registradora de juguete para niñas</h5>
                   <h2 className="text-price mt-4 fw-bold">$ 150.00</h2>
-                  <h4 className="mt-4">Detalle del producto</h4>
                   <p className="card-text">
                     Estimado cliente. Hola. El juego de juguetes para niños de la
                     caja registradora es adecuado para niñas y niños y es el mejor
@@ -41,12 +40,25 @@ const ProductDetail = () => {
                     elegir. El producto coincide con la imagen. Esperando tu
                     pedido. Estamos aquí para servirle.
                   </p>
+
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div className="colum-add">
+
+          <div className="card mb-4">
+              <div className="card-title text-center">
+                Escanea con la app!!
+              </div>
+            <div className="card-body">
+              <div className="qr">
+                <img src="./images/qrcode-generado.png" className="img-fluid rounded-start mt-4" alt="..." />
+              </div>
+            </div>
+          </div>
+
           <div className="card">
             <div className="card-body">
               <h5 className="card-title text-center">
@@ -66,7 +78,9 @@ const ProductDetail = () => {
               </div>
             </div>
           </div>
+          
         </div>
+        
       </div>
     </main>
   );

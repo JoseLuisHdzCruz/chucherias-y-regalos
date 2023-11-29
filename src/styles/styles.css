@@ -239,7 +239,7 @@ body {
     margin-top: 20px;
     flex: 1; /* Hace que las cartas ocupen el mismo espacio en la fila */
     border: 1px solid #ccc;
-    padding: 20px;
+    padding: 0px;
     border-radius: 20px;
     background-color: #f0f0f0;
   }
@@ -328,6 +328,7 @@ body {
     margin: 0px;
     margin-top: 20px;
   }
+
   
   .card-text {
     padding-right: 10px;
@@ -399,6 +400,18 @@ body {
     justify-content: center;
     align-items: center;
   }
+
+  .qr {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .qr img{
+    height: 250px;
+  }
+  
   
   .counter {
     display: flex;
