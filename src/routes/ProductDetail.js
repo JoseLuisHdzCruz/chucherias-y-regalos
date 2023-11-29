@@ -29,7 +29,7 @@ const ProductDetail = () => {
             <div className="row g-0">
               <div className="col-md-6">
                 <img
-                  src="./oso de peluche.jpg"
+                  src="/images/oso de peluche.jpg"
                   className="img-fluid rounded-start mt-4"
                   alt="Oso de peluche"
                 />
@@ -40,9 +40,9 @@ const ProductDetail = () => {
                   <h2 className="text-price mt-4 fw-bold">$ 150.00</h2>
                   <p className="card-text">
                     Hermoso osito Teo súper esponjosito y suave. Calidad
-                    PREMIUM. <br /> Ideal para arreglos de mesa y regalo. ****Si no
+                    PREMIUM. <br /> Ideal para arreglos de mesa y regalo. Si no
                     encuentra los sets de este mismo modelo puede preguntar por
-                    ellos.**** <br /> <br /> Tamaño: 25cm (en diagonal de oreja a pie) <br /> Color:
+                    ellos.<br /> <br /> Tamaño: 25cm (en diagonal de oreja a pie) <br /> Color:
                     Café **COMO SE VE EN LAS FOTOS** <br /> Material: Poliéster <br /> Edad
                     recomendada: +3 años
                   </p>
