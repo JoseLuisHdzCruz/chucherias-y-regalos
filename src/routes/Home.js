@@ -14,16 +14,17 @@ function Home() {
         <a href="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
-              <img src="/images/R (1).jpg" className="card-img-top img-catalog" alt="..." />
+              <img src="/images/oso de peluche.jpg" className="card-img-top img-catalog" alt="..." />
             </div>
             <div className="card-body mt-3">
-              <div className="cont-description">
-                <h4>Caja registradora de juguete para niñas</h4>
-              </div>
               
+              <div className="cont-description">
+                <h4>Oso Osito De Peluche Teo</h4>
+              </div>
               <div className="cont-price mt-4">
                 <h3 className="fw-bold">$ 150.00</h3>
               </div>
+              
             </div>
           </div>
         </a>
