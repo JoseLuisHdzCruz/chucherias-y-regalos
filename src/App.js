@@ -9,6 +9,7 @@ import PrivacyPolicy from './routes/PrivacyPolicy';
 import Terms from './routes/Terms';
 import Cookies from './routes/Cookies';
 import AcercaDe from './routes/AcercaDe';
+import Register from './routes/Register';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
           <Route path="/terms-cond" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/quienes-somos" element={<AcercaDe />} />
+          <Route path="/registro" element={<Register />} />
         </Routes>
 
         <Footer />

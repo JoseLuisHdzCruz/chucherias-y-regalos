@@ -17,7 +17,7 @@ const AccessibilityPanel = () => {
     };
 
     const panelStyle = {
-        width: isExpanded ? '250px' : '50px',
+        width: isExpanded ? '150px' : '40px',
     };
 
     return (

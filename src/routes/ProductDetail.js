@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/styles.css";
+import { MdChevronRight } from 'react-icons/md';
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
@@ -16,7 +17,7 @@ const ProductDetail = () => {
 
   return (
     <main>
-      <h5 className="fw-semibold">Inicio > Detalle producto</h5>
+      <h5 className="fw-semibold">Inicio < MdChevronRight size={25} className='icon-aling' /> Detalle producto</h5>
 
       <h3 className="title-pag fw-bold text-uppercase mt-3">
         Detalle del producto

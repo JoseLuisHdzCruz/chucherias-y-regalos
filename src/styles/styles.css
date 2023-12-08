@@ -1,3 +1,7 @@
+/* header, main, footer {
+  font-family: '';
+} */
+
 card-alumno{
 	background-color: #f9f9f6;
     border-radius: 20px;
@@ -30,8 +34,15 @@ body {
     padding: 5px;
     text-align: center;
     display: flex;
+    height: auto;
+
   }
   
+  header.scrolled {
+    background-color: #f8c6f9; /* Cambia el color de fondo cuando se desplaza hacia abajo */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega sombra cuando se desplaza hacia abajo */
+  }
+
   header h1 {
     margin: 0;
   }
@@ -41,7 +52,7 @@ body {
     padding: 0;
   }
   
-  header nav li {
+  .cinta-opciones {
     display: inline;
     margin-right: 20px;
     font-weight: lighter;
@@ -62,7 +73,7 @@ body {
     text-align: center;
     display: flex;
     justify-content: center;
-  
+    font-size: 18px;
     width: 100%;
   }
   
@@ -134,7 +145,10 @@ body {
   
   .text-login{
     padding: 15px;
-  
+  }
+
+  .text-login a{
+    cursor: pointer;
   }
   
   .text-login p, a {
@@ -215,6 +229,7 @@ body {
   main {
     flex: 1;
     padding: 20px;
+    margin-left: 35px;
   }
   
   .title-pag {
@@ -230,9 +245,8 @@ body {
   .catalog {
     display: flex;
     flex-wrap: wrap;
-    gap: 60px; /* Espacio entre las cartas */
+    gap: 58px; /* Espacio entre las cartas */
     width: 95%;
-    margin-left: 30px;
   }
   
   .product-card {
@@ -490,8 +504,11 @@ body {
   
   /* formulario de registro */
   .container{
-    background-color: #f0f0f0;
+    background-color: #fff;
     padding: 20px;
     border-radius: 20px;
   }
 
+  .container img{
+    border-radius: 15px;
+  }

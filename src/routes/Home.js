@@ -5,7 +5,7 @@ import { MdChevronRight } from 'react-icons/md';
 function Home() {
   return (
     <main>
-      <h3 className="fw-semibold">Inicio < MdChevronRight size={25} className='icon-aling' /></h3>
+      <h5 className="fw-semibold">Inicio < MdChevronRight size={25} className='icon-aling' /></h5>
 
       <h2 className="title-pag fw-bold mt-3">Recomendados</h2>
       <hr className="hr-primary" />

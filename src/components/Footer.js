@@ -12,11 +12,17 @@ function Footer() {
           juguetes que inspiran sonrisas hasta regalos y accesorios que añaden
           elegancia a la vida de las damas. Celebra la vida con nosotros.
         </p>
-        <a href='/quienes-somos' cla><MdGroup size={25} className='icon-aling' /> <strong>Acerca de nosotros</strong></a>
+        
       </div>
       <div className="column">
         <h3>Contacto</h3>
         <ul>
+          <li>
+          <div className="icon-container">
+              <MdGroup size={25} />
+            </div>
+            <a href='/quienes-somos'>Acerca de nosotros</a>
+          </li>
           <li>
             <div className="icon-container">
               <MdEmail size={25} />
