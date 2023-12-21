@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import AccessibilityPanel from './components/AccessibilityPanel'; 
+// import AccessibilityPanel from './components/AccessibilityPanel'; 
 import Home from './routes/Home';
 import ProductDetail from './routes/ProductDetail';
 import PrivacyPolicy from './routes/PrivacyPolicy';
@@ -30,14 +30,9 @@ function App() {
   return (
     <Router>
       <div>
-
-        {/* Incluye el componente de accesibilidad */}
-        
-
         <Header />
-        <AccessibilityPanel />
+        {/* <AccessibilityPanel /> */}
         <Routes>
-          
           <Route path="/" element={<Home />} />
           <Route path="/product" element={<ProductDetail />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
