@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -12,6 +12,20 @@ import AcercaDe from './routes/AcercaDe';
 import Register from './routes/Register';
 
 function App() {
+  
+  useEffect(() => {
+    // Agregar el script de integración de UserWay
+    const userwayScript = document.createElement('script');
+    userwayScript.src = 'https://cdn.userway.org/widget.js';
+    userwayScript.async = true;
+    userwayScript.setAttribute('data-account', 'rkULxaRfQO'); // Reemplaza con tu ID de cuenta de UserWay
+    document.head.appendChild(userwayScript);
+
+    // Limpieza al desmontar el componente
+    return () => {
+      document.head.removeChild(userwayScript);
+    };
+  }, []);
 
   return (
     <Router>

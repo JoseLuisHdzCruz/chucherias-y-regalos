@@ -34,8 +34,26 @@ const ProductDetail = () => {
                     {mostrarModal && <ModalComponent show={mostrarModal} onClose={cerrarModal} />}
                 </div>
 
-                
-                
+                <span className="blockquote-footer">Información personal</span>
+                <div className="form-group row mb-4">
+                <label htmlFor="Name" className="col-sm-3 col-form-label">Nombre completo</label>
+                  <div className="col-sm-9">
+                    <input type="text" className="form-control" id="Name" placeholder="Nombre y apellidos" value="" />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                <label htmlFor="Email" className="col-sm-3 col-form-label">Email</label>
+                  <div className="col-sm-4">
+                    <input type="text" className="form-control" id="Email" placeholder="Email" value="" />
+                  </div>
+
+                  <label htmlFor="Telephone" className="col-sm-2 col-form-label">Telefono</label>
+                  <div className="col-sm-3">
+                    <input type="text" className="form-control" id="Telephone" placeholder="Telefono" value="" />
+                  </div>
+                </div>
+              
             </div>
         </div>
       </div>

@@ -512,3 +512,11 @@ body {
   .container img{
     border-radius: 15px;
   }
+
+  .container label{
+    color: black;
+  }
+
+  .form-group{
+    
+  }
