@@ -5,7 +5,7 @@ import { Modal } from 'react-bootstrap';
 const ModalComponent = ({ show, onClose }) => {
   return (
     <Modal show={show} onHide={onClose} className='modal-lg'>
-        <Modal.Header closeButton className='modal-header'>
+        <Modal.Header className='modal-header' closeButton>
               <h1 className="modal-title fs-5">Iniciar sesión</h1>
         </Modal.Header>
         <Modal.Body className='modal-body'>
@@ -35,7 +35,7 @@ const ModalComponent = ({ show, onClose }) => {
                 </div>
               </div>
         </Modal.Body>
-        <Modal.Footer className='modal-footer'>
+        <Modal.Footer>
           <button type="button" className="btn btn-primary">Ingresar</button>
         </Modal.Footer>
       </Modal>

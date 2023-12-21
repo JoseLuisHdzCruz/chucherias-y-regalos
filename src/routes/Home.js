@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/styles.css';
 import { MdChevronRight } from 'react-icons/md';
+// import CookieBanner from '../components/CookieBanner';
 
 function Home() {
   return (
@@ -14,7 +15,7 @@ function Home() {
         <a href="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
-              <img src="/images/oso de peluche.jpg" className="card-img-top img-catalog" alt="..." />
+              <img src="/images/oso de peluche.jpg" className="card-img-top img-catalog" alt="Oso de peluche" />
             </div>
             <div className="card-body mt-3">
               
@@ -147,6 +148,7 @@ function Home() {
           </div>
         </a>
       </div>
+
     </main>
   );
 }

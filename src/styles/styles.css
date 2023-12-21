@@ -407,6 +407,10 @@ body {
   .modal-footer .btn-primary{
     width: 150px;
   }
+
+  .modal-header{
+    height: 50px;
+  }
   
   .cant {
     display: flex;
