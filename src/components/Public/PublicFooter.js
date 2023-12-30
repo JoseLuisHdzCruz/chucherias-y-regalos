@@ -1,10 +1,9 @@
 import React from 'react';
-import '../styles/styles.css';
 import { MdEmail, MdCall, MdHelpOutline, MdGavel, MdPolicy, MdCookie, MdGroup } from 'react-icons/md';
 
-function Footer() {
+function PublicFooter() {
   return (
-    <footer>
+    <footer className='d-flex'>
       <div className="column">
         <h3>¿Quiénes somos?</h3>
         <p>
@@ -74,4 +73,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default PublicFooter;

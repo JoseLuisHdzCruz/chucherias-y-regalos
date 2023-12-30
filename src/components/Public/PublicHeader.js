@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import '../styles/styles.css';
 import { MdSearch, MdShoppingCart } from 'react-icons/md';
-import DropdownMenu from '../components/DropdownMenu';
+import DropdownMenu from './DropdownMenu';
 import ModalComponent from './Modal';
+import '../../styles/styles.css'
 
-function Header() {
+function PublicHeader() {
 
   // modal iniciar sesion
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -12,7 +12,7 @@ function Header() {
   const activarModal = () => setMostrarModal(true);
   const cerrarModal = () => setMostrarModal(false);
   return (
-    <header>
+    <header className='d-flex'>
       <div className="columna-1">
         <a href="/">
           <img
@@ -24,7 +24,7 @@ function Header() {
       </div>
       <div className="columna-2">
         <div className="search-bar">
-          <input type="text" placeholder="  Buscar en la página"/>
+          <input type="text" placeholder="¿Qué productos buscas el dia de hoy?"/>
           <button>
             <MdSearch size={25} />
           </button>
@@ -34,11 +34,11 @@ function Header() {
             <li className='cinta-opciones'>
             <DropdownMenu />
             </li>
-            <li className='cinta-opciones'><a href="">Historial</a></li>
+            <li className='cinta-opciones'><a href="/purchase-history">Historial</a></li>
             <li className='cinta-opciones'><a href="">Compras</a></li>
             <li className='cinta-opciones'><a href="">Ofertas</a></li>
             <li className='cinta-opciones'>
-              <a onClick={activarModal} pointer>
+              <a onClick={activarModal}>
                 Iniciar sesión
               </a>
               {mostrarModal && <ModalComponent show={mostrarModal} onClose={cerrarModal} />}
@@ -56,8 +56,7 @@ function Header() {
           <h3>Nombre de Usuario</h3>
         </div>
         <div className="cart">
-          <a href="/carrito.html">
-          {/* <FontAwesomeIcon icon={faCartShopping} size='2em' /> */}
+          <a href="/checkup">
             <MdShoppingCart size={40} />
           </a>
         </div>
@@ -66,4 +65,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default PublicHeader;

@@ -1,11 +1,13 @@
 import React from "react";
-import "../styles/styles.css";
 import { MdChevronRight } from "react-icons/md";
+import PageTitle from '../../components/PageTitle'
+
 
 function AcercaDe() {
   return (
     
     <div className="wrapper row3 m-5">
+      <PageTitle title="Chucherias & Regalos | Acerca De" />
       
       <h5 className="fw-semibold">
         Inicio <MdChevronRight size={25} className="icon-aling" /> Acerca De

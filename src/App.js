@@ -1,26 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Home from './routes/Home';
-import ProductDetail from './routes/ProductDetail';
-import PrivacyPolicy from './routes/PrivacyPolicy';
-import Terms from './routes/Terms';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+//Public
+// Componentes publicos
+import PublicHeader from "./components/Public/PublicHeader";
+import PublicFooter from "./components/Public/PublicFooter";
+import NotFound from "./components/Public/NotFound";
+
+//Contenido Publico
+import Home from "./routes/Public/Home";
+import ProductDetail from "./routes/Public/ProductDetail";
+import PrivacyPolicy from "./routes/Public/PrivacyPolicy";
+import Terms from "./routes/Public/Terms";
 // import CookiesBanner from './components/CookieBanner';  // Importa el nuevo componente
-import AcercaDe from './routes/AcercaDe';
-import Register from './routes/Register';
-import Cookies from './routes/Cookies';
-import NotFound  from './components/NotFound';
+import AcercaDe from "./routes/Public/AcercaDe";
+import Register from "./routes/Public/Register";
+import Cookies from "./routes/Public/Cookies";
+import NewAddress from "./routes/Public/NewAddress";
+import UserProfile from "./routes/Public/UserProfile";
+import Carrito from "./routes/Public/Carrito";
+import PurchaseHistory from "./routes/Public/PurchaseHistory";
+
+//Admin
+// Componentes publicos
+import AdminHeader from "./components/Admin/AdminHeader";
+import AdminFooter from "./components/Admin/AdminFooter";
+import Sidebar from "./components/Admin/Sidebar";
+
+//Contenido administrativo
+import Content from "./routes/Admin/Content";
 
 function App() {
   // const [showCookiesBanner, setShowCookiesBanner] = useState(true);
 
   useEffect(() => {
     // Agregar el script de integración de UserWay
-    const userwayScript = document.createElement('script');
-    userwayScript.src = 'https://cdn.userway.org/widget.js';
+    const userwayScript = document.createElement("script");
+    userwayScript.src = "https://cdn.userway.org/widget.js";
     userwayScript.async = true;
-    userwayScript.setAttribute('data-account', 'rkULxaRfQO'); // Reemplaza con tu ID de cuenta de UserWay
+    userwayScript.setAttribute("data-account", "rkULxaRfQO"); // Reemplaza con tu ID de cuenta de UserWay
     document.head.appendChild(userwayScript);
 
     // Limpieza al desmontar el componente
@@ -34,10 +52,14 @@ function App() {
   //   setShowCookiesBanner(false);
   // };
 
-  return (
-    <Router>
-      <div>
-        <Header />
+  const title = "Chucherias & Regalos";
+  const subTitle = "Panel administrativo";
+
+
+  const PublicRoutes = () => (
+    <>
+      {/* Area publica */}
+      <PublicHeader />
         {/* {showCookiesBanner && <CookiesBanner onAccept={handleAcceptCookies} />} Muestra el banner de cookies */}
         <Routes>
           <Route path="/" element={<Home />} />
@@ -47,15 +69,42 @@ function App() {
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/quienes-somos" element={<AcercaDe />} />
           <Route path="/registro" element={<Register />} />
+          <Route path="/new-address" element={<NewAddress />} />
+          <Route path="/user-profile" element={<UserProfile />} />
+          <Route path="/checkup" element={<Carrito />} />
+          <Route path="/purchase-history" element={<PurchaseHistory />} />
+          
 
           {/* Ruta por defecto para manejar cualquier otra ruta no definida */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-
-        <Footer />
-      </div>
+        <PublicFooter />
+    </>
+  );
+  
+  const AdminRoutes = () => (
+    <>
+      <AdminHeader />
+      <Sidebar />
+      {/* Otras rutas administrativas */}
+      <Routes>
+        <Route path="/" element={<Content title={title} subTitle={subTitle} />} />
+        {/* Otras rutas administrativas */}
+      </Routes>
+      <AdminFooter />
+    </>
+  );
+  
+  return (
+    <Router>
+      <Routes>
+        <Route path="/admin/*" element={<AdminRoutes />} />
+        <Route path="/*" element={<PublicRoutes />} />
+      </Routes>
     </Router>
   );
+  
+  
 }
 
 export default App;

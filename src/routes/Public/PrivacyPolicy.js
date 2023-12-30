@@ -1,12 +1,15 @@
 import React from "react";
+import PageTitle from '../../components/PageTitle'
 import { MdChevronRight } from "react-icons/md";
 
 const PrivacyPolicy = () => {
   return (
     <div className="wrapper row3 m-5">
-      <h3 className="fw-semibold">
-        Inicio <MdChevronRight size={25} className="icon-aling" /> Aviso
-      </h3>
+      <PageTitle title="Chucherias & Regalos | Politicas de privacidad" />
+
+      <h5 className="fw-semibold">
+        Inicio <MdChevronRight size={25} className="icon-aling" /> Aviso de privacidad
+      </h5>
 
       <h2 className="title-pag fw-bold mt-3 text-center">
         Aviso de Privacidad

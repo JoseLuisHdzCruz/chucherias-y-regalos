@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef  } from 'react';
-import '../styles/DropdownMenu.css'; // Archivo de estilos para el menú
+import '../../styles/DropdownMenu.css'; // Archivo de estilos para el menú
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 
 function DropdownMenu() {

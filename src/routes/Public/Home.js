@@ -1,11 +1,13 @@
 import React from 'react';
-import '../styles/styles.css';
+import PageTitle from '../../components/PageTitle'
 import { MdChevronRight } from 'react-icons/md';
 // import CookieBanner from '../components/CookieBanner';
 
 function Home() {
   return (
     <main>
+      <PageTitle title="Chucherias & Regalos | Inicio" />
+
       <h5 className="fw-semibold">Inicio < MdChevronRight size={25} className='icon-aling' /></h5>
 
       <h2 className="title-pag fw-bold mt-3">Recomendados</h2>
@@ -20,7 +22,7 @@ function Home() {
             <div className="card-body mt-3">
               
               <div className="cont-description">
-                <h4>Oso Osito De Peluche Teo</h4>
+                <h5>Oso Osito De Peluche Teo</h5>
               </div>
               <div className="cont-price mt-4">
                 <h3 className="fw-bold">$ 150.00</h3>
@@ -37,7 +39,7 @@ function Home() {
             </div>
             <div className="card-body mt-3">
               <div className="cont-description">
-                <h4>Alcancia de cerdito colorida</h4>
+                <h5>Alcancia de cerdito colorida</h5>
               </div>
               <div className="cont-price mt-4">
                 <h3 className="fw-bold">$ 70.00</h3>
@@ -53,7 +55,7 @@ function Home() {
             </div>
             <div className="card-body mt-3">
               <div className="cont-description">
-                <h4>Mochila para niñas con forma de catarina</h4>
+                <h5>Mochila para niñas con forma de catarina</h5>
               </div>
               <div className="cont-price mt-4">
                 <h3 className="fw-bold">$ 160.00</h3>
@@ -69,7 +71,7 @@ function Home() {
             </div>
             <div className="card-body mt-3">
               <div className="cont-description">
-                <h4>Collar para dama con piedra preciosa</h4>
+                <h5>Collar para dama con piedra preciosa</h5>
               </div>
               <div className="cont-price mt-4">
                 <h3 className="fw-bold">$ 120.00</h3>
@@ -90,7 +92,7 @@ function Home() {
             </div>
             <div className="card-body mt-3">
               <div className="cont-description">
-                <h4>Caja registradora de juguete para niñas</h4>
+                <h5>Caja registradora de juguete para niñas</h5>
               </div>
               
               <div className="cont-price mt-4">
@@ -107,7 +109,7 @@ function Home() {
             </div>
             <div className="card-body mt-3">
               <div className="cont-description">
-                <h4>Alcancia de cerdito colorida</h4>
+                <h5>Alcancia de cerdito colorida</h5>
               </div>
               <div className="cont-price mt-4">
                 <h3 className="fw-bold">$ 70.00</h3>
@@ -123,7 +125,7 @@ function Home() {
             </div>
             <div className="card-body mt-3">
               <div className="cont-description">
-                <h4>Mochila para niñas con forma de catarina</h4>
+                <h5>Mochila para niñas con forma de catarina</h5>
               </div>
               <div className="cont-price mt-4">
                 <h3 className="fw-bold">$ 160.00</h3>
@@ -139,7 +141,7 @@ function Home() {
             </div>
             <div className="card-body mt-3">
               <div className="cont-description">
-                <h4>Collar para dama con piedra preciosa</h4>
+                <h5>Collar para dama con piedra preciosa</h5>
               </div>
               <div className="cont-price mt-4">
                 <h3 className="fw-bold">$ 120.00</h3>

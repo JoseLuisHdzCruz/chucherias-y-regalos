@@ -2,525 +2,730 @@
   font-family: '';
 } */
 
-card-alumno{
-	background-color: #f9f9f6;
-    border-radius: 20px;
-    width: 600px;
-    padding: 40px;
-    margin-bottom: 50px;
+card-alumno {
+  background-color: #f9f9f6;
+  border-radius: 20px;
+  width: 600px;
+  padding: 40px;
+  margin-bottom: 50px;
 }
 
-article, p, li{
+article,
+p,
+li {
   font-size: 20px;
 }
 
 /* Estilos para el cuerpo de la página */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .columna-2 {
-    width: 50%;
-  }
-  /* Estilos para el encabezado */
-  header {
-    background-color: #f8c6f9;
-    padding: 5px;
-    text-align: center;
-    display: flex;
-    height: auto;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-  }
-  
-  header.scrolled {
-    background-color: #f8c6f9; /* Cambia el color de fondo cuando se desplaza hacia abajo */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega sombra cuando se desplaza hacia abajo */
-  }
+.columna-2 {
+  width: 50%;
+}
+/* Estilos para el encabezado */
+header {
+  background-color: #f8c6f9;
+  padding: 5px;
+  text-align: center;
+  display: flex;
+  height: auto;
+}
 
-  header h1 {
-    margin: 0;
-  }
-  
-  header nav ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .cinta-opciones {
-    display: inline;
-    margin-right: 20px;
-    font-weight: lighter;
-  }
-  
-  header nav{
-    font-size: 20px;
-  }
-  
-  header a {
-    color: #212121;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  .search-bar {
-    margin-top: 20px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    font-size: 18px;
-    width: 100%;
-  }
-  
-  .search-bar input {
-    padding: 10px;
-    width: 80%;
-    border: none;
-    /* Aplicar un radio solo a la esquina superior derecha del botón */
-    border-top-left-radius: 20px;
-    /* Aplicar un radio solo a la esquina inferior derecha del botón */
-    border-bottom-left-radius: 20px;
-  }
-  
-  .search-bar input:focus {
-    outline: none;
-  }
-  
-  .search-bar button {
-    padding: 10px 20px;
-    color: #000000;
-    background-color: #fff;
-    border: none;
-    cursor: pointer;
-    width: 20%;
-    border-top-right-radius: 20px;
-    /* Aplicar un radio solo a la esquina inferior derecha del botón */
-    border-bottom-right-radius: 20px;
-  }
-  .search-bar button:hover {
-    background-color: #eeeeee;
-  }
-  
-  .columna{
-    padding: 20px;
-  }
-  
-  .columna-1 {
-    width: 25%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .logo-app {
-    height: 85px;
-  }
-  
-  .profile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .logo-user {
-    margin-right: 10px;
-    height: 45px;
-  }
-  
-  .cart {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .icon-aling {
-    vertical-align: middle;
-  }
-  
-  .form-group-dialog{
-    width: 60%;
-  }
-  
-  .text-login{
-    padding: 15px;
-  }
+header.scrolled {
+  background-color: #f8c6f9; /* Cambia el color de fondo cuando se desplaza hacia abajo */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega sombra cuando se desplaza hacia abajo */
+}
 
-  .text-login a{
-    cursor: pointer;
-  }
-  
-  .text-login p, a {
-    display: inline;
-  }
-  
-  .text-login p{
-    margin-right: 5px;
-    font-size: 18px;
-  }
-  
-  .text-login a{
-    color: #ff4444;
-    text-decoration: none;
-  }
-  
-  .credentials{
-    padding: 10px;
-  }
-  
-  .credentials .form-group{
-    font-size: 20px;
-  }
-  
-  .register-footer{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  
-  .register-footer .btn-primary, .register-footer .btn-secondary{
-    width: 180px;
-  }
-  
-  
-  /* Estilos para el pie de página */
-  footer {
-    background-color: #9087b1;
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    bottom: 0;
-    width: 100%;
-  }
-  
-  /* Estilos para vínculos en el pie de página */
-  footer a {
-    color: #fff;
-    text-decoration: none;
-  }
-  .column {
-    flex: 1; /* Cada columna tomará la misma cantidad de espacio disponible */
-    padding: 10px 40px;
-  }
-  
-  .column ul {
-    list-style: none;
-  }
-  
-  .column li {
-    margin-left: -40px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    height: 25px;
-  }
-  
-  .icon-container {
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-  }
-  
-  /* Estilos para el cuerpo de la página */
-  main {
-    flex: 1;
-    padding: 20px;
-    margin-left: 35px;
-  }
-  
-  .title-pag {
-    margin-left: 30px;
-  }
-  
-  .hr-primary {
-    width: 95%;
-    border-color: #d300d8;
-    border-width: 5px;
-  }
-  
-  .catalog {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 58px; /* Espacio entre las cartas */
-    width: 95%;
-  }
-  
-  .product-card {
-    margin-top: 20px;
-    flex: 1; /* Hace que las cartas ocupen el mismo espacio en la fila */
-    border: 1px solid #ccc;
-    padding: 0px;
-    border-radius: 20px;
-    background-color: #f0f0f0;
-  }
-  
-  .catalog .card{
-    padding: 20px;
-    max-height: 450px;
-    background-color: #f0f0f0;
-    border-radius: 20px;
-    width: 20%;
-  }
-  
-  
-  .cont-img{
-    width: 100%;
-  }
-  
-  .cont-description{
-    height: 80px;
-  }
-  
-  .cont-img img{
-    height: 250px;
-    border-radius: 20px;
-  }
-  
-  .catalog a {
-    text-decoration: none;
-    color: #000000;
-  }
-  
-  .text-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  /* Detalle producto */
-  
-  .detail-product {
-    margin-top: 20px;
-    width: 96%;
-    margin-left: 30px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Espacio entre las cartas */
-  }
-  
-  .colum-detail{
-    width: 70%;
-  }
-  .colum-detail .card{
-    background-color: #f0f0f0;
-    border-radius: 20px;
-  }
-  
-  .img-detail {
-    max-width: 420px;
-    max-height: 420px;
-    border-radius: 20px;
-  }
-  
-  .colum-add{
-    width: 28%;
-  }
-  
-  .colum-add .card{
-    background-color: #f0f0f0;
-    border-radius: 20px;
-    
-  }
-  
-  .colum-detail .card {
-    padding: 20px;
-    display: flex;
-    gap: 20px; /* Espacio entre las cartas */
-  }
-  
-  .text-price{
-    color: green;
-  }
-  
-  .card-title {
-    font-size: 26px;
-    font-weight: bold;
-    margin: 0px;
-    margin-top: 20px;
-  }
+header h1 {
+  margin: 0;
+}
 
-  
-  .card-text {
-    padding-right: 10px;
-    text-align: justify;
-    font-size: 20px;
-  }
-  
-  .cont-buttons {
-    display: grid;
-    margin-bottom: 20px;
-  }
-  
-  .btn-secondary {
-    width: 250px;
-    height: 40px;
-    border-radius: 20px;
-    border: none;
-    background-color: #38ccec;
-    color: #fff;
-    margin-bottom: 10px;
-    font-size: 20px;
-    font-weight: bold;
-  }
-  
-  .btn-secondary:hover{
-    background-color: #20b4d5;
-  }
-  
-  .btn-primary {
-    width: 250px;
-    height: 40px;
-    border-radius: 20px;
-    border: none;
-    background-color: #ff4444;
-    color: #fff;
-    font-size: 20px;
-    font-weight: bold;
-  }
-  
-  .btn-primary:hover{
-    background-color: #d00d0d;
-  }
-  
-  
-    .form-control{
-      border: none;
-      border-bottom: 2px solid #ccc;
-      transition: border-bottom-color 0.3s; 
-      outline: none;
-    }
-    .custom-input {
-      border: none;
-      border-bottom: 2px solid #ccc;
-      transition: border-bottom-color 0.3s; 
-      outline: none;
-    }
-  
-    .custom-input:focus {
-      border-bottom-color: #007bff; /* Color azul al enfocar el input */
-    }
-  
-  .modal-footer .btn-primary{
-    width: 150px;
-  }
+header nav ul {
+  list-style: none;
+  padding: 0;
+}
 
-  .modal-header{
-    height: 50px;
-  }
-  
-  .cant {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
-  }
+.cinta-opciones {
+  display: inline;
+  margin-right: 20px;
+  font-weight: lighter;
+}
 
-  .qr {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
-  }
+header nav {
+  font-size: 20px;
+}
 
-  .qr img{
-    height: 250px;
-  }
-  
-  
-  .counter {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    width: 100px;
-    height: 30px;
-  }
-  
-  .counter button {
-    width: 30px;
-    height: 30px;
-    background-color: #fff;
-    border: #fff;
-    border-width: 2px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .value {
-    width: 30px;
-    text-align: center;
-    font-size: 16px;
-    margin: 0 10px;
-    background-color: #fff;
-  }
-  
-  /* Carrito */
-  
-  .cont-img-car img {
-    width: 130px;
-    height: 130px;
-    border-radius: 20px;
-  }
-  
-  .cont-options {
-    margin-top: 20px;
-    display: flex;
-    gap: 40px;
-  }
-  
-  .a-option {
-    text-decoration: none;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .btn-option {
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    color: #ff4444;
-    font-weight: bold;
-  }
-  
-  .cont-cant{
-    gap: 20px;
-  }
-  
-  .aling-center-cont{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  table{
-    width: 100%;
-  }
-  
-  .text-righ{
-    text-align: end;
-  }
-  
-  
-  /* formulario de registro */
-  .container{
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 20px;
-  }
+header a {
+  color: #212121;
+  text-decoration: none;
+  cursor: pointer;
+}
 
-  .container img{
-    border-radius: 15px;
-  }
+.search-bar {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  width: 100%;
+}
 
-  .container label{
-    color: black;
-  }
+.search-bar input {
+  padding: 10px;
+  width: 80%;
+  border: none;
+  /* Aplicar un radio solo a la esquina superior derecha del botón */
+  border-top-left-radius: 20px;
+  /* Aplicar un radio solo a la esquina inferior derecha del botón */
+  border-bottom-left-radius: 20px;
+  padding-left: 30px;
+  color: #000000;
+}
 
-  .form-group{
-    
-  }
+.search-bar input:focus {
+  outline: none;
+}
+
+.search-bar button {
+  padding: 10px 20px;
+  color: #000000;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+  border-top-right-radius: 20px;
+  /* Aplicar un radio solo a la esquina inferior derecha del botón */
+  border-bottom-right-radius: 20px;
+}
+.search-bar button:hover {
+  background-color: #eeeeeee0;
+}
+
+.columna {
+  padding: 20px;
+}
+
+.columna-1 {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo-app {
+  height: 85px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-user {
+  margin-right: 10px;
+  height: 45px;
+}
+
+.cart {
+  display: flex;
+  justify-content: center;
+}
+
+.icon-aling {
+  vertical-align: middle;
+}
+
+.form-group-dialog {
+  width: 60%;
+}
+
+.text-login {
+  padding: 15px;
+}
+
+.text-login a {
+  cursor: pointer;
+}
+
+.text-login p,
+a {
+  display: inline;
+}
+
+.text-login p {
+  margin-right: 5px;
+  font-size: 18px;
+}
+
+.text-login a {
+  color: #ff4444;
+  text-decoration: none;
+}
+
+.credentials {
+  padding: 10px;
+}
+
+.credentials .form-group {
+  font-size: 20px;
+}
+
+.register-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.register-footer .btn-primary,
+.register-footer .btn-secondary {
+  width: 180px;
+}
+
+.btn-primary,
+.btn-secondary {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+/* Estilos para el pie de página */
+footer {
+  background-color: #9087b1;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Estilos para vínculos en el pie de página */
+footer a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.column {
+  flex: 1; /* Cada columna tomará la misma cantidad de espacio disponible */
+  padding: 10px 40px;
+}
+
+.column ul {
+  list-style: none;
+}
+
+.column li {
+  margin-left: -40px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  height: 25px;
+  font-size: 18px;
+}
+
+.column p {
+  font-size: 18px;
+}
+
+.icon-container {
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+/* Estilos para el cuerpo de la página */
+main {
+  flex: 1;
+  padding: 20px;
+  margin-left: 35px;
+}
+
+.title-pag {
+  margin-left: 30px;
+}
+
+.hr-primary {
+  width: 95%;
+  border-color: #d300d8;
+  border-width: 5px;
+  margin-left: 30px;
+}
+
+.hr-primary-cont {
+  width: 100%;
+  border-color: #d300d8;
+  border-width: 5px;
+}
+
+.catalog {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 58px; /* Espacio entre las cartas */
+  width: 95%;
+  margin-left: 30px;
+}
+
+.catalog a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.catalog .card {
+  padding: 20px;
+  max-height: 450px;
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  width: 20%;
+}
+
+.carrusel-detalle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 58px; /* Espacio entre las cartas */
+  width: 95%;
+  margin-left: 30px;
+  justify-content: center;
+}
+
+.carrusel-detalle a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.carrusel-detalle .card {
+  padding: 20px;
+  max-height: 340px;
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  width: 15rem;
+}
+
+.carrusel-button {
+  background-color: #f8c6f9;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 25px;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  position: absolute;
+  top: 150%;
+  transform: translateY(-50%);
+}
+
+.carrusel-button-left {
+  left: 55px;
+}
+
+.carrusel-button-right {
+  right: 25px;
+}
+
+.cont-img-carrusel {
+  width: 100%;
+}
+
+.cont-img-carrusel img {
+  height: 200px;
+  border-radius: 20px;
+}
+
+.product-card {
+  margin-top: 20px;
+  flex: 1; /* Hace que las cartas ocupen el mismo espacio en la fila */
+  border: 1px solid #ccc;
+  padding: 0px;
+  border-radius: 20px;
+  background-color: #f0f0f0;
+}
+
+.cont-img {
+  width: 100%;
+}
+
+.cont-img img {
+  height: 250px;
+  border-radius: 20px;
+}
+
+.cont-description {
+  height: 80px;
+}
+
+.text-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Historial de compra */
+
+.colum-detail-history {
+  width: 100%;
+}
+.colum-detail-history .card {
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  display: flex;
+  gap: 20px; /* Espacio entre las cartas */
+}
+
+.cont-filter{
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+
+.search-bar-history {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  width: 35%;
+  margin-left: 30px;
+}
+
+.search-bar-history input {
+  padding: 10px;
+  width: 80%;
+  border: none;
+  /* Aplicar un radio solo a la esquina superior derecha del botón */
+  border-top-left-radius: 20px;
+  /* Aplicar un radio solo a la esquina inferior derecha del botón */
+  border-bottom-left-radius: 20px;
+  background-color: #f0f0f0;
+  color: #000000;
+  padding-left: 30px;
+}
+
+.search-bar input:focus, .filters input:focus {
+  outline: none;
+}
+
+.search-bar-history button {
+  padding: 10px 20px;
+  color: #000000;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+  border-top-right-radius: 20px;
+  /* Aplicar un radio solo a la esquina inferior derecha del botón */
+  border-bottom-right-radius: 20px;
+  background-color: #f0f0f0;
+}
+.search-bar-history button:hover {
+  background-color: #fbd8fbe9;
+}
+
+.filters{
+  width: 60%;
+  display: flex;
+  gap: 20px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: end;
+  margin-right: 40px;
+}
+
+.filters h5{
+  display: flex;
+  align-items: center;
+}
+
+.filters input{
+  border-radius: 20px;
+  background-color: #f0f0f0;
+  border: none;
+  padding: 10px;
+  padding-left: 20px;
+  color: #000000;
+}
+
+.filters input:hover{
+  border: none;
+}
+
+.btn-filter{
+  background-color: #38ccec;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  width: 70px;
+}
+
+/* Detalle producto */
+
+.detail-product {
+  margin-top: 20px;
+  width: 96%;
+  margin-left: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Espacio entre las cartas */
+}
+
+
+
+.colum-detail {
+  width: 70%;
+}
+.colum-detail .card {
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  padding: 5px;
+  display: flex;
+  gap: 20px; /* Espacio entre las cartas */
+}
+
+.img-detail {
+  max-width: 420px;
+  max-height: 420px;
+  border-radius: 20px;
+}
+
+.colum-add {
+  width: 28%;
+}
+
+.colum-add .card {
+  background-color: #f0f0f0;
+  border-radius: 20px;
+}
+
+
+
+.text-price {
+  color: green;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0px;
+  margin-top: 20px;
+}
+
+.card-text {
+  padding-right: 10px;
+  text-align: justify;
+  font-size: 20px;
+}
+
+.cont-buttons {
+  display: grid;
+  margin-bottom: 20px;
+}
+
+.cont-buttons button {
+  font-size: 16px;
+}
+
+.btn-secondary {
+  width: 250px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background-color: #38ccec;
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.btn-secondary:hover {
+  background-color: #20b4d5;
+}
+
+.btn-primary {
+  width: 250px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background-color: #ff4444;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.btn-primary:hover {
+  background-color: #d00d0d;
+}
+
+.cont-btn {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 15px;
+}
+
+.cont-btn button {
+  width: 180px;
+  font-size: 15px;
+}
+
+.form-control {
+  border: none;
+  border-bottom: 2px solid #ccc;
+  transition: border-bottom-color 0.3s;
+  outline: none;
+}
+.custom-input {
+  border: none;
+  border-bottom: 2px solid #ccc;
+  transition: border-bottom-color 0.3s;
+  outline: none;
+}
+
+.custom-input:focus {
+  border-bottom-color: #007bff; /* Color azul al enfocar el input */
+}
+
+.modal-footer .btn-primary {
+  width: 150px;
+}
+
+.modal-header {
+  height: 50px;
+}
+
+.cant {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr img {
+  height: 250px;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  width: 100px;
+  height: 30px;
+  justify-content: center;
+}
+
+.counter button {
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  border: #fff;
+  border-width: 2px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.value {
+  width: 30px;
+  text-align: center;
+  font-size: 16px;
+  margin: 0 10px;
+  background-color: #fff;
+}
+
+/* Carrito */
+
+.cont-img-car img {
+  width: 130px;
+  height: 130px;
+  border-radius: 20px;
+}
+
+.cont-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.a-option {
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-option {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  color: #ff4444;
+  font-weight: bold;
+}
+
+.cont-cant {
+  gap: 20px;
+}
+
+.aling-center-cont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+table {
+  width: 100%;
+}
+
+.text-righ {
+  text-align: end;
+}
+
+/* formulario de registro */
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.container img {
+  border-radius: 15px;
+}
+
+.container label {
+  color: black;
+}
+
+.form-group {
+  padding-left: 15px;
+}
+
+/* .form-group textarea{
+    padding-left: 15px;
+  } */
+
+.profile-usr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.profile-usr img {
+  border-radius: 100%;
+  width: 80%;
+}
