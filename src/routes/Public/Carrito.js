@@ -43,7 +43,7 @@ const Carrito = () => {
                     alt="..."
                   />
                 </div>
-                <div className="col-md-5 row">
+                <div className="col-md-5 row ml-1">
                   <h5 className="card-title" style={{ fontSize: "20px" }}>
                     Caja registradora de juguete para niñas
                   </h5>
@@ -81,7 +81,7 @@ const Carrito = () => {
                     alt="..."
                   />
                 </div>
-                <div className="col-md-5 row">
+                <div className="col-md-5 row ml-1">
                   <h5 className="card-title" style={{ fontSize: "20px" }}>
                     Collar para dama con piedra preciosa
                   </h5>

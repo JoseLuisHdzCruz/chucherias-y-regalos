@@ -75,8 +75,8 @@ const ProductDetail = () => {
               </div>
               <div className="col-md-6">
                 <div className="card-body">
-                  <h2 className="card-title">Oso Osito De Peluche Teo</h2>
-                  <h2 className="text-price mt-4 fw-bold">$ 150.00</h2>
+                  <h2 className="title-product fw-bold">Oso Osito De Peluche Teo</h2>
+                  <h2 className="text-price mt-2 fw-bold">$ 150.00</h2>
                   <p className="card-text">
                     Hermoso osito Teo súper esponjosito y suave. Calidad
                     PREMIUM. <br /> Ideal para arreglos de mesa y regalo. Si no

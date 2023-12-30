@@ -59,7 +59,7 @@ const ModalComponent = ({ show, onClose }) => {
           </div>
         </div>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="modal-footer">
         <button type="button" className="btn btn-primary">
           Ingresar
         </button>

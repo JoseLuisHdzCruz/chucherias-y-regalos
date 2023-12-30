@@ -59,6 +59,24 @@ header nav ul {
   font-weight: lighter;
 }
 
+.cinta-opciones a:hover{
+  color: #212121;
+  font-weight: bolder;
+}
+
+.dropdown a:hover{
+  color: #212121;
+}
+
+.column a:hover{
+  color: #fff;
+  font-weight: bolder;
+}
+
+.cart a :hover{
+  color:rgb(0, 0, 0);
+}
+
 header nav {
   font-size: 20px;
 }
@@ -165,8 +183,20 @@ a {
 }
 
 .text-login a {
-  color: #ff4444;
+  color: #ff2929;
   text-decoration: none;
+}
+
+.text-login a:hover {
+  color: #ca0303;
+}
+
+.btn-option:hover {
+  color: #ca0303;
+}
+
+.items-history{
+  margin-left: 0.5rem
 }
 
 .credentials {
@@ -211,6 +241,15 @@ footer {
 footer a {
   color: #fff;
   text-decoration: none;
+}
+
+
+.footer-end{
+  background-color: #fff;
+  border-top: 1px solid #dee2e6;
+  padding: 1rem;
+  background-color: #332e40;
+  color: #d0d0d0;
 }
 
 .column {
@@ -278,6 +317,38 @@ main {
   color: #000000;
 }
 
+/* Estilo base para la tarjeta */
+.catalog .card {
+  transition: box-shadow 0.3s ease; /* Transición de la sombra */
+}
+
+/* Efecto de sombra al pasar el ratón sobre la tarjeta */
+.catalog .card:hover {
+  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Efecto de transición cuando se selecciona la tarjeta (por ejemplo, haciendo clic en ella) */
+.catalog .card:active {
+  transform: scale(1.05); /* Escala la tarjeta al hacer clic */
+  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.carrusel-detalle .card {
+  transition: box-shadow 0.3s ease; /* Transición de la sombra */
+}
+
+/* Efecto de sombra al pasar el ratón sobre la tarjeta */
+.carrusel-detalle .card:hover {
+  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Efecto de transición cuando se selecciona la tarjeta (por ejemplo, haciendo clic en ella) */
+.carrusel-detalle .card:active {
+  transform: scale(1.05); /* Escala la tarjeta al hacer clic */
+  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+
 .catalog .card {
   padding: 20px;
   max-height: 450px;
@@ -320,6 +391,12 @@ main {
   position: absolute;
   top: 150%;
   transform: translateY(-50%);
+}
+
+
+/* Efecto de sombra al pasar el ratón sobre la tarjeta */
+.carrusel-button:hover {
+  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
 .carrusel-button-left {
@@ -425,7 +502,7 @@ main {
   background-color: #f0f0f0;
 }
 .search-bar-history button:hover {
-  background-color: #fbd8fbe9;
+  background-color: #38ccec;
 }
 
 .filters{
@@ -475,7 +552,13 @@ main {
   gap: 20px; /* Espacio entre las cartas */
 }
 
+.col-md-6 img{
+  margin: 1rem;
+}
 
+.title-product{
+  font-size: 24px;
+}
 
 .colum-detail {
   width: 70%;
@@ -503,7 +586,9 @@ main {
   border-radius: 20px;
 }
 
-
+.card-body{
+  padding: 1rem!important;
+}
 
 .text-price {
   color: green;
@@ -539,7 +624,7 @@ main {
   background-color: #38ccec;
   color: #fff;
   margin-bottom: 10px;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: bold;
 }
 
@@ -554,7 +639,7 @@ main {
   border: none;
   background-color: #ff4444;
   color: #fff;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: bold;
 }
 
@@ -592,6 +677,13 @@ main {
 
 .modal-footer .btn-primary {
   width: 150px;
+  border-radius: 20px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .modal-header {

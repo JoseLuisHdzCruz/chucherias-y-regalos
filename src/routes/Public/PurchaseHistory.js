@@ -51,7 +51,7 @@ const PurchaseHistory = () => {
                     alt="..."
                   />
                 </div>
-                <div className="col-md-5 row">
+                <div className="col-md-5 row ml-1">
                   <h4 className="card-title mb-4 mt-4" style={{ fontSize: "20px" }}>
                     Caja registradora de juguete para niñas
                   </h4>
@@ -79,7 +79,7 @@ const PurchaseHistory = () => {
                     alt="..."
                   />
                 </div>
-                <div className="col-md-5 row">
+                <div className="col-md-5 row ml-1">
                   <h4 className="card-title mt-4" style={{ fontSize: "20px" }}>
                     Collar para dama con piedra preciosa
                   </h4>
