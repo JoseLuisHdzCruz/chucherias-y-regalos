@@ -1,7 +1,7 @@
 // Content.js
 import React from 'react';
 
-const Content = ({ title, subTitle }) => {
+const AddProduct = ({ title }) => {
   return (
     <div className="content-wrapper">
       {/* Content Header */}
@@ -10,14 +10,14 @@ const Content = ({ title, subTitle }) => {
           <div className="row mb-2">
             <div className="col-sm-6">
               <h1>
-                {title} |
-                <small> {subTitle}</small>
+                {title} | 
+                <small> Agregar nuevo producto</small>
               </h1>
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item"><a href="#">{title}</a></li>
-                <li className="breadcrumb-item active">{subTitle}</li>
+                <li className="breadcrumb-item active">Agregar nuevo producto</li>
               </ol>
             </div>
           </div>
@@ -33,4 +33,4 @@ const Content = ({ title, subTitle }) => {
   );
 };
 
-export default Content;
+export default AddProduct;

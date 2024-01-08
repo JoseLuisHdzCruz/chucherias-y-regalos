@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 //Public
@@ -28,7 +28,10 @@ import AdminFooter from "./components/Admin/AdminFooter";
 import Sidebar from "./components/Admin/Sidebar";
 
 //Contenido administrativo
-import Content from "./routes/Admin/Content";
+import HomeAdmin from "./routes/Admin/Home";
+import Inventario from "./routes/Admin/Inventario";
+import AddProduct from "./routes/Admin/AddProduct"
+
 
 function App() {
   // const [showCookiesBanner, setShowCookiesBanner] = useState(true);
@@ -53,8 +56,6 @@ function App() {
   // };
 
   const title = "Chucherias & Regalos";
-  const subTitle = "Panel administrativo";
-
 
   const PublicRoutes = () => (
     <>
@@ -86,10 +87,11 @@ function App() {
     <>
       <AdminHeader />
       <Sidebar />
-      {/* Otras rutas administrativas */}
       <Routes>
-        <Route path="/" element={<Content title={title} subTitle={subTitle} />} />
-        {/* Otras rutas administrativas */}
+        <Route path="/" element={<HomeAdmin title={title} />} />
+        <Route path="/inventory" element={<Inventario title={title} />} />
+        <Route path="/inventory/add-product" element={<AddProduct title={title} />} />
+
       </Routes>
       <AdminFooter />
     </>
@@ -100,6 +102,7 @@ function App() {
       <Routes>
         <Route path="/admin/*" element={<AdminRoutes />} />
         <Route path="/*" element={<PublicRoutes />} />
+
       </Routes>
     </Router>
   );

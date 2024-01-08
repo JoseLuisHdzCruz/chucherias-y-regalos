@@ -10,13 +10,12 @@ import "admin-lte/dist/css/adminlte.min.css?v=3.2.0";
 import "admin-lte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css";
 import "admin-lte/plugins/daterangepicker/daterangepicker.css";
 import "admin-lte/plugins/summernote/summernote-bs4.min.css";
+import "../../styles/AdminStyles.css";
 import { Helmet } from "react-helmet";
 
 const AdminHeader = () => {
   return (
     <>
-      <Helmet>
-      </Helmet>
 
       <nav className="main-header navbar navbar-expand navbar-dark navbar-primary">
         {/* Left navbar links */}
@@ -38,7 +37,7 @@ const AdminHeader = () => {
             >
               {/* Aquí, deberías manejar la imagen del usuario y el nombre de usuario desde el estado o props */}
               <img
-                src="user-image-path"
+                src="/images/user.png"
                 className="user-image img-circle elevation-2"
                 alt="User Image"
               />

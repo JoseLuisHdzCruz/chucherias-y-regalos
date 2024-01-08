@@ -1,0 +1,32 @@
+.nav-item li{
+    width: 100%;
+}
+
+.nav-item li:hover{
+    width: 100%;
+}
+
+.link-footer{
+    color: rgb(124, 124, 124);
+}
+
+.nav-link{
+    width: 100%;
+}
+
+.footer-admin{
+  bottom: 0;
+  position: fixed;
+}
+
+.item-center{
+    text-align: center;
+}
+
+.btn{
+    border-radius: 10px;
+}
+
+.btn-add{
+    width: 150px;
+}
