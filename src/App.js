@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PublicHeader from "./components/Public/PublicHeader";
 import PublicFooter from "./components/Public/PublicFooter";
 import NotFound from "./components/Public/NotFound";
+import Error500 from "./components/Public/Error500";
 
 //Contenido Publico
 import Home from "./routes/Public/Home";
@@ -78,6 +79,7 @@ function App() {
 
           {/* Ruta por defecto para manejar cualquier otra ruta no definida */}
           <Route path="*" element={<NotFound />} />
+          <Route path="error-500" element={<Error500 />} />
         </Routes>
         <PublicFooter />
     </>
