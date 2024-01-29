@@ -8,6 +8,7 @@ Función IniciarSesion(correoElectronico, contraseña)
       Devolver "Correo electrónico incorrecto"
    Sino Si (correoElectronico y contraseña son incorrectos) Entonces
       Devolver "Correo electrónico y contraseña incorrectos"
+      <i class="fas fa-hospital-alt    "></i>
    Fin Si
 Fin Función
 zz►
