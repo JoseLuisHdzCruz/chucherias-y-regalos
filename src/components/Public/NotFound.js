@@ -1,4 +1,5 @@
 // NotFound.js
+import { Link } from "react-router-dom"; // Importar Link desde react-router-dom
 import React from "react";
 import "../../styles/NotFound.css";
 
@@ -19,7 +20,15 @@ const NotFound = () => {
         <span className="four">
           <span className="screen-reader-text">4</span>
         </span>
-      </section>    
+      </section>
+      <div class="link-container">
+        <Link
+          to="/"
+          class="more-link"
+        >
+          Volver a la página principal
+        </Link>
+      </div>
     </div>
   );
 };

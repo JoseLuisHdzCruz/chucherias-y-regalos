@@ -7,11 +7,7 @@ const PrivacyPolicy = () => {
     <div className="wrapper row3 m-5">
       <PageTitle title="Chucherias & Regalos | Politicas de privacidad" />
 
-      <h5 className="fw-semibold">
-        Inicio <MdChevronRight size={25} className="icon-aling" /> Aviso de privacidad
-      </h5>
-
-      <h2 className="title-pag fw-bold mt-3 text-center">
+      <h2 className="title-pag fw-bold text-center">
         Aviso de Privacidad
       </h2>
       <hr className="hr-primary" />

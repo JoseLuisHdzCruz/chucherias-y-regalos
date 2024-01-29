@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { MdChevronRight } from "react-icons/md";
+import { Link } from 'react-router-dom'
 import PageTitle from '../../components/PageTitle'
 import ModalComponent from "../../components/Public/Modal";
 
@@ -8,12 +9,7 @@ const UserProfile = () => {
     <main>
       <PageTitle title="Chucherias & Regalos | Perfil de usuario" />
 
-      <h5 className="fw-semibold">
-        Inicio <MdChevronRight size={25} className="icon-aling" /> Perfil de
-        usuario
-      </h5>
-
-      <h3 className="title-pag fw-bold text-uppercase mt-3">
+      <h3 className="title-pag fw-bold text-uppercase">
         Perfil de usuario
       </h3>
       <hr className="hr-primary" />
@@ -28,9 +24,9 @@ const UserProfile = () => {
             />
             <p className="mt-3">correo@dominio.com</p>
             <p className="fw-bold">771 118 112</p>
-              <a href="/change-password" className="fw-bold" style={{color:'red', textDecoration:'none', fontSize:'20px' }}>
+              <Link to="/change-password" className="fw-bold" style={{color:'red', textDecoration:'none', fontSize:'20px' }}>
                 Administrar direcciones
-              </a>
+              </Link>
           </div>
 
           <div className="col-md-7 mt-2">
@@ -101,9 +97,9 @@ const UserProfile = () => {
             </div>
 
             <div className="text-login mb-4">
-              <a href="/change-password" className="fw-bold" >
+              <Link to="/change-password" className="fw-bold" >
                 Cambiar contraseña
-              </a>
+              </Link>
             </div>
 
             <div className="cont-btn mt-4">

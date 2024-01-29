@@ -7,11 +7,7 @@ const Terms = () => {
     <div className="wrapper row3 m-5">
       <PageTitle title="Chucherias & Regalos | Terminos y condiciones" />
 
-      <h5 className="fw-semibold">
-        Inicio <MdChevronRight size={25} className="icon-aling" /> Terminos
-      </h5>
-
-      <h2 className="title-pag fw-bold mt-3 text-center">
+      <h2 className="title-pag fw-bold text-center">
         Terminos y condiciones
       </h2>
       <hr className="hr-primary" />

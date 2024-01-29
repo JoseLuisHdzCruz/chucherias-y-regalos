@@ -13,13 +13,7 @@ const NewAddress = () => {
     <main>
       <PageTitle title="Chucherias & Regalos | Nueva dirección" />
 
-      <h5 className="fw-semibold">
-        Inicio <MdChevronRight size={25} className="icon-aling" /> Perfil de
-        usuario <MdChevronRight size={25} className="icon-aling" /> Agregar
-        dirección
-      </h5>
-
-      <h3 className="title-pag fw-bold text-uppercase mt-3">
+      <h3 className="title-pag fw-bold text-uppercase">
         Agregar nueva dirección
       </h3>
       <hr className="hr-primary" />

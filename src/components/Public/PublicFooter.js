@@ -2,12 +2,12 @@ import React from "react";
 import {
   MdEmail,
   MdCall,
-  MdHelpOutline,
   MdGavel,
   MdPolicy,
   MdCookie,
   MdGroup,
 } from "react-icons/md";
+import { Link } from "react-router-dom"; // Importar Link desde react-router-dom
 
 function PublicFooter() {
   return (
@@ -28,7 +28,7 @@ function PublicFooter() {
               <div className="icon-container">
                 <MdGroup size={25} />
               </div>
-              <a href="/quienes-somos">Acerca de nosotros</a>
+              <Link to="/quienes-somos">Acerca de nosotros</Link> {/* Cambiado <a> por <Link> y href por to */}
             </li>
             <li>
               <div className="icon-container">
@@ -48,28 +48,28 @@ function PublicFooter() {
           <h3>Acerca de</h3>
           <ul>
             <li>
-              <a href="/terms-cond" className="d-flex">
+              <Link to="/terms-cond" className="d-flex"> {/* Cambiado <a> por <Link> y href por to */}
                 <div className="icon-container">
                   <MdGavel size={25} />
                 </div>
                 Términos y condiciones
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/privacy-policy" className="d-flex">
+              <Link to="/privacy-policy" className="d-flex"> {/* Cambiado <a> por <Link> y href por to */}
                 <div className="icon-container">
                   <MdPolicy size={25} />
                 </div>
                 Políticas de privacidad
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/cookies" className="d-flex">
+              <Link to="/cookies" className="d-flex"> {/* Cambiado <a> por <Link> y href por to */}
                 <div className="icon-container">
                   <MdCookie size={25} />
                 </div>
                 Cookies
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -79,7 +79,7 @@ function PublicFooter() {
           <b>Versión</b> 1.0 
         </div>
         <strong>
-          &copy; 2023 <a href="http://innego.net">Chucherias & Regalos</a>. | Todos los derechos
+          &copy; 2023 <Link to="/">Chucherias & Regalos</Link>. | Todos los derechos
           reservados.
         </strong>
       </div>

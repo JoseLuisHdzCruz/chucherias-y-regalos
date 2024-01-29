@@ -1,5 +1,6 @@
 // CookieBanner.js
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; 
 import '../styles/cookies.css';
 
 const CookieBanner = () => {
@@ -31,9 +32,9 @@ const CookieBanner = () => {
       <button className="boton" id="btn-aceptar-cookies" onClick={handleAcceptCookies}>
         De acuerdo
       </button>
-      <a className="enlace" href="aviso-cookies.html">
+      <Link className="enlace" to="aviso-cookies.html">
         Aviso de Cookies
-      </a>
+      </Link>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import PageTitle from '../../components/PageTitle'
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom'
 import {
   MdChevronRight,
   MdAdd,
@@ -52,12 +53,7 @@ const ProductDetail = () => {
     <main>
       <PageTitle title="Chucherias & Regalos | Detalle del producto" />
 
-      <h5 className="fw-semibold">
-        Inicio <MdChevronRight size={25} className="icon-aling" /> Detalle
-        producto
-      </h5>
-
-      <h3 className="title-pag fw-bold text-uppercase mt-3">
+      <h3 className="title-pag fw-bold text-uppercase">
         Detalle del producto
       </h3>
       <hr className="hr-primary" />
@@ -138,7 +134,7 @@ const ProductDetail = () => {
         <div
           className="carrusel-detalle mt-4"
         >
-            <a href="/product" style={{ display: startIdx <= 0 ? 'block' : 'none' }}>
+            <Link to="/product" style={{ display: startIdx <= 0 ? 'block' : 'none' }}>
               <div className="card mt-4">
                 <div className="cont-img-carrusel">
                   <img
@@ -153,9 +149,9 @@ const ProductDetail = () => {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
 
-            <a href="/product" style={{ display: startIdx <= 1 ? 'block' : 'none' }}>
+            <Link to="/product" style={{ display: startIdx <= 1 ? 'block' : 'none' }}>
               <div className="card mt-4">
                 <div className="cont-img-carrusel">
                   <img
@@ -170,9 +166,9 @@ const ProductDetail = () => {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
 
-            <a href="/product" style={{ display: startIdx <= 2 ? 'block' : 'none' }}>
+            <Link to="/product" style={{ display: startIdx <= 2 ? 'block' : 'none' }}>
               <div className="card mt-4">
                 <div className="cont-img-carrusel">
                   <img
@@ -187,9 +183,9 @@ const ProductDetail = () => {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
 
-            <a href="/product" style={{ display: startIdx <= 3 ? 'block' : 'none' }}>
+            <Link to="/product" style={{ display: startIdx <= 3 ? 'block' : 'none' }}>
               <div className="card mt-4">
                 <div className="cont-img-carrusel">
                   <img
@@ -204,7 +200,7 @@ const ProductDetail = () => {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
         </div>
       </div>
       {startIdx > 0 && (

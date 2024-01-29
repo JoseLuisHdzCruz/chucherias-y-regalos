@@ -127,6 +127,22 @@ header a {
   background-color: #eeeeeee0;
 }
 
+.search-bar a {
+  padding: 10px 20px;
+  color: #000000;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+  border-top-right-radius: 20px;
+  /* Aplicar un radio solo a la esquina inferior derecha del botón */
+  border-bottom-right-radius: 20px;
+}
+.search-bar a:hover {
+  background-color: #eeeeeee0;
+}
+
+
 .columna {
   padding: 20px;
 }
@@ -653,6 +669,12 @@ main {
   padding-left: 15px;
 }
 
+.cont-btn-2 {
+  display: flex;
+  justify-content: end;
+  padding-left: 15px;
+}
+
 .cont-btn button {
   width: 180px;
   font-size: 15px;
@@ -820,4 +842,28 @@ table {
 .profile-usr img {
   border-radius: 100%;
   width: 80%;
+}
+
+.login-page{
+  height: 60vh !important ;
+  background-color: none;
+}
+
+.cont-breadcrumbs{
+  margin-left: 50px;
+}
+
+.cont-breadcrumbs a{
+  text-decoration: none;
+  color: #000000;
+}
+
+.cont-breadcrumbs a:hover{
+  color: #1965bd;
+}
+
+
+
+.login-box{
+  width: 750px !important;
 }

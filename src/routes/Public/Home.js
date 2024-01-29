@@ -1,5 +1,6 @@
 import React from 'react';
 import PageTitle from '../../components/PageTitle'
+import { Link } from 'react-router-dom'
 import { MdChevronRight } from 'react-icons/md';
 // import CookieBanner from '../components/CookieBanner';
 
@@ -8,13 +9,11 @@ function Home() {
     <main>
       <PageTitle title="Chucherias & Regalos | Inicio" />
 
-      <h5 className="fw-semibold">Inicio < MdChevronRight size={25} className='icon-aling' /></h5>
-
-      <h2 className="title-pag fw-bold mt-3">Recomendados</h2>
+      <h2 className="title-pag fw-bold">Recomendados</h2>
       <hr className="hr-primary" />
 
       <div className="catalog">
-        <a href="/product">
+        <Link to="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/oso de peluche.jpg" className="card-img-top img-catalog" alt="Oso de peluche" />
@@ -30,9 +29,9 @@ function Home() {
               
             </div>
           </div>
-        </a>
+        </Link>
 
-        <a href="/product">
+        <Link to="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/R (2).jpg" className="card-img-top img-catalog" alt="..." />
@@ -46,9 +45,9 @@ function Home() {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
 
-        <a href="/product">
+        <Link to="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/R.jpg" className="card-img-top img-catalog" alt="..." />
@@ -62,9 +61,9 @@ function Home() {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
 
-        <a href="/product">
+        <Link to="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/collar.jpg" className="card-img-top img-catalog" alt="..." />
@@ -78,14 +77,14 @@ function Home() {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
       </div>
 
       <h2 className="title-pag fw-bold mt-4">Ofertas</h2>
       <hr className="hr-primary" />
 
       <div className="catalog">
-        <a href="/product">
+        <Link to="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/R (1).jpg" className="card-img-top img-catalog" alt="..." />
@@ -100,9 +99,9 @@ function Home() {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
 
-        <a href="/product">
+        <Link to="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/R (2).jpg" className="card-img-top img-catalog" alt="..." />
@@ -116,9 +115,9 @@ function Home() {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
 
-        <a href="/product">
+        <Link to="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/R.jpg" className="card-img-top img-catalog" alt="..." />
@@ -132,9 +131,9 @@ function Home() {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
 
-        <a href="/product">
+        <Link to="/product">
           <div className="card mt-4" style={{ width: '18rem' }}>
             <div className="cont-img">
               <img src="/images/collar.jpg" className="card-img-top img-catalog" alt="..." />
@@ -148,7 +147,7 @@ function Home() {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
       </div>
 
     </main>

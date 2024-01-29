@@ -1,47 +1,10 @@
 import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { MdChevronRight } from "react-icons/md";
 import PageTitle from "../../components/PageTitle";
 import ModalComponent from "../../components/Public/Modal";
 
-//validaciones correspondientes al formulario de registro
-const validationSchema = Yup.object().shape({
-  Name: Yup.string()
-    .min(10, "El nombre debe tener al menos 10 caracteres")
-    .max(50, "El nombre no puede tener más de 50 caracteres")
-    .required("El nombre es obligatorio"),
-  Email: Yup.string()
-    .email("Correo electrónico inválido")
-    .required("Email es obligatorio")
-    .matches(
-      /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-      'Ingresa una dirección de correo electrónico válida'
-    ),
-  Telephone: Yup.number()
-  .typeError("Formato invalido")
-  .required("Telefono requerido")
-  .min(10, "El Telefono debe tener al menos 10 digitos"),
-  Sexo: Yup.string()
-    .required("Seleccione su sexo"),
-  Edad: Yup.number()
-    .positive("La edad debe ser un número positivo")
-    .integer("La edad debe ser un número entero")
-    .required("Edad es obligatorio"),
-  Contraseña: Yup.string()
-    .min(8, "La contraseña debe tener al menos 6 caracteres")
-    .required("Contraseña es obligatoria")
-    .matches(
-      /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/,
-      'La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula.'
-    ),
-  RContraseña: Yup.string()
-  .required("Edad es obligatorio")
-  .oneOf(
-    [Yup.ref("Contraseña"), null],
-    "Las contraseñas deben coincidir"
-  ),
-});
+
 
 const Register = () => {
   //acciones para desplegar el mopdal de iniciar sesion
@@ -62,18 +25,9 @@ const Register = () => {
     RContraseña: "",
   };
 
-  const handleSubmit = (values) => {
-    // Aquí puedes realizar acciones con los datos enviados
-    console.log(values);
-  };
-
   return (
     <main>
       <PageTitle title="Chucherias & Regalos | Registrarse" />
-
-      <h5 className="fw-semibold">
-        Inicio <MdChevronRight size={25} className="icon-aling" /> Crear cuenta
-      </h5>
 
       <h3 className="title-pag fw-bold text-uppercase mt-3">Crear cuenta</h3>
       <hr className="hr-primary" />
@@ -101,8 +55,6 @@ const Register = () => {
 
             <Formik
               initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={handleSubmit}
             >
               <Form>
                 <h2 className="mb-4">Registro de Usuario</h2>

@@ -3,6 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import "../../styles/NotFound.css";
+import { Link } from 'react-router-dom'; 
 
 const ErrorPage = () => {
   const [counter, setCounter] = useState(6); // Number of card containers
@@ -84,14 +85,18 @@ const ErrorPage = () => {
   }, [counter]);
 
   return (
-    <div className="container">
+    <div className="container-error">
       <div className="error">
         <h1>500</h1>
         <h2>error</h2>
-        <p>Opss, Algo simplemente no está bien... Es hora de revisar tus registros. ;)</p>
+        <p>Algo salió mal en nuestro servidor. Estamos trabajando para solucionarlo.</p>
+        <div className="link-container">
+        <Link to="/" className="more-link">Volver a la página principal</Link>
       </div>
+      </div>
+      
       <div className="stack-container">
-        {[125, 100, 75, 50, 25, 0].map((spreadDist, index) => (
+        {[125].map((spreadDist, index) => (
           <div key={index} className="card-container">
             <div className="perspec" style={{ '--spreaddist': `${spreadDist}px`, '--scaledist': `${1 - index * 0.05}`, '--vertdist': `${-index * 5}px` }}>
               <div className="card">
