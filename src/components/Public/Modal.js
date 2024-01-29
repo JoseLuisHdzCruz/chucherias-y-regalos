@@ -1,12 +1,13 @@
 // ModalComponent.js
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Importar Link desde react-router-dom
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ReCAPTCHA from "react-google-recaptcha";
 
 //validaciones correspondientes al formulario de registro
 const loginValidationSchema = Yup.object().shape({
@@ -23,11 +24,19 @@ const loginValidationSchema = Yup.object().shape({
     .matches(/\d{1,2}/, "Debe contener al menos 1 o 2 dígitos")
     .matches(/[A-Z]{1,2}/, "Debe contener al menos 1 o 2 letras mayúsculas")
     .matches(/[a-z]{1,2}/, "Debe contener al menos 1 o 2 letras minúsculas")
-    .matches(/[^A-Za-z0-9]{1,2}/, "Debe contener al menos 1 o 2 caracteres especiales"
-    )
+    .matches(
+      /[^A-Za-z0-9]{1,2}/,
+      "Debe contener al menos 1 o 2 caracteres especiales"
+    ),
 });
 
 const ModalComponent = ({ show, onClose }) => {
+  const [captchaValue, setCaptchaValue] = useState(null);
+
+  const handleChange = (value) => {
+    // Guarda el valor del reCAPTCHA en el estado
+    setCaptchaValue(value);
+  };
   //valores por defecto de los campos de registro
   const initialValues = {
     correo: "",
@@ -37,35 +46,66 @@ const ModalComponent = ({ show, onClose }) => {
   const navigate = useNavigate();
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
+      // Verificar si el reCAPTCHA se ha completado
+      if (!captchaValue) {
+        toast.error("Por favor, completa el reCAPTCHA.");
+        return;
+      }
+
+      // Agrega el valor del reCAPTCHA a los datos que enviarás al backend
+      const dataToSend = { ...values, captchaValue };
+
       // Enviar datos al backend para la autenticación
-      const response = await axios.post(
-        "http://localhost:5000/users/login",
-        values
+      axios.post("http://localhost:5000/users/login", dataToSend, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      toast.success(
+        "Inicio de sesion exitoso!, En breve sera redirigido a la pagina principal"
       );
-      console.log(response.data);
-
-      toast.success("Inicio de sesion exitoso!, En breve sera redirigido a la pagina principal");
       setTimeout(() => {
-      onClose();
-      }, 5000); // Redirigir después de 1 segundo (1000 milisegundos)
-
+        onClose();
+      }, 5000);
     } catch (error) {
       if (error.response) {
         // Si la respuesta de la API contiene errores
         const responseData = error.response.data;
-        if (responseData.error === "El correo ingresado no esta asociado a una cuenta") {
+        if (
+          responseData.error ===
+          "El correo ingresado no esta asociado a una cuenta"
+        ) {
           toast.error("El correo ingresado no esta asociado a una cuenta.");
-          setErrors({ correo: "El correo ingresado no esta asociado a una cuenta" });
+          setErrors({
+            correo: "El correo ingresado no esta asociado a una cuenta",
+          });
         } else if (responseData.error === "Contraseña incorrecta") {
           toast.error("Contraseña incorrecta.");
           setErrors({ contraseña: "La contraseña es incorrecta" });
+        } else if (responseData.error === "Error de reCAPTCHA") {
+          toast.error("Error de reCAPTCHA.");
+          // Redirigir a la vista de error 500
+          setTimeout(() => {
+            onClose();
+            navigate("/error-400");
+          }, 5000);
+        } else if (
+          responseData.error === "Error interno al verificar reCAPTCHA"
+        ) {
+          toast.error("Error interno al verificar reCAPTCHA.");
         }
       } else {
         // Si hay un error de red u otro tipo de error
         console.error(error);
-        toast.error("Error de conexión. Por favor, verifica tu conexión a Internet e inténtalo de nuevo más tarde.");
+        toast.error(
+          "Error de conexión. Por favor, verifica tu conexión a Internet e inténtalo de nuevo más tarde."
+        );
         // Redirigir a la vista de error 500
-        navigate("/error-500");
+        setTimeout(() => {
+          onClose();
+          navigate("/error-500");
+        }, 5000);
       }
     } finally {
       setSubmitting(false);
@@ -147,9 +187,24 @@ const ModalComponent = ({ show, onClose }) => {
                 </div>
                 <div className="text-login">
                   <p>¿Olvido su contraseña?</p>
-                  <Link to="/forgot-password" className="fw-bold text-primary" onClick={onClose}>
+                  <Link
+                    to="/forgot-password"
+                    className="fw-bold text-primary"
+                    onClick={onClose}
+                  >
                     Recuperar contraseña
                   </Link>
+                </div>
+                <div className="form-group mt-4">
+                  <ReCAPTCHA
+                    sitekey="6LcbDGApAAAAANIKHKiUNtO-2ae77SgnoFzKXlO-"
+                    onChange={handleChange}
+                  />
+                  <ErrorMessage
+                    name="captcha"
+                    component="div"
+                    className="text-danger"
+                  />
                 </div>
               </div>
             </div>
