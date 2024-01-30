@@ -9,5 +9,3 @@ Función IniciarSesion(correoElectronico, contraseña)
    Sino Si (correoElectronico y contraseña son incorrectos) Entonces
       Devolver "Correo electrónico y contraseña incorrectos"
    Fin Si
-Fin Función
-zz►
