@@ -69,6 +69,17 @@ const validationSchema = Yup.object().shape({
 });
 
 const Register = () => {
+  const [currentYear] = useState(new Date().getFullYear());
+
+  const validateDate = (value) => {
+    const selectedDate = new Date(value);
+    const selectedYear = selectedDate.getFullYear();
+    if (selectedYear > currentYear) {
+      return `El año no puede ser mayor que el año actual (${currentYear})`;
+    }
+    return undefined;
+  };
+
   //acciones para desplegar el mopdal de iniciar sesion
   const [mostrarModal, setMostrarModal] = useState(false);
 
@@ -266,6 +277,7 @@ const Register = () => {
                       name="fecha_nacimiento"
                       component="div"
                       className="text-danger"
+                      validate={validateDate}
                     />
                   </div>
                 </div>
