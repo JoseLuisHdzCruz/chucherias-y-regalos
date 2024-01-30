@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
-import { MdSearch, MdShoppingCart } from 'react-icons/md';
-import { Link } from 'react-router-dom'; // Importar Link desde react-router-dom
-import DropdownMenu from './DropdownMenu';
-import ModalComponent from './Modal';
-import '../../styles/styles.css'
+import React, { useState, useEffect } from "react";
+import { MdSearch, MdShoppingCart } from "react-icons/md";
+import { Link } from "react-router-dom"; // Importar Link desde react-router-dom
+import DropdownMenu from "./DropdownMenu";
+import ModalComponent from "./Modal";
+import "../../styles/styles.css";
 
 function PublicHeader() {
+  // const [token, setToken] = useState({}); // Inicializar con un objeto vacío
+
+  // useEffect(() => {
+  //   const storedToken = localStorage.getItem("token");
+
+  //   if (storedToken) {
+  //     // Solo si hay algo en localStorage, entonces intenta parsearlo
+  //     setToken(JSON.parse(storedToken));
+  //   }
+  // }, []);
+
+  // // Verificar si hay un customerId en el token
+  // const CustomerId = token && token.customerId;
 
   // modal iniciar sesion
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -13,7 +26,7 @@ function PublicHeader() {
   const activarModal = () => setMostrarModal(true);
   const cerrarModal = () => setMostrarModal(false);
   return (
-    <header className='d-flex'>
+    <header className="d-flex">
       <div className="columna-1">
         <Link to="/">
           <img
@@ -25,29 +38,37 @@ function PublicHeader() {
       </div>
       <div className="columna-2">
         <div className="search-bar">
-          <input type="text" placeholder="¿Qué productos buscas el dia de hoy?"/>
-          <Link to='/search'> {/* Cambiado <a> por <Link> y href por to */}
+          <input
+            type="text"
+            placeholder="¿Qué productos buscas el dia de hoy?"
+          />
+          <Link to="/search">
+            {" "}
+            {/* Cambiado <a> por <Link> y href por to */}
             <MdSearch size={25} />
           </Link>
         </div>
         <nav className="mt-3">
           <ul>
-            <li className='cinta-opciones'>
+            <li className="cinta-opciones">
               <DropdownMenu />
             </li>
-            <li className='cinta-opciones'><Link to="/purchase-history">Historial</Link></li> {/* Cambiado <a> por <Link> y href por to */}
-            <li className='cinta-opciones'><Link to="">Compras</Link></li> {/* Cambiado <a> por <Link> y href por to */}
-            <li className='cinta-opciones'><Link to="">Ofertas</Link></li> {/* Cambiado <a> por <Link> y href por to */}
-            <li className='cinta-opciones'>
-              <a onClick={activarModal}>
-                Iniciar sesión
-              </a>
-              {mostrarModal && <ModalComponent show={mostrarModal} onClose={cerrarModal} />}
-            </li>
+            <li className="cinta-opciones">
+              <Link to="/purchase-history">Historial</Link>
+            </li>{" "}
+            <li className="cinta-opciones">
+              <Link to="">Compras</Link>
+            </li>{" "}
+            <li className="cinta-opciones">
+              <Link to="">Ofertas</Link>
+            </li>{" "}
+            {/* 
+            
+            */}
           </ul>
         </nav>
       </div>
-      <div className="columna" style={{ width: '25%' }}>
+      <div className="columna" style={{ width: "25%" }}>
         <div className="profile">
           <img
             className="logo-user"
@@ -57,7 +78,9 @@ function PublicHeader() {
           <h3>Nombre de Usuario</h3>
         </div>
         <div className="cart">
-          <Link to="/checkup"> {/* Cambiado <a> por <Link> y href por to */}
+          <Link to="/checkup">
+            {" "}
+            {/* Cambiado <a> por <Link> y href por to */}
             <MdShoppingCart size={40} />
           </Link>
         </div>

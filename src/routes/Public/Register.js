@@ -7,6 +7,8 @@ import PageTitle from "../../components/PageTitle";
 import ModalComponent from "../../components/Public/Modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css";
+import ReCAPTCHA from "react-google-recaptcha";
 
 //validaciones correspondientes al formulario de registro
 const validationSchema = Yup.object().shape({
@@ -69,6 +71,12 @@ const validationSchema = Yup.object().shape({
 });
 
 const Register = () => {
+  const [captchaValue, setCaptchaValue] = useState(null);
+
+  const handleChange = (value) => {
+    // Guarda el valor del reCAPTCHA en el estado
+    setCaptchaValue(value);
+  };
   //acciones para desplegar el mopdal de iniciar sesion
   const [mostrarModal, setMostrarModal] = useState(false);
 
@@ -93,6 +101,13 @@ const Register = () => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
+      // Verificar si el reCAPTCHA se ha completado
+      if (!captchaValue) {
+        toast.error("Por favor, completa el reCAPTCHA.");
+        setErrors({ captcha: "Complete el CAPTCHA" });
+        return;
+      }
+
       const response = await axios.post("http://localhost:5000/users", values);
       console.log(response.data);
       toast.success(
@@ -347,6 +362,17 @@ const Register = () => {
                       className="text-danger"
                     />
                   </div>
+                </div>
+                <div className="form-group mt-4">
+                  <ReCAPTCHA
+                    sitekey="6LcbDGApAAAAANIKHKiUNtO-2ae77SgnoFzKXlO-"
+                    onChange={handleChange}
+                  />
+                  <ErrorMessage
+                    name="captcha"
+                    component="div"
+                    className="text-danger"
+                  />
                 </div>
 
                 <div className="cont-btn">

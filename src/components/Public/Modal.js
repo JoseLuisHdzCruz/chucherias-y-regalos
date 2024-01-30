@@ -1,4 +1,3 @@
-// ModalComponent.js
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Importar Link desde react-router-dom
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -44,56 +43,57 @@ const ModalComponent = ({ show, onClose }) => {
   };
 
   const navigate = useNavigate();
+
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+    const dataToSend = { ...values, captchaValue };
+    console.log(dataToSend);
     try {
       // Verificar si el reCAPTCHA se ha completado
       if (!captchaValue) {
         toast.error("Por favor, completa el reCAPTCHA.");
+        setErrors({ captcha: "Complete el CAPTCHA" });
         return;
       }
 
-      // Agrega el valor del reCAPTCHA a los datos que enviarás al backend
-      const dataToSend = { ...values, captchaValue };
-
-      // Enviar datos al backend para la autenticación
-      axios.post("http://localhost:5000/users/login", dataToSend, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      toast.success(
-        "Inicio de sesion exitoso!, En breve sera redirigido a la pagina principal"
+      const response = await axios.post(
+        "http://localhost:5000/users/login",
+        values
       );
-      setTimeout(() => {
-        onClose();
-      }, 5000);
+      // Verificar si el inicio de sesión fue exitoso
+      if (response.status === 200) {
+        const token = response.data.token;
+
+        // Almacena el token en localStorage
+        localStorage.setItem("token", token);
+        console.log(token)
+
+        toast.success(
+          "Inicio de sesión exitoso! En breve serás redirigido a la página principal"
+        );
+
+        setTimeout(() => {
+          onClose();
+          navigate("/");
+        }, 5000); // Redirigir después de 5 segundos (5000 milisegundos)
+      }
     } catch (error) {
+      // Manejar errores
       if (error.response) {
         // Si la respuesta de la API contiene errores
         const responseData = error.response.data;
-        if (
-          responseData.error ===
-          "El correo ingresado no esta asociado a una cuenta"
-        ) {
-          toast.error("El correo ingresado no esta asociado a una cuenta.");
-          setErrors({
-            correo: "El correo ingresado no esta asociado a una cuenta",
-          });
-        } else if (responseData.error === "Contraseña incorrecta") {
-          toast.error("Contraseña incorrecta.");
-          setErrors({ contraseña: "La contraseña es incorrecta" });
-        } else if (responseData.error === "Error de reCAPTCHA") {
-          toast.error("Error de reCAPTCHA.");
-          // Redirigir a la vista de error 500
-          setTimeout(() => {
-            onClose();
-            navigate("/error-400");
-          }, 5000);
-        } else if (
-          responseData.error === "Error interno al verificar reCAPTCHA"
-        ) {
-          toast.error("Error interno al verificar reCAPTCHA.");
+        switch (responseData.error) {
+          case "El correo ingresado no esta asociado a una cuenta":
+            toast.error("El correo ingresado no está asociado a una cuenta.");
+            setErrors({
+              correo: "El correo ingresado no está asociado a una cuenta",
+            });
+            break;
+          case "Contraseña incorrecta":
+            toast.error("Contraseña incorrecta.");
+            setErrors({ contraseña: "La contraseña es incorrecta" });
+            break;
+          default:
+            console.error("Error no manejado:", responseData.error);
         }
       } else {
         // Si hay un error de red u otro tipo de error
