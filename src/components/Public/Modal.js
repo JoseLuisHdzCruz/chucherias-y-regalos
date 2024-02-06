@@ -7,6 +7,7 @@ import { Modal } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReCAPTCHA from "react-google-recaptcha";
+import jwt_decode from "jsonwebtoken";
 
 //validaciones correspondientes al formulario de registro
 const loginValidationSchema = Yup.object().shape({
@@ -63,9 +64,14 @@ const ModalComponent = ({ show, onClose }) => {
       if (response.status === 200) {
         const token = response.data.token;
 
-        // Almacena el token en localStorage
+        // Decodificar el token para obtener la información del usuario
+        const decodedToken = jwt_decode(token);
+
+        // Almacenar el token en localStorage
         localStorage.setItem("token", token);
-        console.log(token)
+
+        // También puedes almacenar información adicional del usuario si es necesario
+        localStorage.setItem("userData", JSON.stringify(decodedToken));
 
         toast.success(
           "Inicio de sesión exitoso! En breve serás redirigido a la página principal"

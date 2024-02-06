@@ -70,6 +70,12 @@ const validationSchema = Yup.object().shape({
 });
 
 const Register = () => {
+  const [capchaValue, setCaptchaValue] = useState(null);
+
+  const handleChange = (value) => {
+    setCaptchaValue(value);
+  };
+
   //acciones para desplegar el mopdal de iniciar sesion
   const [mostrarModal, setMostrarModal] = useState(false);
 
@@ -273,7 +279,6 @@ const Register = () => {
                       name="fecha_nacimiento"
                       component="div"
                       className="text-danger"
-                      validate={validateDate}
                     />
                   </div>
                 </div>
