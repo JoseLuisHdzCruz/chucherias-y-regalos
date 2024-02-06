@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 const PageTitle = ({ title }) => (
   <Helmet>
     {/* <meta http-equiv="Content-Security-Policy" content="default-src 'self'" /> */}
-    <meta
+    {/* <meta
       http-equiv="Content-Security-Policy"
       content="
         default-src 'self';
@@ -16,7 +16,7 @@ const PageTitle = ({ title }) => (
         img-src 'self' data: https://cdn.userway.org code.tidio.co;
         frame-src https://cdn.userway.org code.tidio.co;
       "
-    />
+    /> */}
     <title>{title}</title>
   </Helmet>
 );
