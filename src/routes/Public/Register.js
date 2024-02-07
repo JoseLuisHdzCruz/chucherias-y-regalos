@@ -13,7 +13,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 const validationSchema = Yup.object().shape({
   nombre: Yup.string()
     .matches(
-      /^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]+$/,
+      /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ\s]+$/,
       "El nombre solo puede contener letras, acentos y espacios"
     )
     .min(3, "El nombre debe tener al menos 10 caracteres")
@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
     .required("El nombre es obligatorio"),
   aPaterno: Yup.string()
     .matches(
-      /^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]+$/,
+      /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ\s]+$/,
       "El nombre solo puede contener letras, acentos y espacios"
     )
     .min(3, "El nombre debe tener al menos 3 caracteres")
@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
     .required("El nombre es obligatorio"),
   aMaterno: Yup.string()
     .matches(
-      /^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]+$/,
+      /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ\s]+$/,
       "El nombre solo puede contener letras, acentos y espacios"
     )
     .min(3, "El nombre debe tener al menos 3 caracteres")
@@ -71,9 +71,14 @@ const validationSchema = Yup.object().shape({
 
 const Register = () => {
   const [capchaValue, setCaptchaValue] = useState(null);
+  const [captchaExpired, setCaptchaExpired] = useState(false); // Estado para el tiempo de expiración del captcha
 
   const handleChange = (value) => {
     setCaptchaValue(value);
+  };
+
+  const handleExpired = () => {
+    setCaptchaExpired(true); // Actualizar el estado cuando el tiempo del captcha expire
   };
 
   //acciones para desplegar el mopdal de iniciar sesion
@@ -176,211 +181,219 @@ const Register = () => {
               onSubmit={handleSubmit}
               validateOnChange={true}
             >
-              <Form>
-                <h2 className="mb-4">Registro de Usuario</h2>
+              {({ isSubmitting }) => (
+                <Form>
+                  <h2 className="mb-4">Registro de Usuario</h2>
 
-                <span className="blockquote-footer">Información personal</span>
+                  <span className="blockquote-footer">
+                    Información personal
+                  </span>
 
-                <div className="form-group mb-4 row">
-                  <div className="form-group col-sm-6">
-                    <label htmlFor="nombre" className="fw-bold">
-                      Nombre (s)
-                    </label>
-                    <Field
-                      type="text"
-                      className="form-control"
-                      id="nombre"
-                      name="nombre"
-                      placeholder="Nombre y apellidos"
+                  <div className="form-group mb-4 row">
+                    <div className="form-group col-sm-6">
+                      <label htmlFor="nombre" className="fw-bold">
+                        Nombre (s)
+                      </label>
+                      <Field
+                        type="text"
+                        className="form-control"
+                        id="nombre"
+                        name="nombre"
+                        placeholder="Nombre y apellidos"
+                      />
+                      <ErrorMessage
+                        name="nombre"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </div>
+
+                    <div className="form-group col-sm-6">
+                      <label htmlFor="aPaterno" className="fw-bold">
+                        Apellido Paterno
+                      </label>
+                      <Field
+                        type="text"
+                        className="form-control"
+                        id="aPaterno"
+                        name="aPaterno"
+                        placeholder="Apellido paterno"
+                      />
+                      <ErrorMessage
+                        name="aPaterno"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group mb-4 row">
+                    <div className="form-group col-sm-6">
+                      <label htmlFor="aMaterno" className="fw-bold">
+                        Apellido Materno
+                      </label>
+                      <Field
+                        type="text"
+                        className="form-control"
+                        id="aMaterno"
+                        name="aMaterno"
+                        placeholder="Apellido materno"
+                        maxLength="10"
+                      />
+                      <ErrorMessage
+                        name="aMaterno"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group mb-4 row">
+                    <div className="form-group col-sm-7">
+                      <label htmlFor="sexo" className="fw-bold">
+                        Sexo
+                      </label>
+                      <Field
+                        as="select"
+                        className="form-select"
+                        id="sexo"
+                        name="sexo"
+                      >
+                        <option value="" disabled hidden>
+                          Selecciona tu sexo
+                        </option>
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                      </Field>
+                      <ErrorMessage
+                        name="sexo"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </div>
+
+                    <div className="form-group col-sm-5">
+                      <label htmlFor="fecha_nacimiento" className="fw-bold">
+                        Fecha de nacimiento
+                      </label>
+                      <Field
+                        type="date"
+                        className="form-control"
+                        id="fecha_nacimiento"
+                        name="fecha_nacimiento"
+                        placeholder="fecha_nacimiento"
+                      />
+                      <ErrorMessage
+                        name="fecha_nacimiento"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </div>
+                  </div>
+
+                  <span className="blockquote-footer">Datos de acceso</span>
+
+                  <div className="form-group mb-4 row">
+                    <div className="form-group col-sm-7">
+                      <label htmlFor="correo" className="fw-bold">
+                        Correo electronico
+                      </label>
+                      <Field
+                        type="text"
+                        className="form-control"
+                        id="correo"
+                        name="correo"
+                        placeholder="Correo electronico"
+                      />
+                      <ErrorMessage
+                        name="correo"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </div>
+
+                    <div className="form-group col-sm-5">
+                      <label htmlFor="telefono" className="fw-bold">
+                        Teléfono
+                      </label>
+                      <Field
+                        type="text"
+                        className="form-control"
+                        id="telefono"
+                        name="telefono"
+                        placeholder="Teléfono"
+                        maxLength="10"
+                      />
+                      <ErrorMessage
+                        name="telefono"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group row">
+                    <div className="form-group col-sm-6">
+                      <label htmlFor="contraseña" className="fw-bold">
+                        Contraseña
+                      </label>
+                      <Field
+                        type="password"
+                        className="form-control"
+                        id="contraseña"
+                        name="contraseña"
+                        placeholder="contraseña"
+                      />
+                      <ErrorMessage
+                        name="contraseña"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </div>
+
+                    <div className="form-group col-sm-6">
+                      <label htmlFor="RContraseña" className="fw-bold">
+                        Confirmar contraseña
+                      </label>
+                      <Field
+                        type="password"
+                        className="form-control"
+                        id="RContraseña"
+                        name="RContraseña"
+                        placeholder="Contraseña"
+                      />
+                      <ErrorMessage
+                        name="RContraseña"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group mb-4 ">
+                    <ReCAPTCHA
+                      sitekey="6LcbDGApAAAAANIKHKiUNtO-2ae77SgnoFzKXlO-"
+                      onChange={handleChange}
                     />
                     <ErrorMessage
-                      name="nombre"
+                      name="captcha"
                       component="div"
                       className="text-danger"
                     />
                   </div>
 
-                  <div className="form-group col-sm-6">
-                    <label htmlFor="aPaterno" className="fw-bold">
-                      Apellido Paterno
-                    </label>
-                    <Field
-                      type="text"
-                      className="form-control"
-                      id="aPaterno"
-                      name="aPaterno"
-                      placeholder="Apellido paterno"
-                    />
-                    <ErrorMessage
-                      name="aPaterno"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </div>
-                </div>
-
-                <div className="form-group mb-4 row">
-                  <div className="form-group col-sm-6">
-                    <label htmlFor="aMaterno" className="fw-bold">
-                      Apellido Materno
-                    </label>
-                    <Field
-                      type="text"
-                      className="form-control"
-                      id="aMaterno"
-                      name="aMaterno"
-                      placeholder="Apellido materno"
-                      maxLength="10"
-                    />
-                    <ErrorMessage
-                      name="aMaterno"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </div>
-                </div>
-
-                <div className="form-group mb-4 row">
-                  <div className="form-group col-sm-7">
-                    <label htmlFor="sexo" className="fw-bold">
-                      Sexo
-                    </label>
-                    <Field
-                      as="select"
-                      className="form-select"
-                      id="sexo"
-                      name="sexo"
+                  <div className="cont-btn">
+                    <button className="btn-secondary">Cancelar</button>
+                    <button
+                      type="submit"
+                      className="btn-primary"
+                      disabled={!capchaValue || captchaExpired || isSubmitting}
                     >
-                      <option value="" disabled hidden>
-                        Selecciona tu sexo
-                      </option>
-                      <option value="masculino">Masculino</option>
-                      <option value="femenino">Femenino</option>
-                    </Field>
-                    <ErrorMessage
-                      name="sexo"
-                      component="div"
-                      className="text-danger"
-                    />
+                      Registrarse
+                    </button>
                   </div>
-
-                  <div className="form-group col-sm-5">
-                    <label htmlFor="fecha_nacimiento" className="fw-bold">
-                      Fecha de nacimiento
-                    </label>
-                    <Field
-                      type="date"
-                      className="form-control"
-                      id="fecha_nacimiento"
-                      name="fecha_nacimiento"
-                      placeholder="fecha_nacimiento"
-                    />
-                    <ErrorMessage
-                      name="fecha_nacimiento"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </div>
-                </div>
-
-                <span className="blockquote-footer">Datos de acceso</span>
-
-                <div className="form-group mb-4 row">
-                  <div className="form-group col-sm-7">
-                    <label htmlFor="correo" className="fw-bold">
-                      Correo electronico
-                    </label>
-                    <Field
-                      type="text"
-                      className="form-control"
-                      id="correo"
-                      name="correo"
-                      placeholder="Correo electronico"
-                    />
-                    <ErrorMessage
-                      name="correo"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </div>
-
-                  <div className="form-group col-sm-5">
-                    <label htmlFor="telefono" className="fw-bold">
-                      Teléfono
-                    </label>
-                    <Field
-                      type="text"
-                      className="form-control"
-                      id="telefono"
-                      name="telefono"
-                      placeholder="Teléfono"
-                      maxLength="10"
-                    />
-                    <ErrorMessage
-                      name="telefono"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </div>
-                </div>
-
-                <div className="form-group mb-4 row">
-                  <div className="form-group col-sm-6">
-                    <label htmlFor="contraseña" className="fw-bold">
-                      Contraseña
-                    </label>
-                    <Field
-                      type="password"
-                      className="form-control"
-                      id="contraseña"
-                      name="contraseña"
-                      placeholder="contraseña"
-                    />
-                    <ErrorMessage
-                      name="contraseña"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </div>
-
-                  <div className="form-group col-sm-6">
-                    <label htmlFor="RContraseña" className="fw-bold">
-                      Confirmar contraseña
-                    </label>
-                    <Field
-                      type="password"
-                      className="form-control"
-                      id="RContraseña"
-                      name="RContraseña"
-                      placeholder="Contraseña"
-                    />
-                    <ErrorMessage
-                      name="RContraseña"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </div>
-                </div>
-
-                <div className="form-group mt-4">
-                  <ReCAPTCHA
-                    sitekey="6LcbDGApAAAAANIKHKiUNtO-2ae77SgnoFzKXlO-"
-                    onChange={handleChange}
-                  />
-                  <ErrorMessage
-                    name="captcha"
-                    component="div"
-                    className="text-danger"
-                  />
-                </div>
-
-                <div className="cont-btn">
-                  <button className="btn-secondary">Cancelar</button>
-                  <button type="submit" className="btn-primary">
-                    Registrarse
-                  </button>
-                </div>
-              </Form>
+                </Form>
+              )}
             </Formik>
           </div>
         </div>
