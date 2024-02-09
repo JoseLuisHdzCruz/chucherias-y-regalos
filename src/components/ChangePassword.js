@@ -1,33 +1,65 @@
 import React from "react";
-import { MdChevronRight } from "react-icons/md";
 import PageTitle from "../components/PageTitle";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { Link, useNavigate } from "react-router-dom"; // Importar Link desde react-router-dom
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 //validaciones correspondientes al formulario de registro
 const validationEmail = Yup.object().shape({
-  Contraseña: Yup.string()
-    .min(8, "La contraseña debe tener al menos 6 caracteres")
+  contraseña: Yup.string()
     .required("Contraseña es obligatoria")
+    .min(8, "La contraseña debe tener al menos 8 caracteres")
+    .matches(/\d{1,2}/, "Debe contener al menos 1 o 2 dígitos")
+    .matches(/[A-Z]{1,2}/, "Debe contener al menos 1 o 2 letras mayúsculas")
+    .matches(/[a-z]{1,2}/, "Debe contener al menos 1 o 2 letras minúsculas")
     .matches(
-      /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/,
-      "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula."
+      /[^A-Za-z0-9]{1,2}/,
+      "Debe contener al menos 1 o 2 caracteres especiales"
     ),
   RContraseña: Yup.string()
-    .required("Edad es obligatorio")
-    .oneOf([Yup.ref("Contraseña"), null], "Las contraseñas deben coincidir"),
+    .required("Campo obligatorio")
+    .oneOf([Yup.ref("contraseña"), null], "Las contraseñas deben coincidir"),
 });
 
 const ChangePassword = () => {
+
+  const { correo } = useParams();
+  const navigate = useNavigate();
+
   //valores por defecto de los campos de registro
   const initialValues = {
-    Contraseña: "",
+    contraseña: "",
     RContraseña: "",
   };
 
-  const handleSubmit = (values) => {
-    // Aquí puedes realizar acciones con los datos enviados
-    console.log(values);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      // Enviar la solicitud POST a la API
+      const response = await axios.post("http://localhost:5000/users/changePassword", {
+        correo: correo,
+        nuevaContraseña: values.contraseña
+      });
+
+      console.log(correo + " " + values.contraseña)
+
+
+      // Mostrar un mensaje de éxito
+      toast.success(response.data.message);
+
+      setTimeout(() => {
+        navigate("/");
+      }, 5000);
+
+    } catch (error) {
+      // Mostrar un mensaje de error si ocurre algún problema
+      toast.error(error.response.data.error);
+    } finally {
+      // Establecer setSubmitting a false para permitir que el formulario sea enviado nuevamente
+      setSubmitting(false);
+    }
   };
 
   const loginPageStyle = {
@@ -41,9 +73,9 @@ const ChangePassword = () => {
         <div className="login-box">
           <div className="card card-outline card-primary">
             <div className="card-header text-center">
-              <a href="/" className="h1">
+              <Link to="/" className="h1">
                 Chucherias <b>&</b> Regalos
-              </a>
+              </Link>
             </div>
             <div className="card-body">
               <div className="row">
@@ -59,6 +91,7 @@ const ChangePassword = () => {
                     initialValues={initialValues}
                     validationSchema={validationEmail}
                     onSubmit={handleSubmit}
+                    validateOnChange={true}
                   >
                     <Form>
                       <p className="login-box-msg">
@@ -67,25 +100,25 @@ const ChangePassword = () => {
                       </p>
                       <div className="form-group mb-4">
                         <label htmlFor="Contraseña" className="fw-bold">
-                          Ingrese su contraseña
+                          Ingrese su nueva contraseña
                         </label>
                         <div className="input-group mb-3">
                           <Field
-                            type="text"
+                            type="password"
                             className="form-control"
-                            id="Contraseña"
-                            name="Contraseña"
+                            id="contraseña"
+                            name="contraseña"
                             placeholder="Ingrese su contraseña"
                           />
                           
                           <div className="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
+                            <div className="input-group-text">
+                                <span className="fas fa-lock"></span>
                             </div>
                           </div>
                         </div>
                         <ErrorMessage
-                          name="Contraseña"
+                          name="contraseña"
                           component="div"
                           className="text-danger"
                         />
@@ -96,15 +129,15 @@ const ChangePassword = () => {
                         </label>
                         <div className="input-group mb-3">
                           <Field
-                            type="text"
+                            type="password"
                             className="form-control"
                             id="RContraseña"
                             name="RContraseña"
                             placeholder="Confirme su contraseña"
                           />
                           <div className="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
+                            <div className="input-group-text">
+                                <span className="fas fa-lock"></span>
                             </div>
                           </div>
                         </div>
@@ -128,6 +161,7 @@ const ChangePassword = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

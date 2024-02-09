@@ -6,10 +6,10 @@ import contentSecurityPolicy from "./contentSecurityPolicy";
 const PageTitle = ({ title }) => (
   <Helmet>
     {/* <meta http-equiv="Content-Security-Policy" content="default-src 'self'" /> */}
-    <meta
+    {/* <meta
       http-equiv="Content-Security-Policy"
-      content={contentSecurityPolicy}
-    />
+      content=
+    />}
     <title>{title}</title>
   </Helmet>
 );

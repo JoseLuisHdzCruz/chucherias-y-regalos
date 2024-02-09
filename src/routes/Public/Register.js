@@ -118,7 +118,7 @@ const Register = () => {
       );
       setTimeout(() => {
         navigate("/");
-      }, 5000); // Redirigir después de 1 segundo (1000 milisegundos)
+      }, 5000);
     } catch (error) {
       if (error.response) {
         // Si la respuesta de la API contiene errores
