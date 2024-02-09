@@ -8,8 +8,8 @@ const PageTitle = ({ title }) => (
     {/* <meta http-equiv="Content-Security-Policy" content="default-src 'self'" /> */}
     {/* <meta
       http-equiv="Content-Security-Policy"
-      content=
-    />}
+      content={contentSecurityPolicy}
+        /> */}
     <title>{title}</title>
   </Helmet>
 );
