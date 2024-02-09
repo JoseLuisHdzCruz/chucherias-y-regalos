@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MdSearch, MdShoppingCart } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom"; // Importar Link desde react-router-dom
+import { Link } from "react-router-dom"; // Importar Link desde react-router-dom
 import DropdownMenu from "./DropdownMenu";
 import ModalComponent from "./Modal";
 import "../../styles/styles.css";
@@ -11,7 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 
 function PublicHeader() {
-  const navigate = useNavigate();
   const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
@@ -43,20 +42,6 @@ function PublicHeader() {
 
   const activarModal = () => setMostrarModal(true);
   const cerrarModal = () => setMostrarModal(false);
-
-  useEffect(() => {
-    // Obtener el token del almacenamiento local
-    const token = localStorage.getItem("token");
-
-    // Decodificar el token para obtener los datos del usuario si existe
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUsuario(decoded);
-    } else {
-      // Si no hay token, establecer el usuario como null
-      setUsuario(null);
-    }
-  }, []);
 
   return (
     <header className="d-flex">

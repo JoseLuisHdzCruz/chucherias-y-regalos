@@ -11,6 +11,7 @@ import Error500 from "./components/Public/Error500";
 import Error400 from "./components/Public/Error400";
 import ForgotPassword from "./components/ForgotPassword";
 import ChangePassword from "./components/ChangePassword";
+import KeyVerifly from "./components/KeyVerifly";
 
 //Contenido Publico
 import Home from "./routes/Public/Home";
@@ -113,10 +114,12 @@ function App() {
           {/* Ruta por defecto para manejar cualquier otra ruta no definida */}
           <Route path="/back" element={<NavigateBack />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="error-500" element={<Error500 />} />
-          <Route path="error-400" element={<Error400 />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="change-password" element={<ChangePassword />} />
+          <Route path="/error-500" element={<Error500 />} />
+          <Route path="/error-400" element={<Error400 />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/change-password/:correo" element={<ChangePassword />} />
+          <Route path="/key-verification/:correo" element={<KeyVerifly />} />
+
         </Routes>
         <PublicFooter />
     </>

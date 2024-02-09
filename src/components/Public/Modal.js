@@ -6,7 +6,6 @@ import * as Yup from "yup";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { jwtDecode } from "jwt-decode";
 import ReCAPTCHA from "react-google-recaptcha";
 
