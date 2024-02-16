@@ -38,7 +38,7 @@ const ChangePassword = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       // Enviar la solicitud POST a la API
-      const response = await axios.post("https://backend-c-r-production.up.railway.app/users/changePassword", {
+      const response = await axios.post("http://localhost:5000/users/changePassword", {
         correo: correo,
         nuevaContraseña: values.contraseña
       });

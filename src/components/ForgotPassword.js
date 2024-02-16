@@ -40,7 +40,7 @@ const LoginPage = () => {
       }
 
       // Enviar datos al backend para la autenticación
-      await axios.post("https://backend-c-r-production.up.railway.app/users/forgotPassword", values);
+      await axios.post("http://localhost:5000/users/forgotPassword", values);
 
       // Mostrar un toast con el nombre del usuario
       toast.success(`Se a enviado a su correo el codigo de verificacion!`);

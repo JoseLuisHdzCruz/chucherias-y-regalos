@@ -18,7 +18,16 @@ const validationSchema = Yup.object().shape({
     )
     .min(3, "El nombre debe tener al menos 10 caracteres")
     .max(20, "El nombre no puede tener más de 50 caracteres")
-    .required("El nombre es obligatorio"),
+    .required("El nombre es obligatorio")
+    .test(
+      'no-repetir-caracteres',
+      'El nombre no puede contener caracteres repetidos consecutivos más de 2 veces',
+      value => {
+        // Verificar que no haya más de 2 caracteres repetidos consecutivos
+        const regex = /([a-zA-ZáéíóúñÑÁÉÍÓÚüÜ])\1{2,}/g;
+        return !regex.test(value);
+      }
+    ),
   aPaterno: Yup.string()
     .matches(
       /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ\s]+$/,
@@ -26,7 +35,16 @@ const validationSchema = Yup.object().shape({
     )
     .min(3, "El nombre debe tener al menos 3 caracteres")
     .max(15, "El nombre no puede tener más de 15 caracteres")
-    .required("El nombre es obligatorio"),
+    .required("El nombre es obligatorio")
+    .test(
+      'no-repetir-caracteres',
+      'El nombre no puede contener caracteres repetidos consecutivos más de 2 veces',
+      value => {
+        // Verificar que no haya más de 2 caracteres repetidos consecutivos
+        const regex = /([a-zA-ZáéíóúñÑÁÉÍÓÚüÜ])\1{2,}/g;
+        return !regex.test(value);
+      }
+    ),
   aMaterno: Yup.string()
     .matches(
       /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ\s]+$/,
@@ -34,7 +52,16 @@ const validationSchema = Yup.object().shape({
     )
     .min(3, "El nombre debe tener al menos 3 caracteres")
     .max(15, "El nombre no puede tener más de 15 caracteres")
-    .required("El nombre es obligatorio"),
+    .required("El nombre es obligatorio")
+    .test(
+      'no-repetir-caracteres',
+      'El nombre no puede contener caracteres repetidos consecutivos más de 2 veces',
+      value => {
+        // Verificar que no haya más de 2 caracteres repetidos consecutivos
+        const regex = /([a-zA-ZáéíóúñÑÁÉÍÓÚüÜ])\1{2,}/g;
+        return !regex.test(value);
+      }
+    ),
   correo: Yup.string()
     .email("Correo electrónico inválido")
     .required("Email es obligatorio")
@@ -111,7 +138,7 @@ const Register = () => {
         return;
       }
 
-      const response = await axios.post("https://backend-c-r-production.up.railway.app/users", values);
+      const response = await axios.post("http://localhost:5000/users", values);
       console.log(response.data);
       toast.success(
         "¡Registro exitoso!, En breve sera redirigido a la pagina principal"

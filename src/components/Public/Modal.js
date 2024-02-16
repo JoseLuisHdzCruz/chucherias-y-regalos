@@ -54,7 +54,7 @@ const ModalComponent = ({ show, onClose }) => {
 
       // Enviar datos al backend para la autenticación
       const response = await axios.post(
-        "https://backend-c-r-production.up.railway.app/users/login",
+        "http://localhost:5000/users/login",
         values
       );
 
@@ -69,7 +69,7 @@ const ModalComponent = ({ show, onClose }) => {
 
       // Mostrar un toast con el nombre del usuario
       toast.success(`Inicio de sesion exitoso.
-      Bienvenido, ${decoded.nombre}!`);
+      Bienvenido (a), ${decoded.nombre}!`);
 
       setTimeout(() => {
         window.location.href = "/";
@@ -123,7 +123,7 @@ const ModalComponent = ({ show, onClose }) => {
               <div className="col-md-5">
                 <img
                   src="/images/Imagen1-3n4j4J1C4-transformed (1).jpg"
-                  alt=""
+                  alt="Chucherias & Regalos"
                   className="img-fluid rounded-start mt-4"
                 />
               </div>

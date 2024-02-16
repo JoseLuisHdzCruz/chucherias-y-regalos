@@ -57,7 +57,7 @@ const KeyVerifly = () => {
     try {
       // Enviar la solicitud POST a la API
       const response = await axios.post(
-        "https://backend-c-r-production.up.railway.app/users/keyCompare",
+        "http://localhost:5000/users/keyCompare",
         {
           correo: correo,
           clave: clave,
@@ -116,7 +116,7 @@ const KeyVerifly = () => {
 
       setIsResending(true);
 
-      await axios.post("https://backend-c-r-production.up.railway.app/users/forgotPassword", {
+      await axios.post("http://localhost:5000/users/forgotPassword", {
         correo,
       });
 
