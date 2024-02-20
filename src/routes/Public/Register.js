@@ -138,7 +138,7 @@ const Register = () => {
         return;
       }
 
-      const response = await axios.post("http://localhost:5000/users", values);
+      const response = await axios.post("https://backend-c-r-production.up.railway.app/users", values);
       console.log(response.data);
       toast.success(
         "¡Registro exitoso!, En breve sera redirigido a la pagina principal"
