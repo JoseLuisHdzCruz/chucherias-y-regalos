@@ -653,16 +653,16 @@ main {
   height: 40px;
   border-radius: 20px;
   border: none;
-  background-color: #ff4444;
   color: #fff;
   font-size: 15px;
   font-weight: bold;
 }
 
-.btn-primary:hover {
-  background-color: #d00d0d;
+.btn-primary:disabled {
+  background-color: #cccccc !important; /* Cambia el color de fondo */
+  border-color: #999999 !important; /* Cambia el color del borde */
+  cursor: not-allowed; /* Cambia el cursor cuando está deshabilitado */
 }
-
 .cont-btn {
   display: flex;
   justify-content: space-between;

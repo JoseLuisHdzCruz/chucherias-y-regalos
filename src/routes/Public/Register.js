@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import ModalComponent from "../../components/Public/Modal";
 import { ToastContainer, toast } from "react-toastify";
@@ -20,9 +20,9 @@ const validationSchema = Yup.object().shape({
     .max(20, "El nombre no puede tener más de 50 caracteres")
     .required("El nombre es obligatorio")
     .test(
-      'no-repetir-caracteres',
-      'El nombre no puede contener caracteres repetidos consecutivos más de 2 veces',
-      value => {
+      "no-repetir-caracteres",
+      "El nombre no puede contener caracteres repetidos consecutivos más de 2 veces",
+      (value) => {
         // Verificar que no haya más de 2 caracteres repetidos consecutivos
         const regex = /([a-zA-ZáéíóúñÑÁÉÍÓÚüÜ])\1{2,}/g;
         return !regex.test(value);
@@ -37,9 +37,9 @@ const validationSchema = Yup.object().shape({
     .max(15, "El nombre no puede tener más de 15 caracteres")
     .required("El nombre es obligatorio")
     .test(
-      'no-repetir-caracteres',
-      'El nombre no puede contener caracteres repetidos consecutivos más de 2 veces',
-      value => {
+      "no-repetir-caracteres",
+      "El nombre no puede contener caracteres repetidos consecutivos más de 2 veces",
+      (value) => {
         // Verificar que no haya más de 2 caracteres repetidos consecutivos
         const regex = /([a-zA-ZáéíóúñÑÁÉÍÓÚüÜ])\1{2,}/g;
         return !regex.test(value);
@@ -54,9 +54,9 @@ const validationSchema = Yup.object().shape({
     .max(15, "El nombre no puede tener más de 15 caracteres")
     .required("El nombre es obligatorio")
     .test(
-      'no-repetir-caracteres',
-      'El nombre no puede contener caracteres repetidos consecutivos más de 2 veces',
-      value => {
+      "no-repetir-caracteres",
+      "El nombre no puede contener caracteres repetidos consecutivos más de 2 veces",
+      (value) => {
         // Verificar que no haya más de 2 caracteres repetidos consecutivos
         const regex = /([a-zA-ZáéíóúñÑÁÉÍÓÚüÜ])\1{2,}/g;
         return !regex.test(value);
@@ -80,7 +80,6 @@ const validationSchema = Yup.object().shape({
       "Debes ser mayor de 18 años"
     )
     .required("Fecha de nacimiento es obligatoria"),
-
   contraseña: Yup.string()
     .required("Contraseña es obligatoria")
     .min(8, "La contraseña debe tener al menos 8 caracteres")
@@ -94,11 +93,16 @@ const validationSchema = Yup.object().shape({
   RContraseña: Yup.string()
     .required("Campo obligatorio")
     .oneOf([Yup.ref("contraseña"), null], "Las contraseñas deben coincidir"),
+  aceptaTerminos: Yup.boolean().oneOf(
+    [true],
+    "Debes aceptar los términos y condiciones para registrarte"
+  ),
 });
 
 const Register = () => {
   const [capchaValue, setCaptchaValue] = useState(null);
   const [captchaExpired, setCaptchaExpired] = useState(false); // Estado para el tiempo de expiración del captcha
+  const [aceptaTerminos, setAceptaTerminos] = useState(false); // Estado del checkbox de terminos y condiciones
 
   const handleChange = (value) => {
     setCaptchaValue(value);
@@ -130,6 +134,23 @@ const Register = () => {
 
   const navigate = useNavigate();
 
+  const validarCorreoElectronico = async (correoElectronico) => {
+    try {
+      const apiKey = "94393e06186643d9a110f246ca0d2191";
+      const response = await fetch(
+        `https://api.zerobounce.net/v2/validate?api_key=${apiKey}&email=${correoElectronico}`
+      );
+      const data = await response.json();
+      if (data.status === 'invalid') {
+        return false; // Devuelve false si el correo electrónico es inválido
+      }
+      return true;
+    } catch (error) {
+      console.error("Error al validar el correo electrónico:", error);
+      return { error: "Error al validar el correo electrónico" };
+    }
+  };
+
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       if (!capchaValue) {
@@ -138,7 +159,30 @@ const Register = () => {
         return;
       }
 
-      const response = await axios.post("https://backend-c-r-production.up.railway.app/users", values);
+      // Mostrar un indicador de carga o mensaje de "Validando correo electrónico..."
+      const validationEmail = await validarCorreoElectronico(values.correo);
+
+      if (!validationEmail) {
+        // Mostrar un mensaje de error al usuario
+        toast.error("El correo electronico no es válido.");
+        setErrors({ correo: "Correo invalido, verifique si existe." });
+        return;
+      }
+
+      const countryCode = "MX"; // Código de país para México
+      const validateResponse = await axios.get(
+        `http://apilayer.net/api/validate?access_key=7b58de28fe950ac24db3726ec89dc736&number=${values.telefono}&country_code=${countryCode}`
+      );
+      if (!validateResponse.data.valid) {
+        toast.error("El número de teléfono no es válido.");
+        setErrors({ telefono: "Número invalido, verifique si existe." });
+        return;
+      }
+
+      const response = await axios.post(
+        "https://backend-c-r-production.up.railway.app/users",
+        values
+      );
       console.log(response.data);
       toast.success(
         "¡Registro exitoso!, En breve sera redirigido a la pagina principal"
@@ -397,6 +441,33 @@ const Register = () => {
                     </div>
                   </div>
 
+                  <div className="form-group col-sm-12 mb-4">
+                    <div className="form-check">
+                      <Field
+                        type="checkbox"
+                        className="form-check-input"
+                        id="aceptaTerminos"
+                        name="aceptaTerminos"
+                        checked={aceptaTerminos}
+                        onChange={(e) => setAceptaTerminos(e.target.checked)}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="aceptaTerminos"
+                      >
+                        Acepto los {" "}
+                        <strong>
+                          <Link to="/terms-cond" target="_blank" rel="noopener noreferrer">Términos y condiciones</Link>{" "}
+                        </strong>
+                      </label>
+                    </div>
+                    <ErrorMessage
+                      name="aceptaTerminos"
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
+
                   <div className="form-group mb-4 ">
                     <ReCAPTCHA
                       sitekey="6LcbDGApAAAAANIKHKiUNtO-2ae77SgnoFzKXlO-"
@@ -414,9 +485,14 @@ const Register = () => {
                     <button
                       type="submit"
                       className="btn-primary"
-                      disabled={!capchaValue || captchaExpired || isSubmitting}
+                      disabled={
+                        !capchaValue ||
+                        captchaExpired ||
+                        isSubmitting ||
+                        !aceptaTerminos
+                      }
                     >
-                      Registrarse
+                      {isSubmitting ? "Registrando..." : "Registrar"}
                     </button>
                   </div>
                 </Form>
