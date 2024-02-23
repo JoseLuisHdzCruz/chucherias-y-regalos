@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, useField } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import ModalComponent from "../../components/Public/Modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReCAPTCHA from "react-google-recaptcha";
+import PasswordStrengthMeter from "../../components/PasswordStrengthMeter";
 
 //validaciones correspondientes al formulario de registro
 const validationSchema = Yup.object().shape({
@@ -103,6 +104,11 @@ const Register = () => {
   const [capchaValue, setCaptchaValue] = useState(null);
   const [captchaExpired, setCaptchaExpired] = useState(false); // Estado para el tiempo de expiración del captcha
   const [aceptaTerminos, setAceptaTerminos] = useState(false); // Estado del checkbox de terminos y condiciones
+  const [contraseña, setPassword] = useState(""); // Estado del componente password
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
   const handleChange = (value) => {
     setCaptchaValue(value);
@@ -141,7 +147,7 @@ const Register = () => {
         `https://api.zerobounce.net/v2/validate?api_key=${apiKey}&email=${correoElectronico}`
       );
       const data = await response.json();
-      if (data.status === 'invalid') {
+      if (data.status === "invalid") {
         return false; // Devuelve false si el correo electrónico es inválido
       }
       return true;
@@ -408,17 +414,10 @@ const Register = () => {
                       <label htmlFor="contraseña" className="fw-bold">
                         Contraseña
                       </label>
-                      <Field
-                        type="password"
-                        className="form-control"
+                      <PasswordField
                         id="contraseña"
                         name="contraseña"
-                        placeholder="contraseña"
-                      />
-                      <ErrorMessage
-                        name="contraseña"
-                        component="div"
-                        className="text-danger"
+                        placeholder="Contraseña"
                       />
                     </div>
 
@@ -455,9 +454,15 @@ const Register = () => {
                         className="form-check-label"
                         htmlFor="aceptaTerminos"
                       >
-                        Acepto los {" "}
+                        Acepto los{" "}
                         <strong>
-                          <Link to="/terms-cond" target="_blank" rel="noopener noreferrer">Términos y condiciones</Link>{" "}
+                          <Link
+                            to="/terms-cond"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Términos y condiciones
+                          </Link>{" "}
                         </strong>
                       </label>
                     </div>
@@ -503,6 +508,37 @@ const Register = () => {
       </div>
       <ToastContainer />
     </main>
+  );
+};
+
+// Componente de contraseña con medidor de fortaleza
+const PasswordField = ({ id, name, placeholder }) => {
+  const [field, meta] = useField(name);
+  const [password, setPassword] = useState("");
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    field.onChange(e);
+  };
+
+  return (
+    <div>
+      <input
+        {...field}
+        type="password"
+        className="form-control"
+        id={id}
+        name={name}
+        placeholder={placeholder}
+        value={password}
+        onChange={handlePasswordChange}
+      />
+      <PasswordStrengthMeter password={password} />
+
+      {meta.touched && meta.error ? (
+        <div className="text-danger">{meta.error}</div>
+      ) : null}
+    </div>
   );
 };
 
