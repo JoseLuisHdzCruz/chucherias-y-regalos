@@ -12,6 +12,7 @@ import Error400 from "./components/Public/Error400";
 import ForgotPassword from "./components/ForgotPassword";
 import ChangePassword from "./components/ChangePassword";
 import KeyVerifly from "./components/KeyVerifly";
+import ScrollButton from "./components/Public/ScrollButton";
 
 //Contenido Publico
 import Home from "./routes/Public/Home";
@@ -120,6 +121,7 @@ function App() {
           <Route path="/key-verification/:correo" element={<KeyVerifly />} />
 
         </Routes>
+        <ScrollButton />
         <Breadcrumbs />
         <PublicFooter />
     </>
