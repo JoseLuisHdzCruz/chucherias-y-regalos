@@ -8,8 +8,6 @@ import {
 } from "react-icons/md";
 
 const ProductDetail = () => {
-  
-
   const [startIdx, setStartIdx] = useState(0);
   const elementsPerPage = 3;
 
@@ -28,6 +26,7 @@ const ProductDetail = () => {
 
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [transformStyle, setTransformStyle] = useState("scale(1)");
 
   useEffect(() => {
     // Hacer la solicitud a la API para obtener los detalles del producto
@@ -41,6 +40,18 @@ const ProductDetail = () => {
     // Puedes mostrar un mensaje de carga mientras se obtienen los datos
     return <p>Cargando...</p>;
   }
+
+  const handleMouseMove = (e) => {
+    const container = e.currentTarget;
+    const x = e.nativeEvent.offsetX;
+    const y = e.nativeEvent.offsetY;
+    const transformValue = `scale(2) translate(-50%, -50%) translate(${x}px, ${y}px)`;
+    setTransformStyle(transformValue);
+  };
+
+  const handleMouseLeave = () => {
+    setTransformStyle("scale(1)");
+  };
 
   return (
     <main>
@@ -57,9 +68,21 @@ const ProductDetail = () => {
                     <div className="row">
                         <div className="col-12 col-sm-6">
                             <h3 className="d-inline-block d-sm-none">{product.nombre}</h3>
-                            <div className="col-12">
-                                <img src="/images/icono-producto.png" className="product-image" alt="Product Image" />
-                            </div>
+                            <div
+                className="col-12"
+                id="zoom-container"
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                style={{ overflow: "hidden" }}
+              >
+                <img
+                  src="/images/icono-producto.png"
+                  className="product-image"
+                  id="zoom-img"
+                  alt="Product Image"
+                  style={{ transform: transformStyle, transition: "transform 0.5s" }}
+                />
+              </div>
                             <div className="col-12 product-image-thumbs">
                                 <div className="product-image-thumb"><img src="/images/icono-producto.png" alt="Product Image" /></div>
                                 <div className="product-image-thumb"><img src="/images/icono-producto.png" alt="Product Image" /></div>
@@ -178,7 +201,7 @@ const ProductDetail = () => {
               <div className="card mt-4">
                 <div className="cont-img-carrusel">
                   <img
-                    src="/images/oso de peluche.jpg"
+                    src="/images/icono-producto.png"
                     className="card-img-top img-catalog"
                     alt="Oso de peluche"
                   />
@@ -195,7 +218,7 @@ const ProductDetail = () => {
               <div className="card mt-4">
                 <div className="cont-img-carrusel">
                   <img
-                    src="/images/R (2).jpg"
+                    src="/images/icono-producto.png"
                     className="card-img-top img-catalog"
                     alt="..."
                   />
@@ -212,7 +235,7 @@ const ProductDetail = () => {
               <div className="card mt-4">
                 <div className="cont-img-carrusel">
                   <img
-                    src="/images/R.jpg"
+                    src="/images/icono-producto.png"
                     className="card-img-top img-catalog"
                     alt="..."
                   />
@@ -229,7 +252,7 @@ const ProductDetail = () => {
               <div className="card mt-4">
                 <div className="cont-img-carrusel">
                   <img
-                    src="/images/collar.jpg"
+                    src="/images/icono-producto.png"
                     className="card-img-top img-catalog"
                     alt="..."
                   />
