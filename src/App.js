@@ -15,8 +15,8 @@ import KeyVerifly from "./components/KeyVerifly";
 
 //Contenido Publico
 import Home from "./routes/Public/Home";
-import ProductDetail from "./routes/Public/ProductDetail";
-import ProductDetail2 from "./routes/Public/ProductDetail2";
+import ProductDetail from "./routes/Public/ProductDetail2";
+// import ProductDetail2 from "./routes/Public/ProductDetail2";
 import PrivacyPolicy from "./routes/Public/PrivacyPolicy";
 import Terms from "./routes/Public/Terms";
 // import CookiesBanner from './components/CookieBanner';  // Importa el nuevo componente
@@ -93,12 +93,11 @@ function App() {
     
       {/* Area publica */}
       <PublicHeader />
-      <Breadcrumbs />
         {/* {showCookiesBanner && <CookiesBanner onAccept={handleAcceptCookies} />} Muestra el banner de cookies */}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/product" element={<ProductDetail />} />
-          <Route path="/product2" element={<ProductDetail2 />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          {/* <Route path="/product2" element={<ProductDetail2 />} /> */}
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-cond" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
@@ -121,6 +120,7 @@ function App() {
           <Route path="/key-verification/:correo" element={<KeyVerifly />} />
 
         </Routes>
+        <Breadcrumbs />
         <PublicFooter />
     </>
   );
