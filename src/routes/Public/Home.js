@@ -29,7 +29,7 @@ function Home() {
           <Link to={`/product/${product.productoId}`} key={product.productoId}>
             <div className="card mt-4" style={{ width: '18rem' }}>
               <div className="cont-img">
-                <img src="/images/icono-producto.png" className="card-img-top img-catalog" alt={product.nombre} />
+                <img src="/images/icono-producto.jpg" className="card-img-top img-catalog" alt={product.nombre} />
               </div>
               <div className="card-body mt-3">
                 <div className="cont-description">
