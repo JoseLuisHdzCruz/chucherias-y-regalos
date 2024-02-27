@@ -87,10 +87,8 @@ const validationSchema = Yup.object().shape({
     .matches(/\d{1,2}/, "Debe contener al menos 1 o 2 dígitos")
     .matches(/[A-Z]{1,2}/, "Debe contener al menos 1 o 2 letras mayúsculas")
     .matches(/[a-z]{1,2}/, "Debe contener al menos 1 o 2 letras minúsculas")
-    .matches(
-      /[^A-Za-z0-9]{1,2}/,
-      "Debe contener al menos 1 o 2 caracteres especiales"
-    ),
+    .matches(/[^A-Za-z0-9]{1,2}/, "Debe contener al menos 1 o 2 caracteres especiales")
+    ,
   RContraseña: Yup.string()
     .required("Campo obligatorio")
     .oneOf([Yup.ref("contraseña"), null], "Las contraseñas deben coincidir"),
@@ -418,6 +416,9 @@ const Register = () => {
                         id="contraseña"
                         name="contraseña"
                         placeholder="Contraseña"
+                        validations={(password) =>
+                          validationSchema.fields.contraseña.validSync(password)
+                        }
                       />
                     </div>
 

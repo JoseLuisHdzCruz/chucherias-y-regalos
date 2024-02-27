@@ -1,8 +1,14 @@
+// PasswordStrengthMeter.js
+
 import React from "react";
 import zxcvbn from "zxcvbn";
 
-const PasswordStrengthMeter = ({ password, className, style }) => {
-  const result = zxcvbn(password);
+const PasswordStrengthMeter = ({ password, validations, className, style }) => {
+  // Utiliza las validaciones de contraseña para verificar la fortaleza de la contraseña
+  const isValidPassword = validations(password);
+
+  // Calcula el score solo si la contraseña es válida
+  const result = isValidPassword ? zxcvbn(password) : { score: 0 };
   const score = result.score;
 
   // Define mensajes de sugerencia para cada nivel de puntuación
@@ -15,7 +21,16 @@ const PasswordStrengthMeter = ({ password, className, style }) => {
   ];
 
   // Define clases de color para la barra de progreso según la puntuación
-  const progressColorClass = score === 0 ? "bg-danger" : score === 1 ? "bg-warning" : score === 2 ? "bg-info" : score === 3 ? "bg-success" : "bg-success";
+  const progressColorClass =
+    score === 0
+      ? "bg-danger"
+      : score === 1
+      ? "bg-warning"
+      : score === 2
+      ? "bg-info"
+      : score === 3
+      ? "bg-success"
+      : "bg-success";
 
   return (
     <div className={`password-strength-meter ${className}`} style={style}>
