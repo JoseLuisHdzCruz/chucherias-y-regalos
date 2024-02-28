@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PageTitle from "../components/PageTitle";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -6,6 +6,8 @@ import { Link, useNavigate } from "react-router-dom"; // Importar Link desde rea
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import PasswordField from "./PasswordField";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 //validaciones correspondientes al formulario de registro
 const validationEmail = Yup.object().shape({
@@ -25,9 +27,9 @@ const validationEmail = Yup.object().shape({
 });
 
 const ChangePassword = () => {
-
   const { correo } = useParams();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
 
   //valores por defecto de los campos de registro
   const initialValues = {
@@ -38,13 +40,15 @@ const ChangePassword = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       // Enviar la solicitud POST a la API
-      const response = await axios.post("https://backend-c-r-production.up.railway.app/users/changePassword", {
-        correo: correo,
-        nuevaContraseña: values.contraseña
-      });
+      const response = await axios.post(
+        "https://backend-c-r-production.up.railway.app/users/changePassword",
+        {
+          correo: correo,
+          nuevaContraseña: values.contraseña,
+        }
+      );
 
-      console.log(correo + " " + values.contraseña)
-
+      console.log(correo + " " + values.contraseña);
 
       // Mostrar un mensaje de éxito
       toast.success(response.data.message);
@@ -52,7 +56,6 @@ const ChangePassword = () => {
       setTimeout(() => {
         navigate("/");
       }, 5000);
-
     } catch (error) {
       // Mostrar un mensaje de error si ocurre algún problema
       toast.error(error.response.data.error);
@@ -63,7 +66,7 @@ const ChangePassword = () => {
   };
 
   const loginPageStyle = {
-    minHeight: "318.8px",
+    minHeight: "450px",
     background: "none", // Agrega esta línea para quitar el fondo
   };
   return (
@@ -102,25 +105,15 @@ const ChangePassword = () => {
                         <label htmlFor="Contraseña" className="fw-bold">
                           Ingrese su nueva contraseña
                         </label>
-                        <div className="input-group mb-3">
-                          <Field
-                            type="password"
-                            className="form-control"
-                            id="contraseña"
-                            name="contraseña"
-                            placeholder="Ingrese su contraseña"
-                          />
-                          
-                          <div className="input-group-append">
-                            <div className="input-group-text">
-                                <span className="fas fa-lock"></span>
-                            </div>
-                          </div>
-                        </div>
-                        <ErrorMessage
+                        <PasswordField
+                          id="contraseña"
                           name="contraseña"
-                          component="div"
-                          className="text-danger"
+                          placeholder="Contraseña"
+                          validations={(password) =>
+                            validationEmail.fields.contraseña.validSync(
+                              password
+                            )
+                          }
                         />
                       </div>
                       <div className="form-group mb-4">
@@ -128,24 +121,35 @@ const ChangePassword = () => {
                           Confirme su contraseña
                         </label>
                         <div className="input-group mb-3">
-                          <Field
-                            type="password"
-                            className="form-control"
-                            id="RContraseña"
-                            name="RContraseña"
-                            placeholder="Confirme su contraseña"
-                          />
-                          <div className="input-group-append">
-                            <div className="input-group-text">
-                                <span className="fas fa-lock"></span>
+                          <div className="input-group">
+                            <Field
+                              type={showPassword ? "text" : "password"}
+                              className="form-control"
+                              id="RContraseña"
+                              name="RContraseña"
+                              placeholder="Confirme su contraseña"
+                            />
+                            {/* Botón para mostrar/ocultar la contraseña */}
+                            <div className="input-group-append">
+                              <button
+                                className="btn btn-outline-secondary"
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)} // Función para cambiar el estado showPassword
+                              >
+                                {showPassword ? (
+                                  <MdVisibilityOff size={25} />
+                                ) : (
+                                  <MdVisibility size={25} />
+                                )}
+                              </button>
                             </div>
                           </div>
+                          <ErrorMessage
+                            name="RContraseña"
+                            component="div"
+                            className="text-danger"
+                          />
                         </div>
-                        <ErrorMessage
-                          name="RContraseña"
-                          component="div"
-                          className="text-danger"
-                        />
                       </div>
 
                       <div className="cont-btn-2 mt-4">

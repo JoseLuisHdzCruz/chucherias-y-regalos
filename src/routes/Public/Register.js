@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Field, Form, ErrorMessage, useField } from "formik";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,7 +8,8 @@ import ModalComponent from "../../components/Public/Modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReCAPTCHA from "react-google-recaptcha";
-import PasswordStrengthMeter from "../../components/PasswordStrengthMeter";
+import PasswordField from "../../components/PasswordField";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 //validaciones correspondientes al formulario de registro
 const validationSchema = Yup.object().shape({
@@ -87,8 +88,10 @@ const validationSchema = Yup.object().shape({
     .matches(/\d{1,2}/, "Debe contener al menos 1 o 2 dígitos")
     .matches(/[A-Z]{1,2}/, "Debe contener al menos 1 o 2 letras mayúsculas")
     .matches(/[a-z]{1,2}/, "Debe contener al menos 1 o 2 letras minúsculas")
-    .matches(/[^A-Za-z0-9]{1,2}/, "Debe contener al menos 1 o 2 caracteres especiales")
-    ,
+    .matches(
+      /[^A-Za-z0-9]{1,2}/,
+      "Debe contener al menos 1 o 2 caracteres especiales"
+    ),
   RContraseña: Yup.string()
     .required("Campo obligatorio")
     .oneOf([Yup.ref("contraseña"), null], "Las contraseñas deben coincidir"),
@@ -103,6 +106,7 @@ const Register = () => {
   const [captchaExpired, setCaptchaExpired] = useState(false); // Estado para el tiempo de expiración del captcha
   const [aceptaTerminos, setAceptaTerminos] = useState(false); // Estado del checkbox de terminos y condiciones
   const [contraseña, setPassword] = useState(""); // Estado del componente password
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -426,13 +430,30 @@ const Register = () => {
                       <label htmlFor="RContraseña" className="fw-bold">
                         Confirmar contraseña
                       </label>
-                      <Field
-                        type="password"
-                        className="form-control"
-                        id="RContraseña"
-                        name="RContraseña"
-                        placeholder="Contraseña"
-                      />
+                      <div className="input-group">
+                        <Field
+                          type={showPassword ? "text" : "password"}
+                          className="form-control"
+                          id="RContraseña"
+                          name="RContraseña"
+                          placeholder="Contraseña"
+                        />
+                        {/* Botón para mostrar/ocultar la contraseña */}
+                        <div className="input-group-append">
+                          <button
+                            className="btn btn-outline-secondary"
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)} // Función para cambiar el estado showPassword
+                          >
+                            {showPassword ? (
+                              <MdVisibilityOff size={25} />
+                            ) : (
+                              <MdVisibility size={25} />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
                       <ErrorMessage
                         name="RContraseña"
                         component="div"
@@ -509,37 +530,6 @@ const Register = () => {
       </div>
       <ToastContainer />
     </main>
-  );
-};
-
-// Componente de contraseña con medidor de fortaleza
-const PasswordField = ({ id, name, placeholder }) => {
-  const [field, meta] = useField(name);
-  const [password, setPassword] = useState("");
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    field.onChange(e);
-  };
-
-  return (
-    <div>
-      <input
-        {...field}
-        type="password"
-        className="form-control"
-        id={id}
-        name={name}
-        placeholder={placeholder}
-        value={password}
-        onChange={handlePasswordChange}
-      />
-      <PasswordStrengthMeter password={password} />
-
-      {meta.touched && meta.error ? (
-        <div className="text-danger">{meta.error}</div>
-      ) : null}
-    </div>
   );
 };
 

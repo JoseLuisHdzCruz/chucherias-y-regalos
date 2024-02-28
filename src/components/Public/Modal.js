@@ -8,6 +8,7 @@ import { Modal } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import ReCAPTCHA from "react-google-recaptcha";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 //validaciones correspondientes al formulario de registro
 const loginValidationSchema = Yup.object().shape({
@@ -32,6 +33,7 @@ const loginValidationSchema = Yup.object().shape({
 
 const ModalComponent = ({ show, onClose }) => {
   const [capchaValue, setCaptchaValue] = useState(null);
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
 
   const handleChange = (value) => {
     setCaptchaValue(value);
@@ -89,8 +91,13 @@ const ModalComponent = ({ show, onClose }) => {
         } else if (responseData.error === "Contraseña incorrecta") {
           toast.error("Contraseña incorrecta.");
           setErrors({ contraseña: "La contraseña es incorrecta" });
-        } else if (responseData.error === "Se ha excedido el límite de intentos de inicio de sesion") {
-          toast.error("Se ha excedido el límite de intentos de inicio de sesión. Por favor espere 30s para intentarlo de nuevo.");
+        } else if (
+          responseData.error ===
+          "Se ha excedido el límite de intentos de inicio de sesion"
+        ) {
+          toast.error(
+            "Se ha excedido el límite de intentos de inicio de sesión. Por favor espere 30s para intentarlo de nuevo."
+          );
         }
       } else {
         // Si hay un error de red u otro tipo de error
@@ -165,13 +172,30 @@ const ModalComponent = ({ show, onClose }) => {
                     <label htmlFor="contraseña" className="fw-bold">
                       Contraseña
                     </label>
-                    <Field
-                      type="password"
-                      className="form-control"
-                      id="contraseña"
-                      name="contraseña"
-                      placeholder="Contraseña"
-                    />
+                    <div className="input-group">
+                      <Field
+                        type={showPassword ? "text" : "password"}
+                        className="form-control"
+                        id="contraseña"
+                        name="contraseña"
+                        placeholder="Contraseña"
+                      />
+                      {/* Botón para mostrar/ocultar la contraseña */}
+                      <div className="input-group-append">
+                        <button
+                          className="btn btn-outline-secondary"
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)} // Función para cambiar el estado showPassword
+                        >
+                          {showPassword ? (
+                            <MdVisibilityOff size={25} />
+                          ) : (
+                            <MdVisibility size={25} />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
                     <ErrorMessage
                       name="contraseña"
                       component="div"

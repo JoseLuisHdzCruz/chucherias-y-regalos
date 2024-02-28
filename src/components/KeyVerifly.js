@@ -150,7 +150,7 @@ const KeyVerifly = () => {
       <PageTitle title="Chucherias & Regalos | Recuperar contraseña" />
       <div
         className="login-page"
-        style={{ minHeight: "318.8px", background: "none" }}
+        style={{ minHeight: "550px", background: "none" }}
       >
         <div className="login-box">
           <div className="card card-outline card-primary">

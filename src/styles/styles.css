@@ -10,6 +10,10 @@ card-alumno {
   margin-bottom: 50px;
 }
 
+.input-group-append{
+  height: 38px;
+}
+
 article,
 p,
 li {
