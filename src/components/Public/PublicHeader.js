@@ -1,32 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { MdSearch, MdShoppingCart } from "react-icons/md";
-import { Link } from "react-router-dom"; // Importar Link desde react-router-dom
+import { Link } from "react-router-dom"; 
 import DropdownMenu from "./DropdownMenu";
 import ModalComponent from "./Modal";
 import "../../styles/styles.css";
-import { jwtDecode } from "jwt-decode";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-
 function PublicHeader() {
   const [usuario, setUsuario] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    // Obtener el token del almacenamiento local
-    const token = localStorage.getItem("token");
-
-    // Decodificar el token para obtener los datos del usuario si existe
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUsuario(decoded);
-    } else {
-      // Si no hay token, establecer el usuario como null
-      setUsuario(null);
-    }
+    let lastScrollTop = 0;
+  
+    const handleScroll = () => {
+      const currentScrollTop = window.scrollY;
+  
+      if (currentScrollTop > lastScrollTop) {
+        // Scrolling down
+        setScrolled(true);
+      } else {
+        // Scrolling up
+        setScrolled(false);
+      }
+  
+      lastScrollTop = currentScrollTop;
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+  
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
-
+  
 
   const cerrarSesion = () => {
     localStorage.removeItem('token');
@@ -44,7 +52,7 @@ function PublicHeader() {
   const cerrarModal = () => setMostrarModal(false);
 
   return (
-    <header className="d-flex">
+    <header className={`d-flex ${scrolled ? 'hidden' : 'sticky'}`}>
       <div className="columna-1">
         <Link to="/">
           <img
