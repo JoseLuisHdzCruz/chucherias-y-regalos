@@ -142,23 +142,6 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const validarCorreoElectronico = async (correoElectronico) => {
-    try {
-      const apiKey = "94393e06186643d9a110f246ca0d2191";
-      const response = await fetch(
-        `https://api.zerobounce.net/v2/validate?api_key=${apiKey}&email=${correoElectronico}`
-      );
-      const data = await response.json();
-      if (data.status === "invalid") {
-        return false; // Devuelve false si el correo electrónico es inválido
-      }
-      return true;
-    } catch (error) {
-      console.error("Error al validar el correo electrónico:", error);
-      return { error: "Error al validar el correo electrónico" };
-    }
-  };
-
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       if (!capchaValue) {
@@ -166,27 +149,8 @@ const Register = () => {
         setErrors({ captcha: "Complete el Captcha" });
         return;
       }
-
-      // Mostrar un indicador de carga o mensaje de "Validando correo electrónico..."
-      const validationEmail = await validarCorreoElectronico(values.correo);
-
-      if (!validationEmail) {
-        // Mostrar un mensaje de error al usuario
-        toast.error("El correo electronico no es válido.");
-        setErrors({ correo: "Correo invalido, verifique si existe." });
-        return;
-      }
-
-      const countryCode = "MX"; // Código de país para México
-      const validateResponse = await axios.get(
-        `http://apilayer.net/api/validate?access_key=7b58de28fe950ac24db3726ec89dc736&number=${values.telefono}&country_code=${countryCode}`
-      );
-      if (!validateResponse.data.valid) {
-        toast.error("El número de teléfono no es válido.");
-        setErrors({ telefono: "Número invalido, verifique si existe." });
-        return;
-      }
-
+      console.log(values)
+  
       const response = await axios.post(
         "https://backend-c-r-production.up.railway.app/users",
         values
@@ -202,22 +166,22 @@ const Register = () => {
       if (error.response) {
         // Si la respuesta de la API contiene errores
         const responseData = error.response.data;
-        if (responseData.error === "El correo electrónico ya está en uso") {
-          toast.error(
-            "El correo electrónico ya está en uso. Por favor, utiliza otro."
-          );
-          // Actualizar el estado del formulario para mostrar el mensaje de error y mantener el valor del correo electrónico ingresado
-          setErrors({ correo: "Correo electrónico en uso" });
+        if (responseData.error) {
+          // Si la respuesta contiene un mensaje de error específico
+          if (responseData.error.includes("correo")) {
+            setErrors({ correo: responseData.error });
+          } else if (responseData.error.includes("teléfono")) {
+            setErrors({ telefono: responseData.error });
+          }
+          toast.error(responseData.error);
         } else {
-          // Manejar otros errores de la API
+          // Si no hay un mensaje de error específico, manejarlo como un error genérico
           toast.error("Error al registrar. Por favor, inténtalo de nuevo.");
         }
       } else {
         // Si hay un error de red u otro tipo de error
         console.error(error);
-        toast.error(
-          "Error de conexión. Por favor, verifica tu conexión a Internet e inténtalo de nuevo más tarde."
-        );
+        toast.error("Error de conexión. Por favor, verifica tu conexión a Internet e inténtalo de nuevo más tarde.");
         // Redirigir a la vista de error 500
         navigate("/error-500");
       }
@@ -225,6 +189,7 @@ const Register = () => {
       setSubmitting(false);
     }
   };
+  
 
   return (
     <main>
