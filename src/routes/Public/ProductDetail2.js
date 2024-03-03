@@ -78,7 +78,7 @@ const ProductDetail = () => {
                   style={{ overflow: "hidden" }}
                 >
                   <img
-                    src="/images/icono-producto.jpg"
+                    src={product.imagen}
                     className="product-image"
                     id="zoom-img"
                     alt="Product Image"
@@ -88,7 +88,7 @@ const ProductDetail = () => {
                     }}
                   />
                 </div>
-                <div className="col-12 product-image-thumbs">
+                {/* <div className="col-12 product-image-thumbs">
                   <div className="product-image-thumb">
                     <img src="/images/icono-producto.jpg" alt="Product Image" />
                   </div>
@@ -104,7 +104,7 @@ const ProductDetail = () => {
                   <div className="product-image-thumb">
                     <img src="/images/icono-producto.jpg" alt="Product Image" />
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="col-12 col-sm-6">
                 <h3 className="my-3">{product.nombre}</h3>
