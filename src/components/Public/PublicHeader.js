@@ -6,12 +6,20 @@ import ModalComponent from "./Modal";
 import "../../styles/styles.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { jwtDecode } from "jwt-decode";
 
 function PublicHeader() {
   const [usuario, setUsuario] = useState(null);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (token){
+      const decoded = jwtDecode(token)
+      setUsuario(decoded)
+    } else {
+      setUsuario(null)
+    }
     let lastScrollTop = 0;
   
     const handleScroll = () => {

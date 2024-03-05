@@ -69,9 +69,22 @@ const ModalComponent = ({ show, onClose }) => {
       // Decodificar el token para obtener los datos del usuario
       const decoded = jwtDecode(token);
 
-      // Mostrar un toast con el nombre del usuario
-      toast.success(`Inicio de sesion exitoso.
-      Bienvenido (a), ${decoded.nombre}!`);
+      //Terneario pero concatenando con variables del query 
+      const mensaje = `Inicio de sesión exitoso. Bienvenid${decoded.sexo === "femenino" ? "a" : "o"} ${decoded.nombre}`
+
+      toast.success(mensaje)
+      
+
+      //Normal y concatenando con el signo mas+
+      // if(decoded.sexo === "femenino"){
+      //   toast.success(`Inicio de sesión exitoso. Bienvenida ${decoded.nombre}`)
+      // }
+      // else
+      // {
+      //   toast.success("Inicio de sesión exitoso. Bienvenido "+ decoded.nombre)
+      // } 
+
+
 
       setTimeout(() => {
         window.location.href = "/";
