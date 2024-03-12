@@ -2,6 +2,7 @@
   font-family: '';
 } */
 
+
 /* Modal de carrito */
 .modal-cart {
   position: fixed;
@@ -818,7 +819,7 @@ main {
 }
 
 .btn-secondary {
-  width: 250px;
+  width: 180px;
   height: 40px;
   border-radius: 20px;
   border: none;

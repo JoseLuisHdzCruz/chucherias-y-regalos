@@ -77,13 +77,13 @@ const LoginPage = () => {
   };
 
   const loginPageStyle = {
-    minHeight: "318.8px",
+    minHeight: "400px",
     background: "none", // Agrega esta línea para quitar el fondo
   };
   return (
     <div className="wrapper row3 m-5">
       <PageTitle title="Chucherias & Regalos | Recuperar contraseña" />
-      <div className="login-page" style={loginPageStyle}>
+      <div className="login-page login-style" style={loginPageStyle}>
         <div className="login-box">
           <div className="card card-outline card-primary">
             <div className="card-header text-center">

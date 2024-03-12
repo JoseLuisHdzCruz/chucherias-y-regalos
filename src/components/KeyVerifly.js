@@ -73,7 +73,7 @@ const KeyVerifly = () => {
         toast.success(response.data.message);
         setTimeout(() => {
           navigate(`/change-password/${correo}`);
-        }, 5000);
+        }, 3000);
       } else {
         // Mostrar un mensaje de error al usuario
         toast.error(response.data.message);
@@ -150,7 +150,7 @@ const KeyVerifly = () => {
       <PageTitle title="Chucherias & Regalos | Recuperar contraseña" />
       <div
         className="login-page"
-        style={{ minHeight: "550px", background: "none" }}
+        style={{ minHeight: "600px", background: "none" }}
       >
         <div className="login-box">
           <div className="card card-outline card-primary">
@@ -272,6 +272,10 @@ const KeyVerifly = () => {
                         >
                           {isResending ? "Reenviando..." : "Reenviar ahora"}
                         </Link>
+                      </div>
+
+                      <div className="text-login">
+                        <Link to={`/forgot-passworg-secret-question/${correo}`} className="text-primary fw-bold">Probar por pregunta secreta</Link>
                       </div>
 
                       <div className="cont-btn-2 mt-4 mb-4">

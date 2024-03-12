@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   useNavigate,
-  Navigate,
 } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { toast } from "react-toastify";
-import PrivateRoute from "./components/Public/PrivateRoute";
 
 //Public
 // Componentes publicos
@@ -21,6 +19,7 @@ import Error400 from "./components/Public/Error400";
 import ForgotPassword from "./components/ForgotPassword";
 import ChangePassword from "./components/ChangePassword";
 import KeyVerifly from "./components/KeyVerifly";
+import SecretQuestion from "./components/SecretQuestion";
 import ScrollButton from "./components/Public/ScrollButton";
 import { CartProvider } from "./context/CartContext";
 
@@ -55,14 +54,16 @@ import AddProduct from "./routes/Admin/AddProduct";
 const GuardedLayout = ({ children }) => {
   const { token } = useAuth();
   const navigate = useNavigate();
-  const [toastShown, setToastShown] = useState(false);
 
   useEffect(() => {
-    if (!token && !toastShown) {
-      toast.error("Debe iniciar sesión");
-      setToastShown(true);
+    if (!token) {
+      
+      navigate("/");
+      setTimeout(() => {
+        toast.error("Debe iniciar sesión");//Verificar el porque no se muestra la alerta
+      }, 500);
     }
-  }, [token, toastShown]);
+  }, [token]);
   return (
     <>
       <PublicHeader />
@@ -135,11 +136,9 @@ function App() {
             <Route path="/error-500" element={<Error500 />} />
             <Route path="/error-400" element={<Error400 />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route
-              path="/change-password/:correo"
-              element={<ChangePassword />}
-            />
+            <Route path="/change-password/:correo" element={<ChangePassword />}/>
             <Route path="/key-verification/:correo" element={<KeyVerifly />} />
+            <Route path="/forgot-passworg-secret-question/:correo" element={<SecretQuestion />} />
           </Routes>
           <ScrollButton />
           <Breadcrumbs />

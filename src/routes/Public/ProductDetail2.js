@@ -5,9 +5,10 @@ import CarruselProductos from "../../components/Public/CarruselProductos";
 import ComentariosProductos from "../../components/Public/ComentariosProdructos";
 import CartModal from "../../components/Public/CartModal";
 import ModalComponent from "../../components/Public/Modal"; // Nuevo import
-import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../../context/AuthContext";
 
-const ProductDetail = ({ usuario, setUsuario }) => {
+const ProductDetail = () => {
+  const { token } = useAuth();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [transformStyle, setTransformStyle] = useState("scale(1)");
@@ -37,20 +38,7 @@ const ProductDetail = ({ usuario, setUsuario }) => {
       );
   }, [id]);
 
-  useEffect(() => {
-    // Obtener el token del almacenamiento local
-    const token = localStorage.getItem("token");
-
-    // Decodificar el token para obtener los datos del usuario si existe
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUsuario(decoded);
-    } else {
-      // Si no hay token, establecer el usuario como null
-      setUsuario(null);
-    }
-  });
-
+ 
   // Guardar el carrito en localStorage cada vez que cambie
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -86,7 +74,7 @@ const ProductDetail = ({ usuario, setUsuario }) => {
   };
 
   const handleAddToCart = () => {
-    if (!usuario) {
+    if (!token) {
       // Usuario no autenticado, mostrar modal de inicio de sesión
       setMostrarModal(true);
     } else {

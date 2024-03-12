@@ -17,6 +17,7 @@ const aliasMapping = {
   "error-500": "Error 500",
   "forgot-password": "Recuperar Contraseña",
   "change-password": "Cambiar contraseña",
+  "forgot-passworg-secret-question": "Recuperar cuenta por pregunta secreta"
 };
 
 const Breadcrumbs = () => {
