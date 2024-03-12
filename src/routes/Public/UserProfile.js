@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import { MdChevronRight } from "react-icons/md";
+import React from "react";
 import { Link } from 'react-router-dom'
 import PageTitle from '../../components/PageTitle'
-import ModalComponent from "../../components/Public/Modal";
 
 const UserProfile = () => {
   return (
