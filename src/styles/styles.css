@@ -2,7 +2,164 @@
   font-family: '';
 } */
 
-card-alumno {
+
+/* Modal de carrito */
+.modal-cart {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  width: 500px;
+  height: auto;
+  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.aling-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay-cart {
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro transparente */
+  z-index: 9998; /* Asegúrate de que el overlay esté debajo del modal */
+}
+.modal-cart {
+  border: none;
+}
+
+.modal-cart .header-carrito {
+  background-color: #c543c7;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+}
+
+.modal-cart .carrito-item {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-bottom: 1px solid #666;
+  padding: 20px;
+}
+
+.modal-cart .carrito-item img {
+  margin-right: 20px;
+}
+
+.modal-cart .carrito-item .carrito-item-titulo {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.modal-cart .carrito-item .selector-cantidad {
+  display: inline-block;
+  margin-right: 25px;
+}
+
+.modal-cart .carrito-item .carrito-item-cantidad {
+  border: none;
+  font-size: 18px;
+  background-color: transparent;
+  display: inline-block;
+  width: 30px;
+  padding: 5px;
+  text-align: center;
+}
+
+.modal-cart .carrito-item .selector-cantidad i {
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+
+.modal-cart .carrito-item .carrito-item-precio {
+  font-weight: bold;
+  display: inline-block;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.modal-cart .carrito-item .btn-eliminar {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  color: #000;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid #000;
+  cursor: pointer;
+  background: transparent;
+  z-index: 20;
+}
+
+.modal-cart .carrito-item .btn-eliminar i {
+  pointer-events: none;
+}
+
+.carrito-total {
+  background-color: #f3f3f3;
+  padding: 30px;
+}
+
+.carrito-total .fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.carrito-total .btn-pagar {
+  display: block;
+  width: 100%;
+  border: none;
+  background: #000;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.modal-cart-total .btn-pagar:hover {
+  transform: scale(
+    1.05
+  ); /* Corregido el nombre de la propiedad de transformación */
+}
+
+/* CartModal.css */
+
+.card-alumno {
   background-color: #f9f9f6;
   border-radius: 20px;
   width: 600px;
@@ -10,7 +167,7 @@ card-alumno {
   margin-bottom: 50px;
 }
 
-.input-group-append{
+.input-group-append {
   height: 38px;
 }
 
@@ -77,22 +234,32 @@ header nav ul {
   font-weight: lighter;
 }
 
-.cinta-opciones a:hover{
+.text-user{
+  font-size: 30px;
+  text-decoration: none;
+}
+
+.text-user:hover{
+  font-weight: bold;
+  color: #000;
+}
+
+.cinta-opciones a:hover {
   color: #212121;
   font-weight: bolder;
 }
 
-.dropdown a:hover{
+.dropdown a:hover {
   color: #212121;
 }
 
-.column a:hover{
+.column a:hover {
   color: #fff;
   font-weight: bolder;
 }
 
-.cart a :hover{
-  color:rgb(0, 0, 0);
+.cart a :hover {
+  color: rgb(0, 0, 0);
 }
 
 header nav {
@@ -159,7 +326,6 @@ header a {
 .search-bar a:hover {
   background-color: #eeeeeee0;
 }
-
 
 .columna {
   padding: 20px;
@@ -229,8 +395,8 @@ a {
   color: #ca0303;
 }
 
-.items-history{
-  margin-left: 0.5rem
+.items-history {
+  margin-left: 0.5rem;
 }
 
 .credentials {
@@ -277,8 +443,7 @@ footer a {
   text-decoration: none;
 }
 
-
-.footer-end{
+.footer-end {
   background-color: #fff;
   border-top: 1px solid #dee2e6;
   padding: 1rem;
@@ -358,13 +523,15 @@ main {
 
 /* Efecto de sombra al pasar el ratón sobre la tarjeta */
 .catalog .card:hover {
-  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
 /* Efecto de transición cuando se selecciona la tarjeta (por ejemplo, haciendo clic en ella) */
 .catalog .card:active {
   transform: scale(1.05); /* Escala la tarjeta al hacer clic */
-  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
 .carrusel-detalle .card {
@@ -373,15 +540,16 @@ main {
 
 /* Efecto de sombra al pasar el ratón sobre la tarjeta */
 .carrusel-detalle .card:hover {
-  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
 /* Efecto de transición cuando se selecciona la tarjeta (por ejemplo, haciendo clic en ella) */
 .carrusel-detalle .card:active {
   transform: scale(1.05); /* Escala la tarjeta al hacer clic */
-  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
-
 
 .catalog .card {
   padding: 20px;
@@ -427,10 +595,10 @@ main {
   transform: translateY(-50%);
 }
 
-
 /* Efecto de sombra al pasar el ratón sobre la tarjeta */
 .carrusel-button:hover {
-  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
 .carrusel-button-left {
@@ -490,12 +658,11 @@ main {
   gap: 20px; /* Espacio entre las cartas */
 }
 
-.cont-filter{
+.cont-filter {
   display: flex;
   align-items: center;
   gap: 60px;
 }
-
 
 .search-bar-history {
   text-align: center;
@@ -519,7 +686,8 @@ main {
   padding-left: 30px;
 }
 
-.search-bar input:focus, .filters input:focus {
+.search-bar input:focus,
+.filters input:focus {
   outline: none;
 }
 
@@ -539,7 +707,7 @@ main {
   background-color: #38ccec;
 }
 
-.filters{
+.filters {
   width: 60%;
   display: flex;
   gap: 20px;
@@ -549,12 +717,12 @@ main {
   margin-right: 40px;
 }
 
-.filters h5{
+.filters h5 {
   display: flex;
   align-items: center;
 }
 
-.filters input{
+.filters input {
   border-radius: 20px;
   background-color: #f0f0f0;
   border: none;
@@ -563,11 +731,11 @@ main {
   color: #000000;
 }
 
-.filters input:hover{
+.filters input:hover {
   border: none;
 }
 
-.btn-filter{
+.btn-filter {
   background-color: #38ccec;
   border-radius: 10px;
   border: none;
@@ -586,11 +754,11 @@ main {
   gap: 20px; /* Espacio entre las cartas */
 }
 
-.col-md-6 img{
+.col-md-6 img {
   margin: 1rem;
 }
 
-.title-product{
+.title-product {
   font-size: 24px;
 }
 
@@ -620,8 +788,8 @@ main {
   border-radius: 20px;
 }
 
-.card-body{
-  padding: 1rem!important;
+.card-body {
+  padding: 1rem !important;
 }
 
 .text-price {
@@ -651,7 +819,7 @@ main {
 }
 
 .btn-secondary {
-  width: 250px;
+  width: 180px;
   height: 40px;
   border-radius: 20px;
   border: none;
@@ -862,33 +1030,27 @@ table {
   width: 80%;
 }
 
-.login-page{
+.login-page {
   height: 60vh !important ;
   background-color: none;
 }
 
-.cont-breadcrumbs{
+.cont-breadcrumbs {
   margin-left: 50px;
 }
 
-.cont-breadcrumbs a{
+.cont-breadcrumbs a {
   text-decoration: none;
   color: #000000;
 }
 
-.cont-breadcrumbs a:hover{
+.cont-breadcrumbs a:hover {
   color: #1965bd;
 }
 
-
-
-.login-box{
+.login-box {
   width: 750px !important;
 }
-
-
-
-
 
 /* Estilos para los recuadros */
 .recuadro {
@@ -896,7 +1058,7 @@ table {
   border: 1px solid #dee2e6; /* Borde */
   border-radius: 5px; /* Bordes redondeados */
   padding: 20px; /* Espaciado interno */
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); /* Sombra */
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* Sombra */
   transition: all 0.3s ease; /* Transición suave */
 }
 
@@ -909,13 +1071,8 @@ table {
 /* Estilos cuando se pasa el ratón por encima del recuadro */
 .recuadro:hover {
   transform: translateY(-5px); /* Efecto de elevación */
-  box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.1); /* Sombra más pronunciada */
+  box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
 }
-
-
-
-
-
 
 /* Estilos para el validador de contraseñas */
 
@@ -936,4 +1093,3 @@ table {
   font-size: 13px;
   color: #646464;
 }
-

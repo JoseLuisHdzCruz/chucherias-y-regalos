@@ -18,8 +18,8 @@ const validationSchema = Yup.object().shape({
       /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ\s]+$/,
       "El nombre solo puede contener letras, acentos y espacios"
     )
-    .min(3, "El nombre debe tener al menos 10 caracteres")
-    .max(20, "El nombre no puede tener más de 50 caracteres")
+    .min(3, "El nombre debe tener al menos 3 caracteres")
+    .max(20, "El nombre no puede tener más de 20 caracteres")
     .required("El nombre es obligatorio")
     .test(
       "no-repetir-caracteres",
@@ -76,6 +76,15 @@ const validationSchema = Yup.object().shape({
     .required("Telefono requerido")
     .min(10, "El Telefono debe tener al menos 10 digitos"),
   sexo: Yup.string().required("Seleccione su sexo"),
+  preguntaSecreta: Yup.string().required("Seleccione su pregunta"),
+  respuestaSecreta: Yup.string()
+    .matches(
+      /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ\s]+$/,
+      "El nombre solo puede contener letras, acentos y espacios"
+    )
+    .min(3, "La respuesta debe tener al menos 3 caracteres")
+    .max(50, "La respuesta no puede tener más de 50 caracteres")
+    .required("La respuesta es obligatorio"),
   fecha_nacimiento: Yup.date()
     .max(
       new Date(new Date().setFullYear(new Date().getFullYear() - 18)),
@@ -370,6 +379,52 @@ const Register = () => {
                       />
                       <ErrorMessage
                         name="telefono"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group mb-4 row">
+                    <div className="form-group col-sm-6">
+                      <label htmlFor="preguntaSecreta" className="fw-bold">
+                        Pregunta Secreta
+                      </label>
+                      <Field
+                        as="select"
+                        className="form-select"
+                        id="preguntaSecreta"
+                        name="preguntaSecreta"
+                      >
+                        <option value="" disabled hidden selected>
+                          Selecciona tu pregunta secreta
+                        </option>
+                        <option value="¿Color favorito?">¿Color favorito?</option>
+                        <option value="¿Nombre de tu primera mascota?">¿Nombre de tu primera mascota?</option>
+                        <option value="¿Equipo de futbol favorito?">¿Equipo de futbol favorito?</option>
+                        <option value="¿Deporte favorito?">¿Deporte favorito?</option>
+                        <option value="¿Fruta favorita?">¿Fruta favorita?</option>
+                      </Field>
+                      <ErrorMessage
+                        name="preguntaSecreta"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </div>
+
+                    <div className="form-group col-sm-6">
+                      <label htmlFor="respuestaSecreta" className="fw-bold">
+                        Respuesta Secreta
+                      </label>
+                      <Field
+                        type="text"
+                        className="form-control"
+                        id="respuestaSecreta"
+                        name="respuestaSecreta"
+                        placeholder="respuestaSecreta"
+                      />
+                      <ErrorMessage
+                        name="respuestaSecreta"
                         component="div"
                         className="text-danger"
                       />

@@ -1,10 +1,42 @@
-import React, { useState } from "react";
-import { MdChevronRight } from "react-icons/md";
+import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 import PageTitle from '../../components/PageTitle'
-import ModalComponent from "../../components/Public/Modal";
+import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../../context/AuthContext"; 
 
 const UserProfile = () => {
+  const { token } = useAuth();
+  const [decodedToken, setDecodedToken] = useState(null);
+  const [selectedSexo, setSelectedSexo] = useState("");
+  const [edad, setEdad] = useState(null);
+
+  useEffect(() => {
+    if (token) {
+      const decoded = jwtDecode(token);
+      setDecodedToken(decoded);
+
+      // Establece el sexo seleccionado igual al sexo del token decodificado
+      setSelectedSexo(decoded.sexo);
+
+      // Calcula la edad actual del usuario a partir de la fecha de nacimiento en el token
+      const fechaNacimiento = new Date(decoded.edad);
+      const edadActual = calcularEdad(fechaNacimiento);
+      setEdad(edadActual);
+    }
+  }, [token]);
+
+  // Función para calcular la edad a partir de la fecha de nacimiento
+  const calcularEdad = (fechaNacimiento) => {
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+    const mesActual = hoy.getMonth();
+    const mesNacimiento = fechaNacimiento.getMonth();
+    if (mesActual < mesNacimiento || (mesActual === mesNacimiento && hoy.getDate() < fechaNacimiento.getDate())) {
+      edad--;
+    }
+    return edad;
+  };
+
   return (
     <main>
       <PageTitle title="Chucherias & Regalos | Perfil de usuario" />
@@ -13,17 +45,17 @@ const UserProfile = () => {
         Perfil de usuario
       </h3>
       <hr className="hr-primary" />
-      <div className="container">
+      {decodedToken ? (<div className="container">
         <div className="row">
           <div className="profile-usr col-md-5">
-            <h4 className="fw-bold">Nombre de usuario</h4>
+            <h4 className="fw-bold">{decodedToken.nombre} {decodedToken.aPaterno} {decodedToken.aMaterno}</h4>
             <img
               src="/images/OIP (1).jpg"
               className="img-fluid mt-2"
               alt="Chucherias & Regalos"
             />
-            <p className="mt-3">correo@dominio.com</p>
-            <p className="fw-bold">771 118 112</p>
+            <p className="mt-3">{decodedToken.correo}</p>
+            <p className="fw-bold">{decodedToken.telefono}</p>
               <Link to="/change-password" className="fw-bold" style={{color:'red', textDecoration:'none', fontSize:'20px' }}>
                 Administrar direcciones
               </Link>
@@ -41,6 +73,8 @@ const UserProfile = () => {
                 className="form-control"
                 id="Name"
                 placeholder="Nombre y apellidos"
+                value={`${decodedToken.nombre} ${decodedToken.aPaterno} ${decodedToken.aMaterno}`}
+                readOnly
               />
             </div>
 
@@ -53,6 +87,8 @@ const UserProfile = () => {
                 className="form-control"
                 id="Email"
                 placeholder="Email"
+                value={`${decodedToken.correo}`}
+                readOnly
               />
             </div>
 
@@ -66,6 +102,8 @@ const UserProfile = () => {
                   className="form-control"
                   id="Telefono"
                   placeholder="Telefono"
+                  value={`${decodedToken.telefono}`}
+                  readOnly
                 />
               </div>
             </div>
@@ -75,7 +113,7 @@ const UserProfile = () => {
                 <label htmlFor="Sexo" className="fw-bold">
                   Sexo
                 </label>
-                <select className="form-control" id="Sexo">
+                <select className="form-control" id="Sexo" value={selectedSexo} disabled>
                   <option value="" disabled selected hidden>
                     Selecciona tu sexo
                   </option>
@@ -92,6 +130,8 @@ const UserProfile = () => {
                   className="form-control"
                   id="Edad"
                   placeholder="Edad"
+                  value={edad !== null ? edad : ""}
+                  readOnly
                 />
               </div>
             </div>
@@ -108,7 +148,8 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>) : (<p>No hay token disponible</p>)}
+      
     </main>
   );
 };

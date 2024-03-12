@@ -1,3 +1,4 @@
+// PublicHeader.js
 import React, { useState, useEffect } from "react";
 import { MdSearch, MdShoppingCart } from "react-icons/md";
 import { Link } from "react-router-dom"; 
@@ -6,13 +7,22 @@ import ModalComponent from "./Modal";
 import "../../styles/styles.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 
 function PublicHeader() {
   const [usuario, setUsuario] = useState(null);
   const [scrolled, setScrolled] = useState(false);
+  const { token } = useAuth();
+  const { logout } = useAuth();
 
   useEffect(() => {
+    if (token) {
+      const decoded = jwtDecode(token);
+      setUsuario(decoded);
+    } else {
+      setUsuario(null);
+    }
     const token = localStorage.getItem("token")
     if (token){
       const decoded = jwtDecode(token)
@@ -26,10 +36,8 @@ function PublicHeader() {
       const currentScrollTop = window.scrollY;
   
       if (currentScrollTop > lastScrollTop) {
-        // Scrolling down
         setScrolled(true);
       } else {
-        // Scrolling up
         setScrolled(false);
       }
   
@@ -41,19 +49,16 @@ function PublicHeader() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
-  
+  }, [token]); // Agrega token como dependencia para que el efecto se vuelva a ejecutar cuando cambie
 
   const cerrarSesion = () => {
-    localStorage.removeItem('token');
-    setUsuario(null);
+    logout();
     toast.error("Cierre de sesión exitoso. ¡Hasta pronto!");
     setTimeout(() => {
       window.location.href = "/";
     }, 5000);
   };
 
-  // modal iniciar sesion
   const [mostrarModal, setMostrarModal] = useState(false);
 
   const activarModal = () => setMostrarModal(true);
@@ -119,7 +124,7 @@ function PublicHeader() {
             alt="Banner de Usuario"
           />
           {/* Mostrar el nombre de usuario si está disponible */}
-          {usuario ? <h3>{usuario.nombre} {usuario.aPaterno}</h3> : <h3>Usuario</h3>}
+          {usuario ? <Link className="text-user" to="/user-profile" pointer>{usuario.nombre} {usuario.aPaterno}</Link> : <Link className="text-user" to="/user-profile" pointer>Usuario</Link>}
         </div>
         <div className="cart">
           <Link to="/checkup">

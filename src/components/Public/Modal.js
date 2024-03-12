@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import ReCAPTCHA from "react-google-recaptcha";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { useAuth } from "../../context/AuthContext";
 
 //validaciones correspondientes al formulario de registro
 const loginValidationSchema = Yup.object().shape({
@@ -34,6 +35,7 @@ const loginValidationSchema = Yup.object().shape({
 const ModalComponent = ({ show, onClose }) => {
   const [capchaValue, setCaptchaValue] = useState(null);
   const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
+  const { setAuthToken } = useAuth(); // Obtén la función setAuthToken del contexto de autenticación
 
   const handleChange = (value) => {
     setCaptchaValue(value);
@@ -60,35 +62,20 @@ const ModalComponent = ({ show, onClose }) => {
         values
       );
 
-      // Guardar el token en el almacenamiento local del navegador
-      localStorage.setItem("token", response.data.token);
-
-      // Obtener el token del almacenamiento local del navegador
-      const token = localStorage.getItem("token");
+      // Guarda el token utilizando setAuthToken del contexto de autenticación
+      setAuthToken(response.data.token);
 
       // Decodificar el token para obtener los datos del usuario
-      const decoded = jwtDecode(token);
+      const decoded = jwtDecode(response.data.token);
+      console.log(decoded);
 
-      //Terneario pero concatenando con variables del query 
-      const mensaje = `Inicio de sesión exitoso. Bienvenid${decoded.sexo === "femenino" ? "a" : "o"} ${decoded.nombre}`
-
-      toast.success(mensaje)
-      
-
-      //Normal y concatenando con el signo mas+
-      // if(decoded.sexo === "femenino"){
-      //   toast.success(`Inicio de sesión exitoso. Bienvenida ${decoded.nombre}`)
-      // }
-      // else
-      // {
-      //   toast.success("Inicio de sesión exitoso. Bienvenido "+ decoded.nombre)
-      // } 
-
-
+      // Mostrar un toast con el nombre del usuario
+      toast.success(`Inicio de sesion exitoso.
+      Bienvenido (a), ${decoded.nombre}!`);
 
       setTimeout(() => {
         window.location.href = "/";
-      }, 5000);
+      }, 3000);
     } catch (error) {
       if (error.response) {
         // Si la respuesta de la API contiene errores
