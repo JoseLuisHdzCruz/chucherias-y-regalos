@@ -9,12 +9,21 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
+import axios from "axios";
 
-function PublicHeader() {
+function PublicHeader({ onSearch }) {
   const [usuario, setUsuario] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const { token } = useAuth();
   const { logout } = useAuth();
+
+  // Función para manejar la búsqueda
+ const handleSearch = (event) => {
+    const searchTerm = event.target.value.trim(); // Obtener el valor del campo de búsqueda y eliminar espacios en blanco al inicio y al final
+    if (searchTerm !== "") {
+      onSearch(searchTerm); // Llamar a la función de búsqueda solo si el término de búsqueda no está vacío
+    }
+  };
 
   useEffect(() => {
     if (token) {
@@ -73,12 +82,11 @@ function PublicHeader() {
           <input
             type="text"
             placeholder="¿Qué productos buscas el dia de hoy?"
+            onChange={handleSearch}
           />
-          <Link to="/search">
-            {" "}
-            {/* Cambiado <a> por <Link> y href por to */}
+          <button>
             <MdSearch size={25} />
-          </Link>
+          </button>
         </div>
         <nav className="mt-3">
           <ul>
