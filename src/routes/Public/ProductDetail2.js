@@ -80,7 +80,7 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (!token) {
-      toast.error("Para la siguiente accion debe iniciar sesion");
+      toast.error("Para la siguiente accion debe iniciar sesión");
     } else {
       // Usuario autenticado, agregar producto al carrito
       const existingItemIndex = cartItems.findIndex(

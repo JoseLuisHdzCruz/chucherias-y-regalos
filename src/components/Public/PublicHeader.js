@@ -17,10 +17,12 @@ function PublicHeader({ onSearch }) {
 
   // Función para manejar la búsqueda
  const handleSearch = (event) => {
-    const searchTerm = event.target.value.trim(); // Obtener el valor del campo de búsqueda y eliminar espacios en blanco al inicio y al final
-    if (searchTerm !== "") {
-      onSearch(searchTerm); // Llamar a la función de búsqueda solo si el término de búsqueda no está vacío
-    }
+  const searchTerm = event.target.value; // Obtener el valor del campo de búsqueda
+  if (searchTerm !== null && searchTerm !== "") {
+    onSearch(searchTerm); // Llamar a la función de búsqueda solo si el término de búsqueda no está vacío
+  } else {
+    onSearch(null); // Si el campo de búsqueda está vacío, enviar null o 0 según sea necesario
+  }
   };
 
   useEffect(() => {

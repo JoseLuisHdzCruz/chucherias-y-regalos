@@ -13,9 +13,6 @@ import { ToastContainer } from "react-toastify";
 
 //Public
 // Componentes publicos
-import PublicHeader from "./components/Public/PublicHeader";
-import PublicFooter from "./components/Public/PublicFooter";
-import Breadcrumbs from "./components/Breadcrumbs";
 import NotFound from "./components/Public/NotFound";
 import Error500 from "./components/Public/Error500";
 import Error400 from "./components/Public/Error400";
@@ -23,7 +20,6 @@ import ForgotPassword from "./components/ForgotPassword";
 import ChangePassword from "./components/ChangePassword";
 import KeyVerifly from "./components/KeyVerifly";
 import SecretQuestion from "./components/SecretQuestion";
-import ScrollButton from "./components/Public/ScrollButton";
 import { CartProvider } from "./context/CartContext";
 
 //Contenido Publico
@@ -63,17 +59,13 @@ const GuardedLayout = ({ children }) => {
       
       navigate("/");
       setTimeout(() => {
-        toast.error("Debe iniciar sesión");//Verificar el porque no se muestra la alerta
+        toast.error("Para la siguiente accion debe iniciar sesión.");//Verificar el porque no se muestra la alerta
       }, 500);
     }
   }, [token]);
   return (
     <>
-      <PublicHeader />
-      {children}
-      <ScrollButton />
-      <Breadcrumbs />
-      <PublicFooter />
+      <Layout>{children}</Layout>
     </>
   );
 };

@@ -1,51 +1,167 @@
-import React, { useEffect, useState } from 'react';
-import PageTitle from '../../components/PageTitle'
-import { Link } from 'react-router-dom'
-import BootstrapCarousel from '../../components/Public/BootstrapCarousel';
-// import CookieBanner from '../components/CookieBanner';
+import React, { useEffect, useState } from "react";
+import PageTitle from "../../components/PageTitle";
+import { Link } from "react-router-dom";
+import BootstrapCarousel from "../../components/Public/BootstrapCarousel";
 
-function Home({ searchResults }) {
+function Home({ searchResults, searchTerm }) {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 20;
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [orderBy, setOrderBy] = useState("");
 
   useEffect(() => {
     if (searchResults && searchResults.length > 0) {
-      // Si hay resultados de búsqueda, establece los resultados como productos a mostrar
       setProducts(searchResults);
+      setCurrentPage(1); // Resetear a la primera página cuando hay resultados de búsqueda
     } else {
-      // Si no hay resultados de búsqueda, carga los productos desde la API
-      fetch('https://backend-c-r-production.up.railway.app/products/')
+      fetch("https://backend-c-r-production.up.railway.app/products/")
         .then((response) => response.json())
         .then((data) => setProducts(data))
-        .catch((error) => console.error('Error fetching products:', error));
+        .catch((error) => console.error("Error fetching products:", error));
     }
   }, [searchResults]);
 
   // Calcular el índice del primer y último producto en la página actual
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  // Filtrar productos por rango de precios
+  const filteredProducts = currentProducts.filter((product) => {
+    if (minPrice !== "" && parseFloat(product.precio) < parseFloat(minPrice)) {
+      return false;
+    }
+    if (maxPrice !== "" && parseFloat(product.precio) > parseFloat(maxPrice)) {
+      return false;
+    }
+    return true;
+  });
+
+  // Ordenar productos según el criterio seleccionado
+  const sortedProducts =
+    orderBy === "desc"
+      ? filteredProducts.sort(
+          (a, b) => parseFloat(b.precio) - parseFloat(a.precio)
+        )
+      : orderBy === "asc"
+      ? filteredProducts.sort(
+          (a, b) => parseFloat(a.precio) - parseFloat(b.precio)
+        )
+      : filteredProducts;
 
   // Cambiar de página
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+    if (
+      pageNumber >= 1 &&
+      pageNumber <= Math.ceil(sortedProducts.length / productsPerPage)
+    ) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   return (
     <>
-    <BootstrapCarousel />
-    <main> 
-      <PageTitle title="Chucherias & Regalos | Inicio" />
+      <BootstrapCarousel />
+      <main>
+        <PageTitle title="Chucherias & Regalos | Inicio" />
 
-      <h2 className="title-pag fw-bold">Recomendados</h2>
-      <hr className="hr-primary" />
+        {searchResults && searchResults.length > 0 ? (
+          <div className="advanced-search">
+            <h2>
+              Resultados para:{" "}
+              <strong className="text-primary">{searchTerm}</strong>
+            </h2>
 
-      <div className="catalog">
-          {currentProducts.length > 0 ? (
-            currentProducts.map((product) => (
-              <Link to={`/product/${product.productoId}`} key={product.productoId}>
-                <div className="card mt-4" style={{ width: '18rem' }}>
+            <div className="cont-filter mt-4 ml-4">
+              <div className="price-range">
+                <div className="form-row">
+                  <div className="form-group col-sm-6">
+                    <label
+                      htmlFor="min-price"
+                      className="col-form-label col-form-label-sm mr-2"
+                    >
+                      Precio mínimo:
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="min-price"
+                      value={minPrice}
+                      onChange={(e) => setMinPrice(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group col-sm-6">
+                    <label
+                      htmlFor="max-price"
+                      className="col-form-label col-form-label-sm mr-2"
+                    >
+                      Precio máximo:
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="max-price"
+                      value={maxPrice}
+                      onChange={(e) => setMaxPrice(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="order-by">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="orderByDesc"
+                    checked={orderBy === "desc"}
+                    onChange={() =>
+                      setOrderBy(orderBy === "desc" ? "" : "desc")
+                    }
+                  />
+                  <label className="form-check-label" htmlFor="orderByDesc">
+                    Ordenar de mayor a menor
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="orderByAsc"
+                    checked={orderBy === "asc"}
+                    onChange={() => setOrderBy(orderBy === "asc" ? "" : "asc")}
+                  />
+                  <label className="form-check-label" htmlFor="orderByAsc">
+                    Ordenar de menor a mayor
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <h2>Recomendados </h2>
+        )}
+
+        <hr className="hr-primary" />
+
+        <div className="catalog">
+          {sortedProducts.length > 0 ? (
+            sortedProducts.map((product) => (
+              <Link
+                to={`/product/${product.productoId}`}
+                key={product.productoId}
+              >
+                <div className="card mt-4" style={{ width: "18rem" }}>
                   <div className="cont-img">
-                    <img src={product.imagen} className="card-img-top img-catalog" alt={product.nombre} />
+                    <img
+                      src={product.imagen}
+                      className="card-img-top img-catalog"
+                      alt={product.nombre}
+                    />
                   </div>
                   <div className="card-body mt-3">
                     <div className="cont-description">
@@ -64,15 +180,22 @@ function Home({ searchResults }) {
         </div>
 
         {/* Agregar paginación */}
-      <ul className="pagination text-center mt-4">
-        {Array.from({ length: Math.ceil(products.length / productsPerPage) }).map((_, index) => (
-          <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-            <button onClick={() => paginate(index + 1)} className="page-link">
-              {index + 1}
-            </button>
-          </li>
-        ))}
-      </ul>
+        <ul className="pagination text-center mt-4">
+          {Array.from({
+            length: Math.ceil(sortedProducts.length / productsPerPage),
+          }).map((_, index) => (
+            <li
+              key={index}
+              className={`page-item ${
+                currentPage === index + 1 ? "active" : ""
+              }`}
+            >
+              <button onClick={() => paginate(index + 1)} className="page-link">
+                {index + 1}
+              </button>
+            </li>
+          ))}
+        </ul>
       </main>
     </>
   );
