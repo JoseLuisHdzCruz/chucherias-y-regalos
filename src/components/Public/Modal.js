@@ -66,10 +66,10 @@ const ModalComponent = ({ show, onClose }) => {
       setAuthToken(response.data.token);
 
       // Decodificar el token para obtener los datos del usuario
-      const decoded = jwtDecode(response.data.token);
-      console.log(decoded);
+      const user = jwtDecode(response.data.token);
+      console.log(user);
 
-      const mensaje = `Inicio de sesión exitoso. Bienvenid${decoded.sexo === "masculino" ? 'o' : 'a'}, ${decoded.nombre}!`;
+      const mensaje = `Inicio de sesión exitoso. Bienvenid${user.sexo === "masculino" ? 'o' : 'a'}, ${user.nombre}!`;
       toast.success(mensaje);
       onClose();
     } catch (error) {

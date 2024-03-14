@@ -13,8 +13,7 @@ import { useAuth } from "../../context/AuthContext";
 function PublicHeader({ onSearch }) {
   const [usuario, setUsuario] = useState(null);
   const [scrolled, setScrolled] = useState(false);
-  const { token } = useAuth();
-  const { logout } = useAuth();
+  const { token, logout } = useAuth();
 
   // Función para manejar la búsqueda
  const handleSearch = (event) => {
