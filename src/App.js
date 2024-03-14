@@ -8,6 +8,8 @@ import {
 import { AuthProvider } from "./context/AuthContext";
 import { toast } from "react-toastify";
 import Layout from "./Layout/Layout";
+import { ToastContainer } from "react-toastify";
+
 
 //Public
 // Componentes publicos
@@ -140,6 +142,7 @@ function App() {
             <Route path="/key-verification/:correo" element={<Layout><KeyVerifly /></Layout>} />
             <Route path="/forgot-passworg-secret-question/:correo" element={<Layout><SecretQuestion /></Layout>} />
           </Routes>
+          <ToastContainer />
         </CartProvider>
       </AuthProvider>
     </>

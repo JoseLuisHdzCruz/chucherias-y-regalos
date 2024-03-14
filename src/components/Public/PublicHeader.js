@@ -5,11 +5,10 @@ import { Link } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import ModalComponent from "./Modal";
 import "../../styles/styles.css";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
-import axios from "axios";
 
 function PublicHeader({ onSearch }) {
   const [usuario, setUsuario] = useState(null);
@@ -134,7 +133,6 @@ function PublicHeader({ onSearch }) {
           </Link>
         </div>
       </div>
-      <ToastContainer />
     </header>
   );
 }

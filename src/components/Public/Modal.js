@@ -5,7 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import ReCAPTCHA from "react-google-recaptcha";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
@@ -71,10 +71,7 @@ const ModalComponent = ({ show, onClose }) => {
 
       const mensaje = `Inicio de sesión exitoso. Bienvenid${decoded.sexo === "masculino" ? 'o' : 'a'}, ${decoded.nombre}!`;
       toast.success(mensaje);
-
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 3000);
+      onClose();
     } catch (error) {
       if (error.response) {
         // Si la respuesta de la API contiene errores
@@ -233,7 +230,6 @@ const ModalComponent = ({ show, onClose }) => {
           </Form>
         </Formik>
       </Modal.Body>
-      <ToastContainer />
     </Modal>
   );
 };
