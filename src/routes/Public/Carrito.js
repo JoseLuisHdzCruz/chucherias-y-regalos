@@ -1,25 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
-    MdChevronRight,
-    MdAdd,
-    MdRemove,
-  } from "react-icons/md";
+  MdAdd,
+  MdRemove,
+  MdDelete
+} from "react-icons/md";
 import PageTitle from '../../components/PageTitle'
-
+import { CartContext } from '../../context/CartContext';
 
 const Carrito = () => {
+  const { cart, removeFromCart, addToCart  } = useContext(CartContext);
 
-    const [quantity, setQuantity] = useState(1);
-
-  const handleIncrement = () => {
-    setQuantity(quantity + 1);
+  const handleIncrement = (product) => {
+    addToCart(product, 1); // Suponiendo que addToCart actualiza la cantidad en 1
   };
-
-  const handleDecrement = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
+  
+  const handleDecrement = (product) => {
+    // Comprueba si la cantidad es mayor que 1 antes de decrementar
+    const itemInCart = cart.find(item => item.productoId === product.productoId);
+    if (itemInCart && itemInCart.cantidad > 1) {
+      addToCart(product, -1); // Suponiendo que addToCart permite actualizar la cantidad
+    } else {
+      removeFromCart(product.productoId); // Eliminar si la cantidad llega a 0
     }
   };
+
   return (
     <main>
       <PageTitle title="Chucherias & Regalos | Carrito" />
@@ -30,82 +34,43 @@ const Carrito = () => {
 
       <div className="detail-product">
         <div className="colum-detail">
-          <div className="card mb-3 mt-4">
-            <div className="card-body">
-              <div className="row">
-                <div className="col-md-2">
-                  <img
-                    src="./images/R (1).jpg"
-                    className="img-fluid rounded-start"
-                    alt="..."
-                  />
-                </div>
-                <div className="col-md-5 row ml-1">
-                  <h5 className="card-title" style={{ fontSize: "20px" }}>
-                    Caja registradora de juguete para niñas
-                  </h5>
-                  <div className="cont-options">
-                    <button className="btn-option">Eliminar</button>
-                    <a className="a-option" href="">
-                      Comprar ahora
-                    </a>
+          {Object.values(cart).map((item, index) => (
+            <div key={index} className="card mb-3 mt-4">
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-md-2">
+                    <img
+                      src={item.imagen}
+                      className="img-fluid rounded-start"
+                      alt="..."
+                    />
                   </div>
-                </div>
-                <div className="col-md-5 aling-center-cont">
-                  <div className="cont-cant d-flex align-items-center justify-content-center">
-                  <div className="counter">
-                    <button className="decrement" onClick={handleDecrement}>
-                        <MdRemove size={25} />
-                    </button>
-                    <span className="value">{quantity}</span>
-                    <button className="increment" onClick={handleIncrement}>
-                        <MdAdd size={25} />
-                    </button>
+                  <div className="col-md-5 row ml-1">
+                    <h5 className="card-title" style={{ fontSize: "20px" }}>
+                      {item.nombre}
+                    </h5>
+                    <div className="cont-options">
+                      <button className="btn-option" onClick={() => removeFromCart(item.productoId)}><MdDelete size={25}/></button>
+                    </div>
                   </div>
-                    <h2>$ 150.00</h2>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card mb-3 mt-4">
-            <div className="card-body">
-              <div className="row">
-                <div className="col-md-2">
-                  <img
-                    src="./images/collar.jpg"
-                    className="img-fluid rounded-start"
-                    alt="..."
-                  />
-                </div>
-                <div className="col-md-5 row ml-1">
-                  <h5 className="card-title" style={{ fontSize: "20px" }}>
-                    Collar para dama con piedra preciosa
-                  </h5>
-                  <div className="cont-options">
-                    <button className="btn-option">Eliminar</button>
-                    <a className="a-option" href="">
-                      Comprar ahora
-                    </a>
-                  </div>
-                </div>
-                <div className="col-md-5 aling-center-cont">
-                  <div className="cont-cant d-flex align-items-center justify-content-center">
-                  <div className="counter">
-                    <button className="decrement" onClick={handleDecrement}>
-                        <MdRemove size={25} />
-                    </button>
-                    <span className="value">{quantity}</span>
-                    <button className="increment" onClick={handleIncrement}>
-                        <MdAdd size={25} />
-                    </button>
-                  </div>
-                    <h2>$ 150.00</h2>
+                  <div className="col-md-5 aling-center-cont">
+                    <div className="cont-cant d-flex align-items-center justify-content-center">
+                      <div className="counter">
+                        <button className="decrement" onClick={() => handleDecrement(item)}>
+                          <MdRemove size={25} />
+                        </button>
+                        <span className="value">{item.cantidad}</span>
+                        <button className="increment" onClick={() => handleIncrement(item)}>
+                          <MdAdd size={25} />
+                        </button>
+                      </div>
+                      <h2>$ {item.precio}</h2>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
         <div className="colum-add">
           <div className="card mt-4">
@@ -113,20 +78,21 @@ const Carrito = () => {
               <h5 className="text-center">Informacion de compra</h5>
               <hr className="hr-primary-cont" />
               <table>
-                <tr>
-                  <td>Producto(2)</td>
-                  <td className="text-righ">$ 300.00</td>
-                </tr>
-                <tr>
-                  <td>Envio</td>
-                  <td className="text-righ">$ 50.00</td>
-                </tr>
+                <tbody>
+                  {Object.values(cart).map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.nombre} ({item.cantidad})</td>
+                      <td className="text-right">$ {item.precio * item.cantidad}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <hr/>
                 <tr>
                   <td>
                     <strong>Total</strong>
                   </td>
-                  <td className="text-righ">
-                    <strong>$ 350.00</strong>
+                  <td className="text-right">
+                    <strong>$ {Object.values(cart).reduce((total, item) => total + (item.precio * item.cantidad), 0)}</strong>
                   </td>
                 </tr>
               </table>

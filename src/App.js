@@ -5,7 +5,6 @@ import {
   Routes,
   useNavigate,
 } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
 import { toast } from "react-toastify";
 import Layout from "./Layout/Layout";
 import { ToastContainer } from "react-toastify";
@@ -20,11 +19,10 @@ import ForgotPassword from "./components/ForgotPassword";
 import ChangePassword from "./components/ChangePassword";
 import KeyVerifly from "./components/KeyVerifly";
 import SecretQuestion from "./components/SecretQuestion";
-import { CartProvider } from "./context/CartContext";
 
 //Contenido Publico
 import Home from "./routes/Public/Home";
-import ProductDetail from "./routes/Public/ProductDetail2";
+import ProductDetail from "./routes/Public/ProductDetail";
 // import ProductDetail2 from "./routes/Public/ProductDetail2";
 import PrivacyPolicy from "./routes/Public/PrivacyPolicy";
 import Terms from "./routes/Public/Terms";
@@ -111,8 +109,6 @@ function App() {
   const PublicRoutes = () => (
     <>
       {/* Area publica */}
-      <AuthProvider>
-        <CartProvider>
           <Routes>
             {/* Rutas publicas */}
             <Route path="/" element={<Layout><Home /></Layout>} />
@@ -135,8 +131,6 @@ function App() {
             <Route path="/forgot-passworg-secret-question/:correo" element={<Layout><SecretQuestion /></Layout>} />
           </Routes>
           <ToastContainer />
-        </CartProvider>
-      </AuthProvider>
     </>
   );
 
