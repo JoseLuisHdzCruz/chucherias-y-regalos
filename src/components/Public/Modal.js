@@ -5,7 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import ReCAPTCHA from "react-google-recaptcha";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
@@ -66,16 +66,12 @@ const ModalComponent = ({ show, onClose }) => {
       setAuthToken(response.data.token);
 
       // Decodificar el token para obtener los datos del usuario
-      const decoded = jwtDecode(response.data.token);
-      console.log(decoded);
+      const user = jwtDecode(response.data.token);
+      console.log(user);
 
-      // Mostrar un toast con el nombre del usuario
-      toast.success(`Inicio de sesion exitoso.
-      Bienvenido (a), ${decoded.nombre}!`);
-
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 3000);
+      const mensaje = `Inicio de sesión exitoso. Bienvenid${user.sexo === "masculino" ? 'o' : 'a'}, ${user.nombre}!`;
+      toast.success(mensaje);
+      onClose();
     } catch (error) {
       if (error.response) {
         // Si la respuesta de la API contiene errores
@@ -234,7 +230,6 @@ const ModalComponent = ({ show, onClose }) => {
           </Form>
         </Formik>
       </Modal.Body>
-      <ToastContainer />
     </Modal>
   );
 };

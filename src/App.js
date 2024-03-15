@@ -5,14 +5,13 @@ import {
   Routes,
   useNavigate,
 } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
 import { toast } from "react-toastify";
+import Layout from "./Layout/Layout";
+import { ToastContainer } from "react-toastify";
+
 
 //Public
 // Componentes publicos
-import PublicHeader from "./components/Public/PublicHeader";
-import PublicFooter from "./components/Public/PublicFooter";
-import Breadcrumbs from "./components/Breadcrumbs";
 import NotFound from "./components/Public/NotFound";
 import Error500 from "./components/Public/Error500";
 import Error400 from "./components/Public/Error400";
@@ -20,12 +19,10 @@ import ForgotPassword from "./components/ForgotPassword";
 import ChangePassword from "./components/ChangePassword";
 import KeyVerifly from "./components/KeyVerifly";
 import SecretQuestion from "./components/SecretQuestion";
-import ScrollButton from "./components/Public/ScrollButton";
-import { CartProvider } from "./context/CartContext";
 
 //Contenido Publico
 import Home from "./routes/Public/Home";
-import ProductDetail from "./routes/Public/ProductDetail2";
+import ProductDetail from "./routes/Public/ProductDetail";
 // import ProductDetail2 from "./routes/Public/ProductDetail2";
 import PrivacyPolicy from "./routes/Public/PrivacyPolicy";
 import Terms from "./routes/Public/Terms";
@@ -60,17 +57,13 @@ const GuardedLayout = ({ children }) => {
       
       navigate("/");
       setTimeout(() => {
-        toast.error("Debe iniciar sesión");//Verificar el porque no se muestra la alerta
+        toast.error("Para la siguiente accion debe iniciar sesión.");//Verificar el porque no se muestra la alerta
       }, 500);
     }
   }, [token]);
   return (
     <>
-      <PublicHeader />
-      {children}
-      <ScrollButton />
-      <Breadcrumbs />
-      <PublicFooter />
+      <Layout>{children}</Layout>
     </>
   );
 };
@@ -116,35 +109,28 @@ function App() {
   const PublicRoutes = () => (
     <>
       {/* Area publica */}
-      <PublicHeader />
-      <AuthProvider>
-        <CartProvider>
           <Routes>
             {/* Rutas publicas */}
-            <Route path="/" element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-cond" element={<Terms />} />
-            <Route path="/cookies" element={<Cookies />} />
-            <Route path="/quienes-somos" element={<AcercaDe />} />
-            <Route path="/registro" element={<Register />} />
-            <Route path="/search" element={<Search />} />
+            <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/product/:id" element={<Layout><ProductDetail /></Layout>} />
+            <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
+            <Route path="/terms-cond" element={<Layout><Terms /></Layout>} />
+            <Route path="/cookies" element={<Layout><Cookies /></Layout>} />
+            <Route path="/quienes-somos" element={<Layout><AcercaDe /></Layout>} />
+            <Route path="/registro" element={<Layout><Register /></Layout>} />
+            <Route path="/search" element={<Layout><Search /></Layout>} />
 
             {/* Ruta por defecto para manejar cualquier otra ruta no definida */}
-            <Route path="/back" element={<NavigateBack />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="/error-500" element={<Error500 />} />
-            <Route path="/error-400" element={<Error400 />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/change-password/:correo" element={<ChangePassword />}/>
-            <Route path="/key-verification/:correo" element={<KeyVerifly />} />
-            <Route path="/forgot-passworg-secret-question/:correo" element={<SecretQuestion />} />
+            <Route path="/back" element={<Layout><NavigateBack /></Layout>} />
+            <Route path="*" element={<Layout><NotFound /></Layout>} />
+            <Route path="/error-500" element={<Layout><Error500 /></Layout>} />
+            <Route path="/error-400" element={<Layout><Error400 /></Layout>} />
+            <Route path="/forgot-password" element={<Layout><ForgotPassword /></Layout>} />
+            <Route path="/change-password/:correo" element={<Layout><ChangePassword /></Layout>}/>
+            <Route path="/key-verification/:correo" element={<Layout><KeyVerifly /></Layout>} />
+            <Route path="/forgot-passworg-secret-question/:correo" element={<Layout><SecretQuestion /></Layout>} />
           </Routes>
-          <ScrollButton />
-          <Breadcrumbs />
-        </CartProvider>
-      </AuthProvider>
-      <PublicFooter />
+          <ToastContainer />
     </>
   );
 
@@ -169,38 +155,10 @@ function App() {
       <Routes>
         <Route path="/admin/*" element={<AdminRoutes />} />
         <Route path="/*" element={<PublicRoutes />} />
-        <Route
-          path="/new-address"
-          element={
-            <GuardedLayout>
-              <NewAddress />
-            </GuardedLayout>
-          }
-        />
-        <Route
-          path="/user-profile"
-          element={
-            <GuardedLayout>
-              <UserProfile />
-            </GuardedLayout>
-          }
-        />
-        <Route
-          path="/checkup"
-          element={
-            <GuardedLayout>
-              <Carrito />
-            </GuardedLayout>
-          }
-        />
-        <Route
-          path="/purchase-history"
-          element={
-            <GuardedLayout>
-              <PurchaseHistory />
-            </GuardedLayout>
-          }
-        />
+        <Route path="/new-address" element={<GuardedLayout><NewAddress /></GuardedLayout>}/>
+        <Route path="/user-profile" element={<GuardedLayout><UserProfile /></GuardedLayout>}/>
+        <Route path="/checkup" element={<GuardedLayout><Carrito /></GuardedLayout>}/>
+        <Route path="/purchase-history" element={<GuardedLayout><PurchaseHistory /></GuardedLayout>}/>
       </Routes>
     </Router>
   );

@@ -1,16 +1,38 @@
 import PageTitle from '../../components/PageTitle'
-import React, { useState, useEffect } from "react";
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect, useContext } from "react";
 import {
-  MdChevronRight,
   MdAdd,
-  MdRemove,
-  MdArrowRight,
-  MdArrowLeft,
+  MdRemove
 } from "react-icons/md";
+import { useParams } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
+import CarruselProductos from "../../components/Public/CarruselProductos";
+import { CartContext } from '../../context/CartContext';
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
+  const { token } = useAuth();
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const { addToCart } = useContext(CartContext);
+
+  useEffect(() => {
+
+    // Hacer la solicitud a la API para obtener los detalles del producto
+    fetch(`https://backend-c-r-production.up.railway.app/products/${id}`)
+      .then((response) => response.json())
+      .then((data) => setProduct(data))
+      .catch((error) =>
+        console.error("Error fetching product details:", error)
+      );
+    
+  }, [id]);
+
+  if (!product) {
+    // Puedes mostrar un mensaje de carga mientras se obtienen los datos
+    return <p>Cargando...</p>;
+  }
 
   const handleIncrement = () => {
     setQuantity(quantity + 1);
@@ -19,33 +41,6 @@ const ProductDetail = () => {
   const handleDecrement = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
-    }
-  };
-
-  // Funcion del carrusel
-  // const [position, setPosition] = useState(0);
-
-  // const handleMoveLeft = () => {
-  //   setPosition((prevPosition) => prevPosition - 1);
-  // };
-
-  // const handleMoveRight = () => {
-  //   setPosition((prevPosition) => prevPosition + 1);
-  // };
-
-  const [startIdx, setStartIdx] = useState(0);
-  const elementsPerPage = 3;
-
-  const handleMoveLeft = () => {
-    if (startIdx > 0) {
-      setStartIdx(startIdx - 1);
-    }
-  };
-
-  const handleMoveRight = () => {
-    const maxStartIdx = 4 - elementsPerPage; // Ajusta esto según la cantidad total de elementos
-    if (startIdx < maxStartIdx) {
-      setStartIdx(startIdx + 1);
     }
   };
 
@@ -64,23 +59,17 @@ const ProductDetail = () => {
             <div className="row g-0">
               <div className="col-md-6">
                 <img
-                  src="/images/oso de peluche.jpg"
+                  src={product.imagen}
                   className="img-fluid rounded-start mt-4"
                   alt="Oso de peluche"
                 />
               </div>
               <div className="col-md-6">
                 <div className="card-body">
-                  <h2 className="title-product fw-bold">Oso Osito De Peluche Teo</h2>
-                  <h2 className="text-price mt-2 fw-bold">$ 150.00</h2>
+                  <h2 className="title-product fw-bold">{product.nombre}</h2>
+                  <h2 className="text-price mt-2 fw-bold">$ {product.precio}</h2>
                   <p className="card-text">
-                    Hermoso osito Teo súper esponjosito y suave. Calidad
-                    PREMIUM. <br /> Ideal para arreglos de mesa y regalo. Si no
-                    encuentra los sets de este mismo modelo puede preguntar por
-                    ellos.
-                    <br /> <br /> Tamaño: 25cm (en diagonal de oreja a pie){" "}
-                    <br /> Color: Café **COMO SE VE EN LAS FOTOS** <br />{" "}
-                    Material: Poliéster <br /> Edad recomendada: +3 años
+                    {product.descripcion}
                   </p>
                 </div>
               </div>
@@ -88,23 +77,10 @@ const ProductDetail = () => {
           </div>
         </div>
         <div className="colum-add">
-          {/* <div className="card mb-4">
-            <div className="card-title text-center">Escanea con la app!!</div>
-            <div className="card-body">
-              <div className="qr">
-                <img
-                  src="./images/qrcode-generado.png"
-                  className="img-fluid rounded-start mt-4"
-                  alt="..."
-                />
-              </div>
-            </div>
-          </div> */}
-
           <div className="card">
             <div className="card-body">
               <h5 className="text-center">
-                Disponible: <strong>10 piezas</strong>
+                Disponible:<strong className='text-primary ml-2'>{product.existencia} piezas</strong> 
               </h5>
               <div className="cant mt-4">
                 <h5>Cantidad</h5>
@@ -119,112 +95,14 @@ const ProductDetail = () => {
                 </div>
               </div>
               <div className="cont-buttons text-center mt-4">
-                <button className="btn-secondary">Comprar ahora</button>
-                <button className="btn-primary">Agregar a carrito</button>
+                <button className="btn-secondary" style={{width:250}}>Comprar ahora</button>
+                <button className="btn-primary" onClick={() => addToCart(product, quantity)}>Agregar a carrito</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <hr className="hr-primary" />
-      <h4 className="title-pag fw-bold mt-3">Tambien podria gustarte</h4>
-
-      <div className="carrusel-container mb-4">
-        <div
-          className="carrusel-detalle mt-4"
-        >
-            <Link to="/product" style={{ display: startIdx <= 0 ? 'block' : 'none' }}>
-              <div className="card mt-4">
-                <div className="cont-img-carrusel">
-                  <img
-                    src="/images/oso de peluche.jpg"
-                    className="card-img-top img-catalog"
-                    alt="Oso de peluche"
-                  />
-                </div>
-                <div className="card-body mt-2">
-                  <div className="cont-description">
-                    <h5>Oso Osito De Peluche Teo</h5>
-                  </div>
-                </div>
-              </div>
-            </Link>
-
-            <Link to="/product" style={{ display: startIdx <= 1 ? 'block' : 'none' }}>
-              <div className="card mt-4">
-                <div className="cont-img-carrusel">
-                  <img
-                    src="/images/R (2).jpg"
-                    className="card-img-top img-catalog"
-                    alt="..."
-                  />
-                </div>
-                <div className="card-body mt-2">
-                  <div className="cont-description">
-                    <h5>Alcancia de cerdito colorida</h5>
-                  </div>
-                </div>
-              </div>
-            </Link>
-
-            <Link to="/product" style={{ display: startIdx <= 2 ? 'block' : 'none' }}>
-              <div className="card mt-4">
-                <div className="cont-img-carrusel">
-                  <img
-                    src="/images/R.jpg"
-                    className="card-img-top img-catalog"
-                    alt="..."
-                  />
-                </div>
-                <div className="card-body mt-2">
-                  <div className="cont-description">
-                    <h5>Mochila para niñas con forma de catarina</h5>
-                  </div>
-                </div>
-              </div>
-            </Link>
-
-            <Link to="/product" style={{ display: startIdx <= 3 ? 'block' : 'none' }}>
-              <div className="card mt-4">
-                <div className="cont-img-carrusel">
-                  <img
-                    src="/images/collar.jpg"
-                    className="card-img-top img-catalog"
-                    alt="..."
-                  />
-                </div>
-                <div className="card-body mt-2">
-                  <div className="cont-description">
-                    <h5>Collar para dama con piedra preciosa</h5>
-                  </div>
-                </div>
-              </div>
-            </Link>
-        </div>
-      </div>
-      {startIdx > 0 && (
-        <button
-        type="button"
-        className="carrusel-button carrusel-button-left"
-        onClick={handleMoveLeft}
-      >
-        <span aria-hidden="true">
-          <MdArrowLeft size={40} />
-        </span>
-      </button>
-      )}
-      {startIdx < 4 - elementsPerPage && (
-        <button
-        type="button"
-        className="carrusel-button carrusel-button-right"
-        onClick={handleMoveRight}
-      >
-        <span aria-hidden="true">
-          <MdArrowRight size={40} />
-        </span>
-      </button>
-      )}
+      <CarruselProductos />
     </main>
   );
 };

@@ -2,6 +2,21 @@
   font-family: '';
 } */
 
+.numero-items-carrito {
+  position: absolute;
+    top: 66px;
+    right: 167px;
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    font-size: 12px;
+    padding: 2px 4px;
+    justify-content: center;
+    display: flex;
+    width: 20px;
+    height: 20px;
+    align-items: center;
+}
 
 /* Modal de carrito */
 .modal-cart {

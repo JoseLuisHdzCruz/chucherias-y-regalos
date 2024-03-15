@@ -1,34 +1,53 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
-const CartContext = createContext();
+export const CartContext = createContext();
 
-export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+const CartContextProvider = (props) => {
+  const [cart, setCart] = useState([]);
 
-  const updateCartItem = (itemId, quantity) => {
-    const updatedCartItems = cartItems.map(item => {
-      if (item.id === itemId) {
-        return {...item, quantity};
-      }
-      return item;
-    });
-    setCartItems(updatedCartItems);
+  useEffect(() => {
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  const addToCart = (product, quantity) => {
+    // Si el producto ya está en el carrito, actualiza la cantidad
+    const existingProduct = cart.find((item) => item.productoId === product.productoId);
+  
+    if (existingProduct) {
+      const updatedCart = [...cart];
+      existingProduct.cantidad += quantity;
+      setCart(updatedCart);
+    } else {
+      // Si el producto no está en el carrito, agrégalo como un nuevo elemento
+      const newProduct = { ...product, cantidad: quantity };
+      setCart([...cart, newProduct]);
+    }
+  
+    toast.success("Producto agregado al carrito");
   };
 
-  const deleteCartItem = (itemId) => {
-    const updatedCartItems = cartItems.filter(item => item.id !== itemId);
-    setCartItems(updatedCartItems);
+  const removeFromCart = (productId) => {
+    const updatedCart = cart.filter((item) => item.productoId !== productId);
+    setCart(updatedCart);
   };
 
   const clearCart = () => {
-    setCartItems([]);
+    setCart([]);
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, updateCartItem, deleteCartItem, clearCart }}>
-      {children}
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+      {props.children}
     </CartContext.Provider>
   );
 };
 
-export const useCart = () => useContext(CartContext);
+export default CartContextProvider;
