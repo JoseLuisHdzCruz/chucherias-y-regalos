@@ -23,46 +23,51 @@ function Home({ searchResults, searchTerm }) {
     }
   }, [searchResults]);
 
-  // Calcular el índice del primer y último producto en la página actual
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-
-  // Filtrar productos por rango de precios
-  const filteredProducts = currentProducts.filter((product) => {
-    if (minPrice !== "" && parseFloat(product.precio) < parseFloat(minPrice)) {
-      return false;
+  useEffect(() => {
+    // Limpiar los filtros cuando no hay término de búsqueda
+    if (!searchResults && searchResults.length <= 0) {
+      setMinPrice("");
+      setMaxPrice("");
+      setOrderBy("");
     }
-    if (maxPrice !== "" && parseFloat(product.precio) > parseFloat(maxPrice)) {
-      return false;
-    }
-    return true;
-  });
+  }, [searchResults]);
 
-  // Ordenar productos según el criterio seleccionado
-  const sortedProducts =
-    orderBy === "desc"
-      ? filteredProducts.sort(
-          (a, b) => parseFloat(b.precio) - parseFloat(a.precio)
-        )
-      : orderBy === "asc"
-      ? filteredProducts.sort(
-          (a, b) => parseFloat(a.precio) - parseFloat(b.precio)
-        )
-      : filteredProducts;
+  // Filtrar y ordenar productos según criterios
+  const filteredAndSortedProducts = () => {
+    let filteredProducts = products;
+
+    if (minPrice !== "") {
+      filteredProducts = filteredProducts.filter(
+        (product) => parseFloat(product.precio) >= parseFloat(minPrice)
+      );
+    }
+
+    if (maxPrice !== "") {
+      filteredProducts = filteredProducts.filter(
+        (product) => parseFloat(product.precio) <= parseFloat(maxPrice)
+      );
+    }
+
+    if (orderBy === "desc") {
+      filteredProducts.sort(
+        (a, b) => parseFloat(b.precio) - parseFloat(a.precio)
+      );
+    } else if (orderBy === "asc") {
+      filteredProducts.sort(
+        (a, b) => parseFloat(a.precio) - parseFloat(b.precio)
+      );
+    }
+
+    return filteredProducts;
+  };
 
   // Cambiar de página
   const paginate = (pageNumber) => {
-    if (
-      pageNumber >= 1 &&
-      pageNumber <= Math.ceil(sortedProducts.length / productsPerPage)
-    ) {
-      setCurrentPage(pageNumber);
-    }
+    setCurrentPage(pageNumber);
   };
+
+  // Calcular el número total de páginas
+  const totalPages = Math.ceil(filteredAndSortedProducts().length / productsPerPage);
 
   return (
     <>
@@ -72,10 +77,7 @@ function Home({ searchResults, searchTerm }) {
 
         {searchResults && searchResults.length > 0 ? (
           <div className="advanced-search">
-            <h2>
-              Resultados para:{" "}
-              <strong className="text-primary">{searchTerm}</strong>
-            </h2>
+            <h2 className="text-center">Resultados para: {searchTerm}</h2>
 
             <div className="cont-filter mt-4 ml-4">
               <div className="price-range">
@@ -149,31 +151,33 @@ function Home({ searchResults, searchTerm }) {
         <hr className="hr-primary" />
 
         <div className="catalog">
-          {sortedProducts.length > 0 ? (
-            sortedProducts.map((product) => (
-              <Link
-                to={`/product/${product.productoId}`}
-                key={product.productoId}
-              >
-                <div className="card mt-4" style={{ width: "18rem" }}>
-                  <div className="cont-img">
-                    <img
-                      src={product.imagen}
-                      className="card-img-top img-catalog"
-                      alt={product.nombre}
-                    />
-                  </div>
-                  <div className="card-body mt-3">
-                    <div className="cont-description">
-                      <h5>{product.nombre}</h5>
+          {filteredAndSortedProducts().length > 0 ? (
+            filteredAndSortedProducts()
+              .slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage)
+              .map((product) => (
+                <Link
+                  to={`/product/${product.productoId}`}
+                  key={product.productoId}
+                >
+                  <div className="card mt-4" style={{ width: "18rem" }}>
+                    <div className="cont-img">
+                      <img
+                        src={product.imagen}
+                        className="card-img-top img-catalog"
+                        alt={product.nombre}
+                      />
                     </div>
-                    <div className="cont-price mt-4">
-                      <h3 className="fw-bold">{`$ ${product.precio}`}</h3>
+                    <div className="card-body mt-3">
+                      <div className="cont-description">
+                        <h5>{product.nombre}</h5>
+                      </div>
+                      <div className="cont-price mt-4">
+                        <h3 className="fw-bold">{`$ ${product.precio}`}</h3>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            ))
+                </Link>
+              ))
           ) : (
             <p>No se encontraron productos.</p>
           )}
@@ -181,9 +185,7 @@ function Home({ searchResults, searchTerm }) {
 
         {/* Agregar paginación */}
         <ul className="pagination text-center mt-4">
-          {Array.from({
-            length: Math.ceil(sortedProducts.length / productsPerPage),
-          }).map((_, index) => (
+          {Array.from({ length: totalPages }).map((_, index) => (
             <li
               key={index}
               className={`page-item ${
