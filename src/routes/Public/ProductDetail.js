@@ -6,9 +6,10 @@ import {
 } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { toast } from "react-toastify";
 import CarruselProductos from "../../components/Public/CarruselProductos";
 import { CartContext } from '../../context/CartContext';
+import CartModal from '../../components/Public/CartModal';
+import { toast } from 'react-toastify';
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
@@ -16,6 +17,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const { addToCart } = useContext(CartContext);
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false); // Estado para controlar la apertura/cierre del modal del carrito
 
   useEffect(() => {
 
@@ -42,6 +44,20 @@ const ProductDetail = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
     }
+  };
+
+  const handleAddToCart = () => {
+    if(token){
+      addToCart(product, quantity);
+      setIsCartModalOpen(true); // Abrir el modal del carrito después de agregar al carrito
+    } else {
+      toast.error("Para la siguiente accion debe iniciar sesión.")
+    }
+    
+  };
+
+  const handleCloseCartModal = () => {
+    setIsCartModalOpen(false); // Cerrar el modal del carrito
   };
 
   return (
@@ -96,13 +112,14 @@ const ProductDetail = () => {
               </div>
               <div className="cont-buttons text-center mt-4">
                 <button className="btn-secondary" style={{width:250}}>Comprar ahora</button>
-                <button className="btn-primary" onClick={() => addToCart(product, quantity)}>Agregar a carrito</button>
+                <button className="btn-primary" onClick={handleAddToCart}>Agregar a carrito</button>
               </div>
             </div>
           </div>
         </div>
       </div>
       <CarruselProductos />
+      <CartModal isOpen={isCartModalOpen} onClose={handleCloseCartModal} />
     </main>
   );
 };

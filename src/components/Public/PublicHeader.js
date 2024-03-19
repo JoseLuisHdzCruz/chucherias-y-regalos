@@ -15,7 +15,7 @@ function PublicHeader({ onSearch }) {
   const [usuario, setUsuario] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const { token, logout } = useAuth();
-  const { cart } = useContext(CartContext);
+  const { cart, clearCart } = useContext(CartContext);
   const totalItemsEnCarrito = cart.reduce(
     (total, item) => total + item.cantidad,
     0
@@ -61,10 +61,11 @@ function PublicHeader({ onSearch }) {
 
   const cerrarSesion = () => {
     logout();
+    clearCart();
     toast.error("Cierre de sesión exitoso. ¡Hasta pronto!");
     setTimeout(() => {
       window.location.href = "/";
-    }, 5000);
+    }, 3000);
   };
 
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -145,7 +146,7 @@ function PublicHeader({ onSearch }) {
           <Link to="/checkup">
             <MdShoppingCart size={40} />
             {totalItemsEnCarrito > 0 && (
-              <span className="numero-items-carrito">
+              <span className="numero-items-carrito fw-bold">
                 {totalItemsEnCarrito}
               </span>
             )}

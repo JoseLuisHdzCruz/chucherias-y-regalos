@@ -2,6 +2,13 @@
   font-family: '';
 } */
 
+.btn-delete{
+  background-color: red;
+  border-radius: 100%;
+  height: 50px;
+  width: 50px; 
+}
+
 .numero-items-carrito {
   position: absolute;
     top: 66px;
@@ -52,6 +59,8 @@
 }
 .modal-cart {
   border: none;
+  z-index: 9999;
+  border-radius: 20px;
 }
 
 .modal-cart .header-carrito {
@@ -60,7 +69,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80px;
+  height: 65px;
+}
+.carrito-items {
+  /* Estilos para el contenedor de los elementos del carrito */
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical si los elementos exceden la altura */
+  max-height: 250px; /* Establece la altura máxima para mostrar solo tres elementos */
 }
 
 .modal-cart .carrito-item {

@@ -8,6 +8,7 @@ import {
 import { toast } from "react-toastify";
 import Layout from "./Layout/Layout";
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 //Public
@@ -130,7 +131,6 @@ function App() {
             <Route path="/key-verification/:correo" element={<Layout><KeyVerifly /></Layout>} />
             <Route path="/forgot-passworg-secret-question/:correo" element={<Layout><SecretQuestion /></Layout>} />
           </Routes>
-          <ToastContainer />
     </>
   );
 
@@ -160,6 +160,10 @@ function App() {
         <Route path="/checkup" element={<GuardedLayout><Carrito /></GuardedLayout>}/>
         <Route path="/purchase-history" element={<GuardedLayout><PurchaseHistory /></GuardedLayout>}/>
       </Routes>
+      <ToastContainer 
+        autoClose={2000} // La alerta se cerrará automáticamente después de 3 segundos
+        closeOnClick={true} // La alerta se cerrará al hacer clic en ella
+      />
     </Router>
   );
 }
