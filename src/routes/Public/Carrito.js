@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   MdAdd,
   MdRemove,
@@ -7,6 +7,7 @@ import {
 } from "react-icons/md";
 import PageTitle from "../../components/PageTitle";
 import { CartContext } from "../../context/CartContext";
+import ConfirmationModal from "../../components/Public/ConfirmationModal ";
 
 const Carrito = () => {
   const { cart, removeFromCart, addToCart, clearCart } = useContext(
@@ -16,6 +17,9 @@ const Carrito = () => {
     (total, item) => total + item.cantidad,
     0
   );
+
+  // Estado para controlar la visibilidad del modal de confirmación
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
   const handleIncrement = (product) => {
     addToCart(product, 1); // Suponiendo que addToCart actualiza la cantidad en 1
@@ -34,7 +38,16 @@ const Carrito = () => {
   };
 
   const vaciarCarrito = () => {
+    setIsConfirmationModalOpen(true); // Mostrar el modal de confirmación
+  };
+
+  const confirmVaciarCarrito = () => {
     clearCart();
+    setIsConfirmationModalOpen(false); // Cerrar el modal de confirmación después de vaciar el carrito
+  };
+
+  const cancelVaciarCarrito = () => {
+    setIsConfirmationModalOpen(false); // Cerrar el modal de confirmación sin vaciar el carrito
   };
 
   return (
@@ -178,6 +191,14 @@ const Carrito = () => {
           </div>
         )}
       </div>
+      {/* Modal de confirmación */}
+      <ConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onClose={cancelVaciarCarrito}
+        onConfirm={confirmVaciarCarrito}
+        title="¿Vaciar Carrito?"
+        message="¿Estás seguro de que deseas vaciar tu carrito? Esta acción no se puede deshacer."
+      />
     </main>
   );
 };
