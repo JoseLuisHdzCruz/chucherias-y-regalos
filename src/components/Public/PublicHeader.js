@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../../context/AuthContext";
 import { CartContext } from "../../context/CartContext";
+import { jwtDecode } from "jwt-decode";
 
 function PublicHeader({ onSearch }) {
   const [usuario, setUsuario] = useState(null);
