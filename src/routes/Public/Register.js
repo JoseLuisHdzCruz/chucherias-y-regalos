@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import ModalComponent from "../../components/Public/Modal";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReCAPTCHA from "react-google-recaptcha";
 import PasswordField from "../../components/PasswordField";
@@ -77,7 +77,7 @@ const validationSchema = Yup.object().shape({
     .min(10, "El Telefono debe tener al menos 10 digitos"),
   sexo: Yup.string().required("Seleccione su sexo"),
   preguntaSecreta: Yup.string().required("Seleccione su pregunta"),
-  respuestaSecreta: Yup.string()
+  respuestaPSecreta: Yup.string()
     .matches(
       /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ\s]+$/,
       "El nombre solo puede contener letras, acentos y espacios"
@@ -413,18 +413,18 @@ const Register = () => {
                     </div>
 
                     <div className="form-group col-sm-6">
-                      <label htmlFor="respuestaSecreta" className="fw-bold">
+                      <label htmlFor="respuestaPSecreta" className="fw-bold">
                         Respuesta Secreta
                       </label>
                       <Field
                         type="text"
                         className="form-control"
-                        id="respuestaSecreta"
-                        name="respuestaSecreta"
+                        id="respuestaPSecreta"
+                        name="respuestaPSecreta"
                         placeholder="respuestaSecreta"
                       />
                       <ErrorMessage
-                        name="respuestaSecreta"
+                        name="respuestaPSecreta"
                         component="div"
                         className="text-danger"
                       />
@@ -548,7 +548,6 @@ const Register = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </main>
   );
 };
