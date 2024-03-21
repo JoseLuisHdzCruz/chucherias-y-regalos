@@ -16,8 +16,7 @@ const validationRespuesta = Yup.object().shape({
     )
     .min(3, "La respuesta debe tener al menos 3 caracteres")
     .max(50, "La respuesta no puede tener más de 50 caracteres")
-    .required("Este campo es obligatorio")
-    
+    .required("Este campo es obligatorio"),
 });
 
 const SecretQuestion = () => {
@@ -27,7 +26,7 @@ const SecretQuestion = () => {
 
   //valores por defecto de los campos de registro
   const initialValues = {
-    respuesta : ""
+    respuesta: "",
   };
 
   useEffect(() => {
@@ -35,8 +34,11 @@ const SecretQuestion = () => {
     const fetchData = async () => {
       try {
         // Enviar una solicitud POST al backend con el correo en el cuerpo de la solicitud
-        const response = await axios.post("https://backend-c-r-production.up.railway.app/users/secretQuestion", { correo });
-        setPreguntaSecreta(response.data); // Actualizar el estado con la pregunta secreta recibida del backend
+        const response = await axios.post(
+          "https://backend-c-r-production.up.railway.app/users/secretQuestion",
+          { correo: correo }
+        );
+        setPreguntaSecreta(response.data.preguntaSecreta); // Actualizar el estado con la pregunta secreta recibida del backend
       } catch (error) {
         console.error("Error al obtener la pregunta secreta:", error);
         // Manejar el error, por ejemplo, mostrar un mensaje al usuario
@@ -48,10 +50,13 @@ const SecretQuestion = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      await axios.post("https://backend-c-r-production.up.railway.app/users/secretAnswer", {
-        correo,
-        respuesta: values.respuesta
-      });
+      await axios.post(
+        "https://backend-c-r-production.up.railway.app/users/secretAnswer",
+        {
+          correo,
+          respuesta: values.respuesta,
+        }
+      );
       toast.success("La respuesta es correcta");
       setTimeout(() => {
         navigate(`/change-password/${correo}`);
@@ -59,7 +64,7 @@ const SecretQuestion = () => {
     } catch (error) {
       console.error("Error al verificar respuesta secreta:", error);
       toast.error("La respuesta proporcionada es incorrecta.");
-    }finally {
+    } finally {
       setSubmitting(false);
     }
   };
@@ -97,12 +102,15 @@ const SecretQuestion = () => {
                   >
                     <Form>
                       <p className="login-box-msg">
-                        Puede recuperar el acceso s su cuenta mediante Pregunta Secreta.
-                        Solo tiene que responder correctamente a la siguiente pregunta:
+                        Puede recuperar el acceso s su cuenta mediante Pregunta
+                        Secreta. Solo tiene que responder correctamente a la
+                        siguiente pregunta:
                       </p>
                       <div className="form-group mb-1 text-center">
                         <p className="fw-bold">
-                          {preguntaSecreta}
+                          {typeof preguntaSecreta === "string"
+                            ? preguntaSecreta
+                            : "Cargando pregunta secreta..."}
                         </p>
                       </div>
 

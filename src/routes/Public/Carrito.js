@@ -5,6 +5,7 @@ import {
   MdDelete,
   MdRemoveShoppingCart,
 } from "react-icons/md";
+import { Link } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import { CartContext } from "../../context/CartContext";
 import ConfirmationModal from "../../components/Public/ConfirmationModal ";
@@ -17,6 +18,9 @@ const Carrito = () => {
     (total, item) => total + item.cantidad,
     0
   );
+
+  // Calcular el total del IVA sumando el IVA de cada producto en el carrito
+  const totalIVA = cart.reduce((total, item) => total + (item.IVA * item.cantidad), 0);
 
   // Estado para controlar la visibilidad del modal de confirmación
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
@@ -138,7 +142,8 @@ const Carrito = () => {
 
                       <div className="d-flex text-center row">
                         <span>Precio por pieza:</span>
-                        <h2>$ {item.precio}</h2>
+                        <h2>$ {item.precioFinal}</h2>
+                        <span>IVA: ${item.IVA}</span>
                       </div>
                     </div>
                   </div>
@@ -161,12 +166,20 @@ const Carrito = () => {
                           {item.nombre} ({item.cantidad})
                         </td>
                         <td className="text-right">
-                          $ {item.precio * item.cantidad}
+                          $ {item.precioFinal * item.cantidad}
                         </td>
                       </tr>
                     ))}
                   </tbody>
                   <hr />
+                  <tr>
+                  <td>
+                      <strong>IVA Incluido</strong>
+                    </td>
+                    <td className="text-right">
+                      <strong>${totalIVA}</strong>
+                    </td>
+                  </tr>
                   <tr>
                     <td>
                       <strong>Total</strong>
@@ -175,7 +188,7 @@ const Carrito = () => {
                       <strong>
                         ${" "}
                         {Object.values(cart).reduce(
-                          (total, item) => total + item.precio * item.cantidad,
+                          (total, item) => total + item.precioFinal * item.cantidad,
                           0
                         )}
                       </strong>
@@ -184,7 +197,7 @@ const Carrito = () => {
                 </table>
 
                 <div className="cont-buttons text-center mt-4">
-                  <button className="btn-primary">Proceder a pago</button>
+                  <Link to="/select-address" className="btn-primary">Continuar con la compra</Link>
                 </div>
               </div>
             </div>

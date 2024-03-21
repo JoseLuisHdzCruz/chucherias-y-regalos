@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PageTitle from "../components/PageTitle";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link, useNavigate } from "react-router-dom"; // Importar Link desde react-router-dom
@@ -34,12 +34,25 @@ const validationSchema = Yup.object().shape({
     .required("Este campo es obligatorio"),
 });
 
-const KeyVerifly = () => {
+const KeyVeriflyWhatsApp = () => {
   const [isResending, setIsResending] = useState(false);
   const [isCooldown, setIsCooldown] = useState(false);
-
+  const [telefono, setTelefono] = useState([]);
   const { correo } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch(`https://backend-c-r-production.up.railway.app/users/findPhone/${correo}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.telefono) {
+          setTelefono(data.telefono); // Guarda el valor del teléfono en el estado
+        } else {
+          console.log('No se encontró el número de teléfono para el correo dado');
+        }
+      })
+      .catch((error) => console.error("Error fetching phone number:", error));
+  }, [correo]); // Este efecto se ejecutará cada vez que 'correo' cambie
 
   // Valores por defecto de los campos de contraseña
   const initialValues = {
@@ -72,7 +85,7 @@ const KeyVerifly = () => {
         // Mostrar un mensaje de éxito al usuario
         toast.success(response.data.message);
         setTimeout(() => {
-          navigate(`/change-password/${correo}`);
+          navigate(`/forgot-passworg-secret-question/${correo}`);
         }, 3000);
       } else {
         // Mostrar un mensaje de error al usuario
@@ -116,14 +129,11 @@ const KeyVerifly = () => {
 
       setIsResending(true);
 
-      await axios.post(
-        "https://backend-c-r-production.up.railway.app/users/forgotPassword",
-        {
-          correo,
-        }
-      );
+      await axios.post("https://backend-c-r-production.up.railway.app/users/sedKeyWhatsApp", {
+        correo,
+      });
 
-      toast.success(`Se ha enviado a su correo el código de verificación!`);
+      toast.success(`Se ha enviado a su WhatsApp el código de verificación!`);
 
       setIsCooldown(true);
       setTimeout(() => setIsCooldown(false), 5 * 60 * 1000); // Establece un tiempo de espera de 5 minutos antes de que se pueda reenviar nuevamente
@@ -148,23 +158,6 @@ const KeyVerifly = () => {
     }
   };
 
-  const handleClick = async () => {
-    try {
-      await axios.post(
-        "https://backend-c-r-production.up.railway.app/users/sedKeyWhatsApp",
-        {
-          correo: correo,
-        }
-      );
-      toast.success("Token enviado por WhatsApp exitosamente");
-      setTimeout(() => {
-        navigate(`/key-verification-whatsapp/${correo}`)
-      }, 2000);
-      
-    } catch (error) {
-      toast.error("Error al enviar el token por WhatsApp");
-    }
-  };
   return (
     <div className="wrapper row3 m-5">
       <PageTitle title="Chucherias & Regalos | Recuperar contraseña" />
@@ -183,7 +176,7 @@ const KeyVerifly = () => {
               <div className="row">
                 <div className="col-md-5">
                   <img
-                    src="/images/change-password.jpg"
+                    src="/images/sendPhone.jpg"
                     alt=""
                     className="img-fluid rounded-start mt-4"
                   />
@@ -197,30 +190,14 @@ const KeyVerifly = () => {
                   >
                     <Form>
                       <p className="login-box-msg mb-1">
-                        Se le hizo llegar un codigo de verificacion a su correo
-                        electronico asociado a su cuenta, por favor introduzca
+                        Se le hizo llegar un codigo de verificacion por medio de WhatsApp a su número de telefono asociado a su cuenta, por favor introduzca
                         su clave.
                       </p>
 
-                      <div className="form-group mb-4">
-                        <label htmlFor="correo" className="fw-bold">
-                          Su correo electronico
-                        </label>
-                        <div className="input-group mb-3">
-                          <Field
-                            type="text"
-                            className="form-control"
-                            id="correo"
-                            name="correo"
-                            value={correo}
-                            disabled
-                          />
-                          <div className="input-group-append">
-                            <div className="input-group-text">
-                              <span className="fas fa-envelope"></span>
-                            </div>
-                          </div>
-                        </div>
+                      <div className="form-group mb-4 text-center">
+                        <p className="fw-bold">
+                          Su numero de telefono: {telefono}
+                        </p>
                       </div>
 
                       <div className="form-group mb-4">
@@ -294,16 +271,6 @@ const KeyVerifly = () => {
                         </Link>
                       </div>
 
-                      <div className="text-login">
-                        <Link
-                          className="text-primary fw-bold"
-                        >
-                          <p onClick={handleClick}>
-                            Probar por pregunta secreta
-                          </p>
-                        </Link>
-                      </div>
-
                       <div className="cont-btn-2 mt-4 mb-4">
                         <button type="submit" className="btn-primary">
                           Enviar
@@ -321,4 +288,4 @@ const KeyVerifly = () => {
   );
 };
 
-export default KeyVerifly;
+export default KeyVeriflyWhatsApp;

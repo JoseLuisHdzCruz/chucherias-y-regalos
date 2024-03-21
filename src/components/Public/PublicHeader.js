@@ -61,11 +61,11 @@ function PublicHeader({ onSearch }) {
 
   const cerrarSesion = () => {
     logout();
-    clearCart();
     toast.error("Cierre de sesión exitoso. ¡Hasta pronto!");
     setTimeout(() => {
       window.location.href = "/";
     }, 3000);
+    clearCart();
   };
 
   const [mostrarModal, setMostrarModal] = useState(false);

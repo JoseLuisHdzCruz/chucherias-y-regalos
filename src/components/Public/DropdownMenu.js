@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef  } from 'react';
 import '../../styles/DropdownMenu.css'; // Archivo de estilos para el menú
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 
 function DropdownMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,9 +31,9 @@ function DropdownMenu() {
       Categoría {isOpen ? <MdExpandLess size={25} className="icon-align" /> : <MdExpandMore size={25} className="icon-align" />}
       </a>
       <ul className={`dropdown-list ${isOpen ? 'show' : ''}`}>
-      <li>Peluches</li>
-          <li>Juguetes</li>
-          <li>Pelotas</li>
+        <Link><li>Peluches</li></Link>
+        <Link><li>Juguetes</li></Link>
+        <Link><li>Pelotas</li></Link>
         {/* Agrega más opciones según sea necesario */}
       </ul>
     </div>

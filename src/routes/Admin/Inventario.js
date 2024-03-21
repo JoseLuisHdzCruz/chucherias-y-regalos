@@ -1,11 +1,10 @@
 // Content.js
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import axios from "axios";
 import {
     MdFilterAlt,
     MdAdd,
-    MdDelete,
     MdEdit
   } from "react-icons/md";
 
@@ -18,7 +17,7 @@ const Inventario = ({ title }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/product/');
+      const response = await axios.get('https://backend-c-r-production.up.railway.app/products/');
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -107,30 +106,12 @@ const Inventario = ({ title }) => {
               </form>
             </div>
 
-            {/* Boton activo solo cuando hay algo en el filtro */}
-            {/* <a className="btn btn-default" href="{{ route('home/pacientes_list') }}">Limpiar</a> */}
-
             <hr className="hr-primary" />
-
-            {/* @if ($filterEdad || $filterTipoSangre || $filterNombre)
-            <h1 className="text-primary text-center">Resultados para:
-                @if ($filterEdad)
-                    {{ $filterEdad }},
-                @endif
-                @if ($filterTipoSangre)
-                    {{ $filterTipoSangre }},
-                @endif
-                @if ($filterNombre)
-                    {{ $filterNombre }},
-                @endif
-            </h1>
-        @endif */}
 
             <p>
               <a href="/admin/inventory/add-product" className="btn btn-primary btn-add">
                 <MdAdd size={25} /> Agregar
               </a>
-              
             </p>
 
             <div className="table-responsive">
@@ -177,14 +158,6 @@ const Inventario = ({ title }) => {
                             title="Editar"
                           >
                             <MdEdit size={25} />
-                          </a>
-                          <a
-                            href={`#delete/${product.productoId}`}
-                            className="btn btn-danger"
-                            data-toggle="tooltip"
-                            title="Eliminar"
-                          >
-                            <MdDelete size={25} />
                           </a>
                         </td>
                       </tr>

@@ -83,8 +83,10 @@ const ProductDetail = () => {
               <div className="col-md-6">
                 <div className="card-body">
                   <h2 className="title-product fw-bold">{product.nombre}</h2>
-                  <h2 className="text-price mt-2 fw-bold">$ {product.precio}</h2>
-                  <p className="card-text">
+                  <h2 className="text-price mt-2 fw-bold">$ {product.precioFinal}</h2>
+                  <span>IVA Incluido</span>
+
+                  <p className="card-text mt-4">
                     {product.descripcion}
                   </p>
                 </div>

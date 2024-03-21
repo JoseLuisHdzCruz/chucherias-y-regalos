@@ -10,7 +10,7 @@ const CartModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     // Calcular el total del carrito al cargar
-    const cartTotal = cart.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+    const cartTotal = cart.reduce((acc, item) => acc + (item.precioFinal * item.cantidad), 0);
     setTotal(cartTotal);
   }, [cart]);
 
@@ -84,7 +84,7 @@ const CartModal = ({ isOpen, onClose }) => {
                     </span>
                   </div>
                   <span className="carrito-item-precio">
-                    ${item.precio * item.cantidad}
+                    ${item.precioFinal * item.cantidad}
                   </span>
                 </div>
                 <button className="btn-eliminar aling-icon" onClick={() => handleDelete(item.productoId)}>
