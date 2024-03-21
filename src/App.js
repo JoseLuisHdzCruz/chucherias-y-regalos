@@ -8,6 +8,7 @@ import {
 import { toast } from "react-toastify";
 import Layout from "./Layout/Layout";
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 //Public
@@ -18,6 +19,8 @@ import Error400 from "./components/Public/Error400";
 import ForgotPassword from "./components/ForgotPassword";
 import ChangePassword from "./components/ChangePassword";
 import KeyVerifly from "./components/KeyVerifly";
+import KeyVeriflyWhatsApp from "./components/KeyVeriflyWhatsApp";
+
 import SecretQuestion from "./components/SecretQuestion";
 
 //Contenido Publico
@@ -33,6 +36,7 @@ import Cookies from "./routes/Public/Cookies";
 import NewAddress from "./routes/Public/NewAddress";
 import UserProfile from "./routes/Public/UserProfile";
 import Carrito from "./routes/Public/Carrito";
+import SelectAddress from "./routes/Public/SelectAddress";
 import PurchaseHistory from "./routes/Public/PurchaseHistory";
 import Search from "./routes/Public/Search";
 import { useAuth } from "./context/AuthContext";
@@ -128,9 +132,9 @@ function App() {
             <Route path="/forgot-password" element={<Layout><ForgotPassword /></Layout>} />
             <Route path="/change-password/:correo" element={<Layout><ChangePassword /></Layout>}/>
             <Route path="/key-verification/:correo" element={<Layout><KeyVerifly /></Layout>} />
+            <Route path="/key-verification-whatsapp/:correo" element={<Layout><KeyVeriflyWhatsApp /></Layout>} />
             <Route path="/forgot-passworg-secret-question/:correo" element={<Layout><SecretQuestion /></Layout>} />
           </Routes>
-          <ToastContainer />
     </>
   );
 
@@ -159,7 +163,12 @@ function App() {
         <Route path="/user-profile" element={<GuardedLayout><UserProfile /></GuardedLayout>}/>
         <Route path="/checkup" element={<GuardedLayout><Carrito /></GuardedLayout>}/>
         <Route path="/purchase-history" element={<GuardedLayout><PurchaseHistory /></GuardedLayout>}/>
+        <Route path="/select-address" element={<GuardedLayout><SelectAddress /></GuardedLayout>}/>
       </Routes>
+      <ToastContainer 
+        autoClose={2000} // La alerta se cerrará automáticamente después de 3 segundos
+        closeOnClick={true} // La alerta se cerrará al hacer clic en ella
+      />
     </Router>
   );
 }

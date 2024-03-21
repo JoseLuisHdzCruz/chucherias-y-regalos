@@ -89,7 +89,7 @@ const ModalComponent = ({ show, onClose }) => {
           setErrors({ contraseña: "La contraseña es incorrecta" });
         } else if (
           responseData.error ===
-          "Se ha excedido el límite de intentos de inicio de sesion"
+          "Se ha excedido el límite de intentos "
         ) {
           toast.error(
             "Se ha excedido el límite de intentos de inicio de sesión. Por favor espere 30s para intentarlo de nuevo."

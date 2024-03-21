@@ -3,7 +3,7 @@ import PageTitle from "../components/PageTitle";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -47,7 +47,7 @@ const LoginPage = () => {
 
       setTimeout(() => {
         navigate(`/key-verification/${values.correo}`);
-      }, 5000);
+      }, 2000);
     } catch (error) {
       if (error.response) {
         // Si la respuesta de la API contiene errores
@@ -164,7 +164,6 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 };
