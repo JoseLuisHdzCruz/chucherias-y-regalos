@@ -10,10 +10,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
 import { CartContext } from "../../context/CartContext";
+import axios from "axios";
 
 function PublicHeader({ onSearch }) {
-  const [usuario, setUsuario] = useState(null);
+  const [usuario, setUsuario] = useState(1);
   const [scrolled, setScrolled] = useState(false);
+  const [verificacionRealizada, setVerificacionRealizada] = useState(false);
   const { token, logout } = useAuth();
   const { cart, clearCart } = useContext(CartContext);
   const totalItemsEnCarrito = cart.reduce(
@@ -59,13 +61,48 @@ function PublicHeader({ onSearch }) {
     };
   }, [token]); // Agrega token como dependencia para que el efecto se vuelva a ejecutar cuando cambie
 
-  const cerrarSesion = () => {
-    logout();
-    toast.error("Cierre de sesión exitoso. ¡Hasta pronto!");
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 3000);
-    clearCart();
+
+  useEffect(() => {
+    if (usuario && usuario.sesion) {
+    if (!verificacionRealizada) {
+      // Obtener domicilios
+      fetch(`https://backend-c-r-production.up.railway.app/users/getSession/${usuario.sesion}`)
+        .then(response => response.json())
+        .then(data =>{
+          setVerificacionRealizada(true);
+          // Mostrar una alerta de Toast si la sesión ha expirado
+          if (data.sessionId=== 0 || data.sessionId === null) {
+            logout();
+            toast.error("La sesión ha expirado", {
+              autoClose: 2000, // La alerta se cerrará automáticamente después de 2 segundos
+              closeOnClick: true // La alerta se cerrará al hacer clic en ella
+            });
+          }
+        })
+        .catch(error => console.error('Error fetching domicilios data:', error));
+    }}
+  }, [usuario,verificacionRealizada]);
+
+
+  const cerrarSesion = async () => {
+    try {
+      // Llamada a la API para cerrar sesión
+      await axios.post('https://backend-c-r-production.up.railway.app/users/logout', { sessionId:usuario.sesion });
+  
+      // Ejecutar la función logout() (suponiendo que ya está definida en tu código)
+      logout();
+  
+      // Realizar otras acciones (por ejemplo, mostrar un mensaje de éxito)
+      toast.error("Cierre de sesión exitoso. ¡Hasta pronto!");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 3000);
+      clearCart();
+    } catch (error) {
+      // Manejar errores si la llamada a la API falla
+      console.error('Error al cerrar sesión:', error);
+      toast.error("Error al cerrar sesión.");
+    }
   };
 
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -133,9 +170,18 @@ function PublicHeader({ onSearch }) {
           />
           {/* Mostrar el nombre de usuario si está disponible */}
           {usuario ? (
-            <Link className="text-user" to="/user-profile" pointer>
-              {usuario.nombre} {usuario.aPaterno}
-            </Link>
+            <>
+              <div className="perfil  ">
+                <div className="row">
+                  <span className="text-idUser">ID: {usuario.sesion}</span>
+                </div>
+                <div className="row">
+                  <Link className="text-user" to="/user-profile" pointer>
+                    {usuario.nombre}
+                  </Link>
+                </div>
+              </div>
+            </>
           ) : (
             <Link className="text-user" to="/user-profile" pointer>
               Usuario

@@ -78,9 +78,9 @@ const ModalComponent = ({ show, onClose }) => {
         const responseData = error.response.data;
         if (
           responseData.error ===
-          "El correo ingresado no esta asociado a una cuenta"
+          "El correo ingresado no está asociado a una cuenta"
         ) {
-          toast.error("El correo ingresado no esta asociado a una cuenta.");
+          toast.error("El correo ingresado no está asociado a una cuenta.");
           setErrors({
             correo: "El correo ingresado no esta asociado a una cuenta",
           });

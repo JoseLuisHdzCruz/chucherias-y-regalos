@@ -11,7 +11,7 @@
 
 .numero-items-carrito {
   position: absolute;
-    top: 66px;
+    top: 80px;
     right: 167px;
     background-color: red;
     border-radius: 50%;
@@ -264,8 +264,12 @@ header nav ul {
 }
 
 .text-user{
-  font-size: 30px;
+  font-size: 28px;
   text-decoration: none;
+}
+
+.text-idUser{
+  font-size: 11px;
 }
 
 .text-user:hover{
