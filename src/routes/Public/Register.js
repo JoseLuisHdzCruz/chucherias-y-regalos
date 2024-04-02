@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import ModalComponent from "../../components/Public/Modal";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import ReCAPTCHA from "react-google-recaptcha";
 import PasswordField from "../../components/PasswordField";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
@@ -121,6 +120,11 @@ const Register = () => {
     setPassword(e.target.value);
   };
 
+  const handleBack = () => {
+    navigate(-1); // Regresa a la ruta anterior
+  };
+
+
   const handleChange = (value) => {
     setCaptchaValue(value);
   };
@@ -170,7 +174,7 @@ const Register = () => {
       );
       setTimeout(() => {
         navigate("/");
-      }, 5000);
+      }, 3000);
     } catch (error) {
       if (error.response) {
         // Si la respuesta de la API contiene errores
@@ -528,7 +532,7 @@ const Register = () => {
                   </div>
 
                   <div className="cont-btn">
-                    <button className="btn-secondary">Cancelar</button>
+                    <button className="btn-secondary" onClick={handleBack}>Cancelar</button>
                     <button
                       type="submit"
                       className="btn-primary"

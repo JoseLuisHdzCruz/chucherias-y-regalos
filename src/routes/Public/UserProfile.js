@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import PageTitle from '../../components/PageTitle'
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../context/AuthContext"; 
+import { toast } from "react-toastify";
 
 const UserProfile = () => {
   const { token } = useAuth();
   const [decodedToken, setDecodedToken] = useState(null);
   const [selectedSexo, setSelectedSexo] = useState("");
   const [edad, setEdad] = useState(null);
+
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1); // Regresa a la ruta anterior
+  };
+
 
   useEffect(() => {
     if (token) {
@@ -56,7 +64,7 @@ const UserProfile = () => {
             />
             <p className="mt-3">{decodedToken.correo}</p>
             <p className="fw-bold">{decodedToken.telefono}</p>
-              <Link to="/change-password" className="fw-bold" style={{color:'red', textDecoration:'none', fontSize:'20px' }}>
+              <Link to="/new-address" className="fw-bold" style={{color:'red', textDecoration:'none', fontSize:'20px' }}>
                 Administrar direcciones
               </Link>
           </div>
@@ -143,7 +151,7 @@ const UserProfile = () => {
             </div>
 
             <div className="cont-btn mt-4">
-              <button className="btn-secondary">Regresar</button>
+              <button className="btn-secondary" onClick={handleBack}>Regresar</button>
               <button className="btn-primary">Actualizar</button>
             </div>
           </div>

@@ -166,7 +166,7 @@ const Carrito = () => {
                           {item.nombre} ({item.cantidad})
                         </td>
                         <td className="text-right">
-                          $ {item.precioFinal * item.cantidad}
+                          $ {(item.precioFinal * item.cantidad).toFixed(2)}
                         </td>
                       </tr>
                     ))}
@@ -174,10 +174,10 @@ const Carrito = () => {
                   <hr />
                   <tr>
                   <td>
-                      <strong>IVA Incluido</strong>
+                      <strong>IVA incluido</strong>
                     </td>
                     <td className="text-right">
-                      <strong>${totalIVA}</strong>
+                      <strong>${totalIVA.toFixed(2)}</strong>
                     </td>
                   </tr>
                   <tr>
@@ -190,7 +190,7 @@ const Carrito = () => {
                         {Object.values(cart).reduce(
                           (total, item) => total + item.precioFinal * item.cantidad,
                           0
-                        )}
+                        ).toFixed(2)}
                       </strong>
                     </td>
                   </tr>
