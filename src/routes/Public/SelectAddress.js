@@ -19,25 +19,32 @@ const SelectAddress = () => {
       setDecodedToken(decoded);
     }
   }, [token]);
-  
+
   useEffect(() => {
     if (decodedToken && decodedToken.customerId) {
       const UserId = decodedToken.customerId;
-  
+
       // Obtener sucursales
-      fetch("https://backend-c-r-production.up.railway.app/address/get-sucursal")
+      fetch(
+        "https://backend-c-r-production.up.railway.app/address/get-sucursal"
+      )
         .then((response) => response.json())
         .then((data) => setSucursales(data))
-        .catch((error) => console.error("Error fetching sucursales data:", error));
-  
+        .catch((error) =>
+          console.error("Error fetching sucursales data:", error)
+        );
+
       // Obtener domicilios
-      fetch(`https://backend-c-r-production.up.railway.app/address/get-domicilio/${UserId}`)
-        .then(response => response.json())
-        .then(data => setDomicilios(data))
-        .catch(error => console.error('Error fetching domicilios data:', error));
+      fetch(
+        `https://backend-c-r-production.up.railway.app/address/get-domicilio/${UserId}`
+      )
+        .then((response) => response.json())
+        .then((data) => setDomicilios(data))
+        .catch((error) =>
+          console.error("Error fetching domicilios data:", error)
+        );
     }
   }, [decodedToken]);
-  
 
   const { cart } = useContext(CartContext);
   const totalItemsEnCarrito = cart.reduce(
@@ -51,9 +58,8 @@ const SelectAddress = () => {
     0
   );
 
-
   const handleChangeEnvio = (event) => {
-    if (event.target.value === 'domicilio') {
+    if (event.target.value === "domicilio") {
       setMostrarDomicilios(true);
     } else {
       setMostrarDomicilios(false);
@@ -101,49 +107,47 @@ const SelectAddress = () => {
                   </h5>
                 </div>
               </div>
-              
-              {mostrarDomicilios && (
-  domicilioS.length > 0 ? (
-    <div className="row mt-2">
-  {domicilioS.map((domicilio, index) => (
-    <div className="col-md-4 mb-4" key={index}>
-      <div className="card h-100">
-        <div className="card-body d-flex flex-column">
-          <div className="row">
-            <div className="col-md-1 d-flex align-items-center justify-content-center">
-              <input
-                type="radio"
-                name={`domicilio`}
-                value={domicilio.DomicilioId}
-                className="form-check-input"
-              />
-            </div>
-            <div className="col-md-11">
-              <h5 className="card-title fw-bold">
-                {domicilio.Nombre}
-              </h5>
-            </div>
-          </div>
-          <div className="row ml-2 mr-2 flex-grow-1">
-            <span>{domicilio.Calle}</span>
-            <span>{domicilio.Telefono}</span>
-            <span>{domicilio.Referencias}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  ))}
-</div>
 
-  ) : (
-    <div className="row mt-4 text-center">
-      <p className="text-muted mt-2">Aún no tiene domicilios registrados, por favor añada uno.</p>
-    </div>
-  )
-)}
+              {mostrarDomicilios &&
+                (domicilioS.length > 0 ? (
+                  <div className="row mt-2">
+                    {domicilioS.map((domicilio, index) => (
+                      <div className="col-md-4 mb-4" key={index}>
+                        <div className="card h-100">
+                          <div className="card-body d-flex flex-column">
+                            <div className="row">
+                              <div className="col-md-1 d-flex align-items-center justify-content-center">
+                                <input
+                                  type="radio"
+                                  name={`domicilio`}
+                                  value={domicilio.DomicilioId}
+                                  className="form-check-input"
+                                />
+                              </div>
+                              <div className="col-md-11">
+                                <h5 className="card-title fw-bold">
+                                  {domicilio.Nombre}
+                                </h5>
+                              </div>
+                            </div>
+                            <div className="row ml-2 mr-2 flex-grow-1">
+                              <span>{domicilio.Calle}</span>
+                              <span>{domicilio.Telefono}</span>
+                              <span>{domicilio.Referencias}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="row mt-4 text-center">
+                    <p className="text-muted mt-2">
+                      Aún no tiene domicilios registrados, por favor añada uno.
+                    </p>
+                  </div>
+                ))}
 
-               
-              
               <div className="row"></div>
               <div className="row">
                 <div className="text-login">
@@ -178,36 +182,35 @@ const SelectAddress = () => {
               </div>
               {mostrarSucursales && (
                 <div className="row mt-2">
-                {sucursales.map((sucursal, index) => (
-                  <div className="col-md-4 mb-4" key={index}>
-                    <div className="card h-100">
-                      <div className="card-body d-flex flex-column">
-                        <div className="row">
-                          <div className="col-md-1 d-flex align-items-center justify-content-center">
-                            <input
-                              type="radio"
-                              name={`sucursal`}
-                              value={sucursal.SucursalId}
-                              className="form-check-input"
-                            />
+                  {sucursales.map((sucursal, index) => (
+                    <div className="col-md-4 mb-4" key={index}>
+                      <div className="card h-100">
+                        <div className="card-body d-flex flex-column">
+                          <div className="row">
+                            <div className="col-md-1 d-flex align-items-center justify-content-center">
+                              <input
+                                type="radio"
+                                name={`sucursal`}
+                                value={sucursal.SucursalId}
+                                className="form-check-input"
+                              />
+                            </div>
+                            <div className="col-md-11">
+                              <h5 className="card-title fw-bold">
+                                {sucursal.Nombre}
+                              </h5>
+                            </div>
                           </div>
-                          <div className="col-md-11">
-                            <h5 className="card-title fw-bold">
-                              {sucursal.Nombre}
-                            </h5>
+                          <div className="row ml-2 mr-2 mt-2 flex-grow-1">
+                            <span>{sucursal.Calle}</span>
+                            <span>{sucursal.Telefono}</span>
+                            <span>{sucursal.Horario}</span>
                           </div>
-                        </div>
-                        <div className="row ml-2 mr-2 mt-2 flex-grow-1">
-                          <span>{sucursal.Calle}</span>
-                          <span>{sucursal.Telefono}</span>
-                          <span>{sucursal.Horario}</span>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-              
+                  ))}
+                </div>
               )}
             </div>
           </div>
