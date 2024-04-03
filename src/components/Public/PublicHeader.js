@@ -7,10 +7,9 @@ import ModalComponent from "./Modal";
 import "../../styles/styles.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
 import { CartContext } from "../../context/CartContext";
-import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 function PublicHeader({ onSearch }) {
   const [usuario, setUsuario] = useState(1);
@@ -39,6 +38,13 @@ function PublicHeader({ onSearch }) {
       setUsuario(decoded);
     } else {
       setUsuario(null);
+    }
+    const token = localStorage.getItem("token")
+    if (token){
+      const decoded = jwtDecode(token)
+      setUsuario(decoded)
+    } else {
+      setUsuario(null)
     }
     let lastScrollTop = 0;
 
