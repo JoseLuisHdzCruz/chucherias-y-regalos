@@ -9,6 +9,10 @@
   width: 50px; 
 }
 
+.selector-item{
+  cursor: pointer;
+}
+
 .numero-items-carrito {
   position: absolute;
     top: 80px;

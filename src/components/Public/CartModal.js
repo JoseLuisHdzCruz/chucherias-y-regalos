@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import Modal from "react-modal";
-import { MdAdd, MdRemove, MdDelete, MdClose, MdShoppingCartCheckout } from "react-icons/md";
+import {
+  MdAdd,
+  MdRemove,
+  MdDelete,
+  MdClose,
+  MdShoppingCartCheckout,
+} from "react-icons/md";
 import { CartContext } from "../../context/CartContext";
 import { Link } from "react-router-dom";
 
@@ -10,7 +16,10 @@ const CartModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     // Calcular el total del carrito al cargar
-    const cartTotal = cart.reduce((acc, item) => acc + (item.precioFinal * item.cantidad), 0);
+    const cartTotal = cart.reduce(
+      (acc, item) => acc + item.precioFinal * item.cantidad,
+      0
+    );
     setTotal(cartTotal.toFixed(2));
   }, [cart]);
 
@@ -29,11 +38,14 @@ const CartModal = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
   const increaseQuantity = (productId) => {
-    addToCart(cart.find(item => item.productoId === productId), 1);
+    addToCart(
+      cart.find((item) => item.productoId === productId),
+      1
+    );
   };
 
   const decreaseQuantity = (productId) => {
-    const currentItem = cart.find(item => item.productoId === productId);
+    const currentItem = cart.find((item) => item.productoId === productId);
     if (currentItem.cantidad > 1) {
       addToCart(currentItem, -1);
     } else {
@@ -63,36 +75,51 @@ const CartModal = ({ isOpen, onClose }) => {
 
         <div className="carrito-items">
           <div className="items-container"></div>
-          {cart.map((item, index) => (
-            <div key={index}>
-              <div className="carrito-item">
-                <img src={item.imagen} width="80px" alt="" />
-                <div className="carrito-item-detalles">
-                  <span className="carrito-item-titulo">{item.nombre}</span>
-                  <div className="selector-cantidad align-icons">
-                    <span className="selector-item" onClick={() => decreaseQuantity(item.productoId)}>
-                      <MdRemove className="restar-cantidad" size={25} />
-                    </span>
-                    <input
-                      type="text"
-                      value={item.cantidad}
-                      className="carrito-item-cantidad"
-                      disabled
-                    />
-                    <span className="selector-item" onClick={() => increaseQuantity(item.productoId)}>
-                      <MdAdd className="sumar-cantidad" size={25} />
+          {cart && cart.length > 0 ? (
+            cart.map((item, index) => (
+              <div key={index}>
+                <div className="carrito-item">
+                  <img src={item.imagen} width="80px" alt="" />
+                  <div className="carrito-item-detalles">
+                    <span className="carrito-item-titulo">{item.nombre}</span>
+                    <div className="selector-cantidad align-icons">
+                      <span
+                        className="selector-item"
+                        onClick={() => decreaseQuantity(item.productoId)}
+                      >
+                        <MdRemove className="restar-cantidad" size={25} />
+                      </span>
+                      <input
+                        type="text"
+                        value={item.cantidad}
+                        className="carrito-item-cantidad"
+                        disabled
+                      />
+                      <span
+                        className="selector-item"
+                        onClick={() => increaseQuantity(item.productoId)}
+                      >
+                        <MdAdd className="sumar-cantidad" size={25} />
+                      </span>
+                    </div>
+                    <span className="carrito-item-precio">
+                      ${(item.precioFinal * item.cantidad).toFixed(2)}
                     </span>
                   </div>
-                  <span className="carrito-item-precio">
-                    ${(item.precioFinal * item.cantidad).toFixed(2)}
-                  </span>
+                  <button
+                    className="btn-eliminar aling-icon"
+                    onClick={() => handleDelete(item.productoId)}
+                  >
+                    <MdDelete size={25} />
+                  </button>
                 </div>
-                <button className="btn-eliminar aling-icon" onClick={() => handleDelete(item.productoId)}>
-                  <MdDelete size={25} />
-                </button>
               </div>
+            ))
+          ) : (
+            <div className="row  text-center">
+              <p className="text-muted mt-4">Tu carrito está vacío.</p>
             </div>
-          ))}
+          )}
         </div>
         <div className="carrito-total">
           <div className="fila">
