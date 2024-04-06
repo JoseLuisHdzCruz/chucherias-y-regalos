@@ -64,7 +64,7 @@ const SelectPayment = () => {
       const customerId = decodedToken.customerId;
 
       const response = await axios.post("https://backend-c-r-production.up.railway.app/order/create-order",{
-        metodoPagoId: 2, customerId , items, venta
+        items, customerId, venta, metodoPagoId: 2
       });
 
       const { id } = response.data;
