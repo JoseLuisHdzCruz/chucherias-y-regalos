@@ -8,7 +8,6 @@ import { jwtDecode } from "jwt-decode";
 
 const SelectPayment = () => {
   const [venta, setVenta] = useState(null);
-  const [metodoPagoId, setMetodoPago] = useState(null);
   const { token } = useAuth();
   const [decodedToken, setDecodedToken] = useState(null);
   const [botonPagar, setBotonPagar] = useState(); // Estado para manejar el texto del botón
@@ -36,14 +35,12 @@ const SelectPayment = () => {
   // Función para manejar el cambio en la selección del método de pago
   const handleMetodoPagoChange = (event) => {
     if (event.target.value === "1") {
-      setMetodoPago(1);
       setBotonPagar(
         <button className="btn btn-primary">
           Terminar compra <MdPayments className="ml-4" size={25} />
         </button>
       );
     } else if (event.target.value === "2") {
-      setMetodoPago(2);
       handleBuy()
     }
   };
