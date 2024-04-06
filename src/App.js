@@ -37,6 +37,7 @@ import NewAddress from "./routes/Public/NewAddress";
 import UserProfile from "./routes/Public/UserProfile";
 import Carrito from "./routes/Public/Carrito";
 import SelectAddress from "./routes/Public/SelectAddress";
+import SelectPayment from "./routes/Public/SelectPayment";
 import PurchaseHistory from "./routes/Public/PurchaseHistory";
 import Search from "./routes/Public/Search";
 import { useAuth } from "./context/AuthContext";
@@ -164,6 +165,8 @@ function App() {
         <Route path="/checkup" element={<GuardedLayout><Carrito /></GuardedLayout>}/>
         <Route path="/purchase-history" element={<GuardedLayout><PurchaseHistory /></GuardedLayout>}/>
         <Route path="/select-address" element={<GuardedLayout><SelectAddress /></GuardedLayout>}/>
+        <Route path="/select-payment" element={<GuardedLayout><SelectPayment /></GuardedLayout>}/>
+
       </Routes>
       <ToastContainer 
         autoClose={2000} // La alerta se cerrará automáticamente después de 3 segundos

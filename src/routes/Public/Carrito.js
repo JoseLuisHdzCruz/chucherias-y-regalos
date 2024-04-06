@@ -11,16 +11,18 @@ import { CartContext } from "../../context/CartContext";
 import ConfirmationModal from "../../components/Public/ConfirmationModal ";
 
 const Carrito = () => {
-  const { cart, removeFromCart, addToCart, clearCart } = useContext(
-    CartContext
-  );
+  const { cart, removeFromCart, addToCart, clearCart } =
+    useContext(CartContext);
   const totalItemsEnCarrito = cart.reduce(
     (total, item) => total + item.cantidad,
     0
   );
 
   // Calcular el total del IVA sumando el IVA de cada producto en el carrito
-  const totalIVA = cart.reduce((total, item) => total + (item.IVA * item.cantidad), 0);
+  const totalIVA = cart.reduce(
+    (total, item) => total + item.IVA * item.cantidad,
+    0
+  );
 
   // Estado para controlar la visibilidad del modal de confirmación
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
@@ -171,33 +173,35 @@ const Carrito = () => {
                       </tr>
                     ))}
                   </tbody>
-                  <hr />
                   <tr>
-                  <td>
-                      <strong>IVA incluido</strong>
-                    </td>
-                    <td className="text-right">
-                      <strong>${totalIVA.toFixed(2)}</strong>
-                    </td>
+                    <td>IVA incluido</td>
+                    <td className="text-right">${totalIVA.toFixed(2)}</td>
                   </tr>
+                  <hr />
+
                   <tr>
                     <td>
-                      <strong>Total</strong>
+                      <strong>Total productos ({totalItemsEnCarrito})</strong>
                     </td>
                     <td className="text-right">
                       <strong>
                         ${" "}
-                        {Object.values(cart).reduce(
-                          (total, item) => total + item.precioFinal * item.cantidad,
-                          0
-                        ).toFixed(2)}
+                        {Object.values(cart)
+                          .reduce(
+                            (total, item) =>
+                              total + item.precioFinal * item.cantidad,
+                            0
+                          )
+                          .toFixed(2)}
                       </strong>
                     </td>
                   </tr>
                 </table>
 
                 <div className="cont-buttons text-center mt-4">
-                  <Link to="/select-address" className="btn-primary">Continuar con la compra</Link>
+                  <Link to="/select-address" className="btn-primary">
+                    Continuar con la compra
+                  </Link>
                 </div>
               </div>
             </div>

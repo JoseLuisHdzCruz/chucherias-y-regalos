@@ -10,11 +10,9 @@ import CarruselProductos from "../../components/Public/CarruselProductos";
 import { CartContext } from '../../context/CartContext';
 import CartModal from '../../components/Public/CartModal';
 import { toast } from 'react-toastify';
-import { jwtDecode } from 'jwt-decode';
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
-  const [usuario, setUsuario] = useState(1);
   const { token } = useAuth();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -32,15 +30,6 @@ const ProductDetail = () => {
       );
     
   }, [id]);
-
-  useEffect(() => {
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUsuario(decoded);
-    } else {
-      setUsuario(null);
-    }
-  }, [token]);
 
   if (!product) {
     // Puedes mostrar un mensaje de carga mientras se obtienen los datos

@@ -35,7 +35,7 @@ const CarruselProductos = () => {
       <div className="carrusel-container mb-4">
         <div className="carrusel-detalle mt-4">
           {products.slice(startIdx, startIdx + elementsPerPage).map(product => (
-            <Link to={`/product/${product.id}`} key={product.id}>
+            <Link to={`/product/${product.productoId}`} key={product.productoId}>
               <div className="card mt-4">
                 <div className="cont-img-carrusel">
                   <img

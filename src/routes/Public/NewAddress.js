@@ -108,7 +108,6 @@ const NewAddress = () => {
     }
     setSubmitting(false);
   };
-  
 
   return (
     <main>
