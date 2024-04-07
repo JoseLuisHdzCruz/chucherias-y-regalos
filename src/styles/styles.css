@@ -699,6 +699,7 @@ main {
   display: flex;
   align-items: center;
   gap: 60px;
+  justify-content: end;
 }
 
 .search-bar-history {
@@ -761,13 +762,11 @@ main {
 }
 
 .filters {
-  width: 92%;
+  width: 100%;
   display: flex;
   gap: 20px;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: end;
-  margin-right: 40px;
 }
 
 .filters h5 {
