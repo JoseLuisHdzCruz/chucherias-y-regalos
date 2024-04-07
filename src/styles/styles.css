@@ -741,11 +741,27 @@ main {
   background-color: #f0f0f0;
 }
 .search-bar-history button:hover {
-  background-color: #38ccec;
+  background-color: #38ccec !important;
+}
+.bg-primary-c{
+  background-color: #c543c7 ;
+  align-items: center;
+  color: white;
+}
+
+.bg-primary-c .modal-header{
+  
+  display: flex !important;
+    justify-content: center;
+    align-items: center !important;
+}
+.vertical-line {
+  border-left: 20px solid green; /* Cambia el color y el ancho de la línea según tus necesidades */
+  height: 100%; /* La altura de la línea será igual a la altura del contenido de la carta */
 }
 
 .filters {
-  width: 60%;
+  width: 92%;
   display: flex;
   gap: 20px;
   flex-direction: row;

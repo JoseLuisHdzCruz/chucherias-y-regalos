@@ -96,7 +96,6 @@ function PublicHeader({ onSearch }) {
       setTimeout(() => {
         window.location.href = "/";
       }, 3000);
-      clearCart();
     } catch (error) {
       // Manejar errores si la llamada a la API falla
       console.error('Error al cerrar sesión:', error);

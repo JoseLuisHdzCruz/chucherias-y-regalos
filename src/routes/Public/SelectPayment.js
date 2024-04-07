@@ -40,6 +40,7 @@ const SelectPayment = () => {
           Terminar compra <MdPayments className="ml-4" size={25} />
         </button>
       );
+      console.log(venta);
     } else if (event.target.value === "2") {
       handleBuy()
     }
