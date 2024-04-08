@@ -28,7 +28,7 @@ const PurchaseHistory = () => {
       setUser(decoded.customerId);
     }
   }, [token]);
-  
+
   useEffect(() => {
     if (user) {
       const fetchPurchaseHistory = async () => {
@@ -37,7 +37,7 @@ const PurchaseHistory = () => {
             `https://backend-c-r-production.up.railway.app/ventas/cliente/${user}`
           );
           const historyData = response.data;
-  
+
           // Obtener los detalles de cada compra
           const purchaseDetailsPromises = historyData.map(async (purchase) => {
             const detailResponse = await axios.get(
@@ -48,10 +48,10 @@ const PurchaseHistory = () => {
               detalleVenta: detailResponse.data,
             };
           });
-  
+
           // Esperar a que todas las promesas se resuelvan
           const purchaseDetails = await Promise.all(purchaseDetailsPromises);
-  
+
           setPurchaseHistory(purchaseDetails);
           setDataHistory(purchaseDetails);
           setLoading(false);
@@ -60,11 +60,10 @@ const PurchaseHistory = () => {
           setLoading(false);
         }
       };
-  
+
       fetchPurchaseHistory();
     }
   }, [user]);
-  
 
   const openModal = async (purchase, ventaId) => {
     try {
@@ -83,12 +82,10 @@ const PurchaseHistory = () => {
   const handleClearFilter = () => {
     setPurchaseHistory(dataHistory);
     toast.success("Se limpio el filtro de busqueda.");
-    setFilterValues(
-      {
-        fechaInicial: "",
-        fechaFinal: "",
-      }
-    )
+    setFilterValues({
+      fechaInicial: "",
+      fechaFinal: "",
+    });
   };
 
   return (
@@ -108,6 +105,7 @@ const PurchaseHistory = () => {
                 {
                   fechaInicial: values.fechaInicial,
                   fechaFinal: values.fechaFinal,
+                  customerId: user.customerId
                 }
               );
 
@@ -247,6 +245,30 @@ const PurchaseHistory = () => {
                         </div>
                       </div>
                       <div className="col-md-3 aling-center-cont">
+                        <div className="row">
+                        <div className="text-center">
+                        {venta.statusVentaId === 1 && (
+                          <span className="text-success">
+                            <strong>Estado de la venta: </strong>En proceso
+                          </span>
+                        )}
+                        {venta.statusVentaId === 2 && (
+                          <span className="text-success">
+                            <strong>Estado de la venta: </strong>En camino
+                          </span>
+                        )}
+                        {venta.statusVentaId === 3 && (
+                          <span className="text-success">
+                            <strong>Estado de la venta: </strong>Entregado
+                          </span>
+                        )}
+                        {venta.statusVentaId === 4 && (
+                          <span className="text-success">
+                            <strong>Estado de la venta: </strong>En espera de
+                            recolección en sucursal
+                          </span>
+                        )}
+                        </div>
                         <div className="cont-cant d-flex align-items-center justify-content-center">
                           <button
                             className="btn-primary my-4"
@@ -257,6 +279,8 @@ const PurchaseHistory = () => {
                             Ver detalle
                           </button>
                         </div>
+                        </div>
+                        
                       </div>
                     </div>
                   </div>
@@ -277,6 +301,16 @@ const PurchaseHistory = () => {
             <Modal.Title>Detalle de la compra</Modal.Title>
           </Modal.Header>
           <Modal.Body>
+            {venta.domicilioId && venta.domicilioId !== null ? (
+              <p>
+                <strong>Metodo de entrega: </strong>Envio a domicilio
+              </p>
+            ) : (
+              <p>
+                <strong>Metodo de entrega: </strong>Recoleccion en socursal
+              </p>
+            )}
+
             <p>Total de productos comprados ({venta.cantidad})</p>
             <p className="text-secondary fw-bold">
               Fecha de compra: {venta.fecha.split("T")[0]}
