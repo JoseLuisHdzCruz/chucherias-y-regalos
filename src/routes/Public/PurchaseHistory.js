@@ -247,22 +247,22 @@ const PurchaseHistory = () => {
                       <div className="col-md-3 aling-center-cont">
                         <div className="row">
                         <div className="text-center">
-                        {venta.statusVentaId === 1 && (
+                        {purchase.statusVentaId === 1 && (
                           <span className="text-success">
                             <strong>Estado de la venta: </strong>En proceso
                           </span>
                         )}
-                        {venta.statusVentaId === 2 && (
+                        {purchase.statusVentaId === 2 && (
                           <span className="text-success">
                             <strong>Estado de la venta: </strong>En camino
                           </span>
                         )}
-                        {venta.statusVentaId === 3 && (
+                        {purchase.statusVentaId === 3 && (
                           <span className="text-success">
                             <strong>Estado de la venta: </strong>Entregado
                           </span>
                         )}
-                        {venta.statusVentaId === 4 && (
+                        {purchase.statusVentaId === 4 && (
                           <span className="text-success">
                             <strong>Estado de la venta: </strong>En espera de
                             recolección en sucursal
