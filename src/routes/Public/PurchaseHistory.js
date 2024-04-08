@@ -105,7 +105,7 @@ const PurchaseHistory = () => {
                 {
                   fechaInicial: values.fechaInicial,
                   fechaFinal: values.fechaFinal,
-                  customerId: user.customerId
+                  customerId: user
                 }
               );
 
