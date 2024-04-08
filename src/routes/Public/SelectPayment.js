@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import PageTitle from "../../components/PageTitle";
-import { MdPayments } from "react-icons/md";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 const SelectPayment = () => {
   const [venta, setVenta] = useState(null);
+  const [selectedPayment, setSelectedPayment] = useState("");
   const { token } = useAuth();
   const [decodedToken, setDecodedToken] = useState(null);
-  const [botonPagar, setBotonPagar] = useState(); // Estado para manejar el texto del botón
   const [preferenceId, setPreferenceId] = useState(null);
   initMercadoPago("TEST-13eb1554-c4f9-44b9-832b-e455aabb8502", {
     locale: "es-MX",
@@ -36,15 +36,61 @@ const SelectPayment = () => {
 
   // Función para manejar el cambio en la selección del método de pago
   const handleMetodoPagoChange = (event) => {
-    if (event.target.value === "1") {
-      setBotonPagar(
-        <button className="btn btn-primary">
-          Terminar compra <MdPayments className="ml-4" size={25} />
-        </button>
-      );
-      console.log(venta);
-    } else if (event.target.value === "2") {
+    setSelectedPayment(event.target.value); // Actualiza el estado con el método de pago seleccionado
+
+    if (event.target.value === "mercadoPago") {
       handleBuy();
+    }
+  };
+
+  // Función para manejar el clic en el botón "Pagar en la sucursal"
+  const handlePagarEnSucursalClick = async () => {
+    try {
+      const customerId = decodedToken.customerId;
+      // Aquí puedes incluir la lógica para crear la venta
+      const response = await axios.post(
+        "https://backend-c-r-production.up.railway.app/ventas/",
+        {
+          metodoPagoId: 1,
+          customerId, // Aquí debes proporcionar el ID del cliente
+          venta// Aquí debes proporcionar los detalles de la venta
+        }
+      );
+
+      toast.success(
+        "Compra exitosa, acuda a la sucursal que eligio para la entrega y pago de su producto"
+      );
+      setTimeout(() => {
+        window.location.href ="/purchase-history";
+      }, 3000);
+
+      // Aquí puedes manejar la respuesta de la creación de la venta, si es necesario
+
+      console.log("Venta creada:", response.data);
+    } catch (error) {
+      toast.error(
+        "Error al crear la venta"
+      );
+      console.error("Error al crear la venta:", error);
+      // Aquí puedes manejar el error de la creación de la venta, si es necesario
+    }
+  };
+
+  // Renderiza el botón correspondiente al método de pago seleccionado
+  const renderPaymentButton = () => {
+    if (selectedPayment === "mercadoPago") {
+      return (
+        preferenceId && (
+          <Wallet
+            initialization={{ preferenceId: preferenceId }}
+            customization={{ texts: { valueProp: "smart_option" } }}
+          />
+        )
+      );
+    } else if (selectedPayment === "pagarEnSucursal") {
+      return <button className="btn-primary" onClick={handlePagarEnSucursalClick}>Pagar en la sucursal</button>;
+    } else {
+      return null; // No muestra ningún botón si no se ha seleccionado un método de pago
     }
   };
 
@@ -72,7 +118,7 @@ const SelectPayment = () => {
           items,
           customerId,
           venta,
-          metodoPagoId: 2,
+          metodoPagoId: 3,
         }
       );
 
@@ -111,7 +157,7 @@ const SelectPayment = () => {
                   <input
                     type="radio"
                     name="metodoPago"
-                    value="2"
+                    value="mercadoPago"
                     className="form-check-input ml-4"
                     onChange={handleMetodoPagoChange} // Manejar cambio de selección
                   />
@@ -121,7 +167,7 @@ const SelectPayment = () => {
                     className="card-title fw-bold"
                     style={{ fontSize: "20px" }}
                   >
-                    Mercado Pago
+                    Pagar con Mercado Pago
                   </h5>
                 </div>
               </div>
@@ -134,7 +180,7 @@ const SelectPayment = () => {
                   <input
                     type="radio"
                     name="metodoPago"
-                    value="1"
+                    value="pagarEnSucursal"
                     className="form-check-input ml-4"
                     onChange={handleMetodoPagoChange} // Manejar cambio de selección
                   />
@@ -144,7 +190,7 @@ const SelectPayment = () => {
                     className="card-title fw-bold"
                     style={{ fontSize: "20px" }}
                   >
-                    Pagar en efectivo en la sucursal elegida
+                    Pago en efectivo en la sucursal elegida
                   </h5>
                 </div>
               </div>
@@ -193,13 +239,7 @@ const SelectPayment = () => {
                   </tr>
                 </table>
                 <div className="cont-buttons text-center mt-4">
-                  {botonPagar}
-                  {preferenceId && (
-                    <Wallet
-                      initialization={{ preferenceId: preferenceId }}
-                      customization={{ texts: { valueProp: "smart_option" } }}
-                    />
-                  )}
+                  <div>{renderPaymentButton()}</div>
                 </div>
               </div>
             </div>
