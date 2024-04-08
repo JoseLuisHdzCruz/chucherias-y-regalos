@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 const PurchaseHistory = () => {
   const { token } = useAuth();
-  const [decodedToken, setDecodedToken] = useState(null);
+  const [user, setUser] = useState(0);
   const [purchaseHistory, setPurchaseHistory] = useState([]);
   const [dataHistory, setDataHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,43 +25,46 @@ const PurchaseHistory = () => {
   useEffect(() => {
     if (token) {
       const decoded = jwtDecode(token);
-      setDecodedToken(decoded);
+      setUser(decoded.customerId);
     }
   }, [token]);
-
+  
   useEffect(() => {
-    const fetchPurchaseHistory = async () => {
-      try {
-        const response = await axios.get(
-          `https://backend-c-r-production.up.railway.app/ventas/cliente/${decodedToken.customerId}`
-        );
-        const historyData = response.data;
-
-        // Obtener los detalles de cada compra
-        const purchaseDetailsPromises = historyData.map(async (purchase) => {
-          const detailResponse = await axios.get(
-            `https://backend-c-r-production.up.railway.app/ventas/detalle/${purchase.ventaId}`
+    if (user) {
+      const fetchPurchaseHistory = async () => {
+        try {
+          const response = await axios.get(
+            `https://backend-c-r-production.up.railway.app/ventas/cliente/${user}`
           );
-          return {
-            ...purchase,
-            detalleVenta: detailResponse.data,
-          };
-        });
-
-        // Esperar a que todas las promesas se resuelvan
-        const purchaseDetails = await Promise.all(purchaseDetailsPromises);
-
-        setPurchaseHistory(purchaseDetails);
-        setDataHistory(purchaseDetails);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching purchase history:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchPurchaseHistory();
-  }, []);
+          const historyData = response.data;
+  
+          // Obtener los detalles de cada compra
+          const purchaseDetailsPromises = historyData.map(async (purchase) => {
+            const detailResponse = await axios.get(
+              `https://backend-c-r-production.up.railway.app/ventas/detalle/${purchase.ventaId}`
+            );
+            return {
+              ...purchase,
+              detalleVenta: detailResponse.data,
+            };
+          });
+  
+          // Esperar a que todas las promesas se resuelvan
+          const purchaseDetails = await Promise.all(purchaseDetailsPromises);
+  
+          setPurchaseHistory(purchaseDetails);
+          setDataHistory(purchaseDetails);
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching purchase history:", error);
+          setLoading(false);
+        }
+      };
+  
+      fetchPurchaseHistory();
+    }
+  }, [user]);
+  
 
   const openModal = async (purchase, ventaId) => {
     try {
@@ -79,11 +82,13 @@ const PurchaseHistory = () => {
   // Función para limpiar los filtros y restaurar los datos originales
   const handleClearFilter = () => {
     setPurchaseHistory(dataHistory);
-    setFilterValues({
-      fechaInicial: "",
-      fechaFinal: "",
-    });
     toast.success("Se limpio el filtro de busqueda.");
+    setFilterValues(
+      {
+        fechaInicial: "",
+        fechaFinal: "",
+      }
+    )
   };
 
   return (
