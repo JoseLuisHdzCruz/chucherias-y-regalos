@@ -83,6 +83,7 @@ const PurchaseHistory = () => {
       fechaInicial: "",
       fechaFinal: "",
     });
+    toast.success("Se limpio el filtro de busqueda.");
   };
 
   return (
@@ -126,6 +127,7 @@ const PurchaseHistory = () => {
               );
 
               setPurchaseHistory(purchaseDetails);
+              toast.success("Se aplico el filtro de historial de compra.");
             } catch (error) {
               console.error("Error fetching filtered purchase history:", error);
             }
@@ -165,7 +167,7 @@ const PurchaseHistory = () => {
         >
           {({ isSubmitting }) => (
             <Form>
-              <div className="filters">
+              <div className="filters mr-4">
                 <h5>Filtrar por fecha:</h5>
                 <Field type="date" name="fechaInicial" />
                 <h5>
@@ -174,14 +176,14 @@ const PurchaseHistory = () => {
                 <Field type="date" name="fechaFinal" />
                 <button
                   type="submit"
-                  className="btn-filter"
+                  className="btn-filter btn-info"
                   disabled={isSubmitting}
                 >
                   <MdFilterAlt size={25} />
                 </button>
                 <button
                   type="button"
-                  className="btn-filter"
+                  className="btn-filter btn-danger"
                   onClick={handleClearFilter}
                 >
                   <MdFilterAltOff size={25} />

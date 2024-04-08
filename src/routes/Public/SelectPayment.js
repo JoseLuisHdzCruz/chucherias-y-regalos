@@ -12,7 +12,9 @@ const SelectPayment = () => {
   const [decodedToken, setDecodedToken] = useState(null);
   const [botonPagar, setBotonPagar] = useState(); // Estado para manejar el texto del botón
   const [preferenceId, setPreferenceId] = useState(null);
-  initMercadoPago("TEST-13eb1554-c4f9-44b9-832b-e455aabb8502", {locale: "es-MX"});
+  initMercadoPago("TEST-13eb1554-c4f9-44b9-832b-e455aabb8502", {
+    locale: "es-MX",
+  });
 
   useEffect(() => {
     if (token) {
@@ -28,7 +30,7 @@ const SelectPayment = () => {
       // Convertir la cadena JSON de Venta de nuevo a un objeto JavaScript
       const item = JSON.parse(ventaJSON);
       setVenta(item);
-      console.log(item)
+      console.log(item);
     }
   }, []); // El segundo argumento de useEffect debe ser un array vacío para que se ejecute solo una vez después del montaje del componente
 
@@ -42,45 +44,51 @@ const SelectPayment = () => {
       );
       console.log(venta);
     } else if (event.target.value === "2") {
-      handleBuy()
+      handleBuy();
     }
   };
 
-  const createPreference = async () =>{
+  const createPreference = async () => {
     try {
-      const items = venta.productos.map(producto => ({
+      const items = venta.productos.map((producto) => ({
         title: producto.nombre,
         quantity: producto.cantidad,
         price: producto.precio,
-        imagen: producto.imagen
+        imagen: producto.imagen,
       }));
-  
+
       items.push({
         title: "Envío",
         quantity: 1, // Cantidad de envío (puedes ajustarla según tus necesidades)
         price: venta.totalEnvio, // Precio del envío
-        imagen: ""
+        imagen: "",
       });
 
       const customerId = decodedToken.customerId;
 
-      const response = await axios.post("https://backend-c-r-production.up.railway.app/order/create-order",{
-        items, customerId, venta, metodoPagoId: 2
-      });
+      const response = await axios.post(
+        "https://backend-c-r-production.up.railway.app/order/create-order",
+        {
+          items,
+          customerId,
+          venta,
+          metodoPagoId: 2,
+        }
+      );
 
       const { id } = response.data;
       return id;
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleBuy = async () => {
     const id = await createPreference();
     if (id) {
       setPreferenceId(id);
-    }    
-  }
+    }
+  };
 
   return (
     <main>
@@ -116,7 +124,6 @@ const SelectPayment = () => {
                     Mercado Pago
                   </h5>
                 </div>
-                
               </div>
             </div>
           </div>
@@ -187,10 +194,12 @@ const SelectPayment = () => {
                 </table>
                 <div className="cont-buttons text-center mt-4">
                   {botonPagar}
-                  {preferenceId && <Wallet
-          initialization={{ preferenceId: preferenceId }}
-          customization={{ texts: { valueProp: "smart_option" } }}
-        />}
+                  {preferenceId && (
+                    <Wallet
+                      initialization={{ preferenceId: preferenceId }}
+                      customization={{ texts: { valueProp: "smart_option" } }}
+                    />
+                  )}
                 </div>
               </div>
             </div>

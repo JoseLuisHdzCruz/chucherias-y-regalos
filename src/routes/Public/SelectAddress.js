@@ -143,8 +143,8 @@ const SelectAddress = () => {
       .toFixed(2), // Total de productos
     totalEnvio: parseFloat(envio).toFixed(2), // Total del envío
     totalIVA: totalIVA.toFixed(2), // Total del IVA
-    sucursalesId: sucursalSeleccionada ? selectedSucursalId : null, // ID de la sucursal seleccionada (o null si no se seleccionó)
-    domicilioId: direccionSeleccionada ? selectedDomicilioId : null, // ID del domicilio seleccionado (o null si no se seleccionó)
+    sucursalesId: sucursalSeleccionada ? selectedSucursalId : null,
+    domicilioId: direccionSeleccionada ? selectedDomicilioId : null,
     productos: productosEnCarrito,
   };
 
