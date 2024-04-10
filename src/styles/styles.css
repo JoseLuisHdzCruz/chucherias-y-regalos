@@ -2,6 +2,26 @@
   font-family: '';
 } */
 
+
+/*
+Sidebar
+*/
+
+
+.item-sidebar{
+  display: flex;
+  height: 60px;
+  margin-left: 30px;
+  align-items: center;
+}
+
+.list-unstyled li:hover{
+ background-color:rgba(0, 0, 0, 0.2);
+}
+
+/*
+Sidebar end
+*/
 .btn-delete{
   background-color: red;
   border-radius: 100%;

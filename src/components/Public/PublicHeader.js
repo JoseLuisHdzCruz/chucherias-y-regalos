@@ -13,10 +13,11 @@ import axios from "axios";
 
 function PublicHeader({ onSearch }) {
   const [usuario, setUsuario] = useState(1);
+  const [selectedSexo, setSelectedSexo] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [verificacionRealizada, setVerificacionRealizada] = useState(false);
   const { token, logout } = useAuth();
-  const { cart, clearCart } = useContext(CartContext);
+  const { cart } = useContext(CartContext);
   const totalItemsEnCarrito = cart.reduce(
     (total, item) => total + item.cantidad,
     0
@@ -36,6 +37,8 @@ function PublicHeader({ onSearch }) {
     if (token) {
       const decoded = jwtDecode(token);
       setUsuario(decoded);
+      // Establece el sexo seleccionado igual al sexo del token decodificado
+      setSelectedSexo(decoded.sexo);
     } else {
       setUsuario(null);
     }
@@ -60,37 +63,43 @@ function PublicHeader({ onSearch }) {
     };
   }, [token]); // Agrega token como dependencia para que el efecto se vuelva a ejecutar cuando cambie
 
-
   useEffect(() => {
     if (usuario && usuario.sesion) {
-    if (!verificacionRealizada) {
-      // Obtener domicilios
-      fetch(`https://backend-c-r-production.up.railway.app/users/getSession/${usuario.sesion}`)
-        .then(response => response.json())
-        .then(data =>{
-          setVerificacionRealizada(true);
-          // Mostrar una alerta de Toast si la sesión ha expirado
-          if (data.sessionId=== 0 || data.sessionId === null) {
-            logout();
-            toast.error("La sesión ha expirado", {
-              autoClose: 2000, // La alerta se cerrará automáticamente después de 2 segundos
-              closeOnClick: true // La alerta se cerrará al hacer clic en ella
-            });
-          }
-        })
-        .catch(error => console.error('Error fetching domicilios data:', error));
-    }}
-  }, [usuario,verificacionRealizada]);
-
+      if (!verificacionRealizada) {
+        // Obtener domicilios
+        fetch(
+          `https://backend-c-r-production.up.railway.app/users/getSession/${usuario.sesion}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            setVerificacionRealizada(true);
+            // Mostrar una alerta de Toast si la sesión ha expirado
+            if (data.sessionId === 0 || data.sessionId === null) {
+              logout();
+              toast.error("La sesión ha expirado", {
+                autoClose: 2000, // La alerta se cerrará automáticamente después de 2 segundos
+                closeOnClick: true, // La alerta se cerrará al hacer clic en ella
+              });
+            }
+          })
+          .catch((error) =>
+            console.error("Error fetching domicilios data:", error)
+          );
+      }
+    }
+  }, [usuario, verificacionRealizada]);
 
   const cerrarSesion = async () => {
     try {
       // Llamada a la API para cerrar sesión
-      await axios.post('https://backend-c-r-production.up.railway.app/users/logout', { sessionId:usuario.sesion });
-  
+      await axios.post(
+        "https://backend-c-r-production.up.railway.app/users/logout",
+        { sessionId: usuario.sesion }
+      );
+
       // Ejecutar la función logout() (suponiendo que ya está definida en tu código)
       logout();
-  
+
       // Realizar otras acciones (por ejemplo, mostrar un mensaje de éxito)
       toast.error("Cierre de sesión exitoso. ¡Hasta pronto!");
       setTimeout(() => {
@@ -98,7 +107,7 @@ function PublicHeader({ onSearch }) {
       }, 3000);
     } catch (error) {
       // Manejar errores si la llamada a la API falla
-      console.error('Error al cerrar sesión:', error);
+      console.error("Error al cerrar sesión:", error);
       toast.error("Error al cerrar sesión.");
     }
   };
@@ -161,11 +170,36 @@ function PublicHeader({ onSearch }) {
       </div>
       <div className="columna" style={{ width: "25%" }}>
         <div className="profile">
-          <img
-            className="logo-user"
-            src="/images/user.png"
-            alt="Banner de Usuario"
-          />
+          
+
+          {!usuario ? (
+            <img
+              className="logo-user"
+              src="/images/user.png"
+              alt="Banner de Usuario"
+            />
+          ):(
+            usuario && usuario.imagen !== null ? (
+              <img
+                src={usuario.imagen}
+                className="img-fluid mt-2"
+                alt="Chucherias & Regalos"
+              />
+            ) : selectedSexo === "masculino" ? (
+              <img
+                src="/images/user-masculino.png"
+                className="logo-user"
+                alt="Chucherias & Regalos"
+              />
+            ) : (
+              <img
+                src="/images/OIP (1).jpg"
+                className="logo-user"
+                alt="Chucherias & Regalos"
+              />
+            )
+          )}
+
           {/* Mostrar el nombre de usuario si está disponible */}
           {usuario ? (
             <>

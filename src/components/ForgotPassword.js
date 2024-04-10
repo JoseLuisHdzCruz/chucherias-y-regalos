@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 import ReCAPTCHA from "react-google-recaptcha";
 
+
 //validaciones correspondientes al formulario de registro
 const validationEmail = Yup.object().shape({
   correo: Yup.string()
@@ -25,6 +26,10 @@ const LoginPage = () => {
     setCaptchaValue(value);
   };
   const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1); // Regresa a la ruta anterior
+  };
 
   //valores por defecto de los campos de registro
   const initialValues = {
@@ -149,9 +154,9 @@ const LoginPage = () => {
                       </div>
 
                       <div className="cont-btn mt-4">
-                        <Link to="/" className="btn-secondary">
+                        <button onClick={handleBack} className="btn-secondary">
                           Cancelar
-                        </Link>
+                        </button>
                         <button type="submit" className="btn-primary">
                           Enviar solicitud
                         </button>
