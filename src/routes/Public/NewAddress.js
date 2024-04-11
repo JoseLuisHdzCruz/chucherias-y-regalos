@@ -7,7 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
   Nombre: Yup.string().required("El nombre es requerido"),
@@ -28,8 +28,21 @@ const NewAddress = () => {
   const [captchaExpired, setCaptchaExpired] = useState(false);
   const [colonias, setColonias] = useState([]);
   const [codigo, setCodigoP] = useState(null);
-
+  const [addressDetails, setAddressDetails] = useState(null);
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  const initialValues = {
+    Nombre: addressDetails ? addressDetails.Nombre : "",
+    Telefono: addressDetails ? addressDetails.Telefono : "",
+    Calle: addressDetails ? addressDetails.Calle : "",
+    Estado: addressDetails ? addressDetails.Estado : "",
+    Ciudad: addressDetails ? addressDetails.Ciudad : "",
+    NumInterior: addressDetails ? addressDetails.NumExterior : "",
+    NumExterior: addressDetails ? addressDetails.NumExterior : "",
+    Referencias: addressDetails ? addressDetails.Referencias : "",
+    CP: addressDetails ? addressDetails.CP : "",
+  };
 
   const handleBack = () => {
     navigate(-1); // Regresa a la ruta anterior
@@ -60,8 +73,6 @@ const NewAddress = () => {
       }
     };
 
-    console.log(codigo, colonias);
-
     fetchData();
   }, [codigo]);
 
@@ -73,38 +84,52 @@ const NewAddress = () => {
     setCaptchaExpired(true); // Actualizar el estado cuando el tiempo del captcha expire
   };
 
-  const initialValues = {
-    Nombre: "",
-    Telefono: "",
-    Calle: "",
-    Colonia: "",
-    Estado: "",
-    Ciudad: "",
-    NumInterior: "",
-    NumExterior: "",
-    Referencias: "",
-  };
+  useEffect(() => {
+    if (id && !addressDetails) {
+      console.log(id);
+
+      // Si hay un ID en los parámetros de la URL, obtén los detalles de la dirección existente
+      fetch(
+        `https://backend-c-r-production.up.railway.app/address/get-domicilioById/${id}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setAddressDetails(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching address details:", error);
+        });
+    }
+  }, [id, addressDetails]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      // Combinar los valores del formulario con el customerId
-      const data = {
-        ...values,
-        customerId: decodedToken.customerId,
-      };
-
-      // Realizar la solicitud POST a la API para agregar la dirección
-      await axios.post(
-        "https://backend-c-r-production.up.railway.app/address/add-domicilio",
-        data
-      );
-      toast.success("La dirección se agregó correctamente");
+      if (id) {
+        // Si hay un ID en los parámetros de la URL, actualiza la dirección existente
+        await axios.put(
+          `https://backend-c-r-production.up.railway.app/address/update-domicilio/${id}`,
+          values
+        );
+        toast.success("La dirección se actualizó correctamente");
+      } else {
+        // Si no hay un ID en los parámetros de la URL, agrega una nueva dirección
+        // Combina los valores del formulario con el customerId
+        const data = {
+          ...values,
+          customerId: decodedToken.customerId,
+        };
+        await axios.post(
+          "https://backend-c-r-production.up.railway.app/address/add-domicilio",
+          data
+        );
+        toast.success("La dirección se agregó correctamente");
+      }
       setTimeout(() => {
         navigate(-1);
       }, 3000);
     } catch (error) {
-      console.error("Error al agregar la dirección:", error);
-      toast.error("Error al agregar la dirección");
+      console.error("Error al agregar/actualizar la dirección:", error);
+      toast.error("Error al agregar/actualizar la dirección");
     }
     setSubmitting(false);
   };
@@ -113,9 +138,15 @@ const NewAddress = () => {
     <main>
       <PageTitle title="Chucherias & Regalos | Nueva dirección" />
 
-      <h3 className="title-pag fw-bold text-uppercase">
-        Agregar nueva dirección
-      </h3>
+      {addressDetails ? (
+        <h3 className="title-pag fw-bold text-uppercase">
+          Actualizar su dirección
+        </h3>
+      ) : (
+        <h3 className="title-pag fw-bold text-uppercase">
+          Agregar nueva dirección
+        </h3>
+      )}
       <hr className="hr-primary" />
       <div className="container">
         <div className="row">
@@ -131,11 +162,16 @@ const NewAddress = () => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
             validateOnChange={true}
+            enableReinitialize
           >
             {({ isSubmitting, setFieldValue }) => (
               <Form className="col-md-7">
                 <div className="col-md-12 mt-2">
-                  <h3 className="fw-bold">Ingrese su domicilio de entrega</h3>
+                  {addressDetails ? (
+                    <h3 className="fw-bold">Actualice su domicilio de entrega</h3>
+                  ) : (
+                    <h3 className="fw-bold">Ingrese su domicilio de entrega</h3>
+                  )}
 
                   <div className="text-login">
                     <p>
@@ -199,6 +235,11 @@ const NewAddress = () => {
                         <option value="" hidden>
                           Selecciona tu Estado
                         </option>
+                        {addressDetails && (
+                          <option value={addressDetails.Estado} selected={true}>
+                            {addressDetails.Estado}
+                          </option>
+                        )}
                         {colonias.length > 0 && (
                           <option value={colonias[0].estado} selected={true}>
                             {colonias[0].estado}
@@ -222,6 +263,11 @@ const NewAddress = () => {
                         <option value="" hidden>
                           Selecciona tu municipio
                         </option>
+                        {addressDetails && (
+                          <option value={addressDetails.Ciudad} selected={true}>
+                            {addressDetails.Ciudad}
+                          </option>
+                        )}
                         {colonias.length > 0 && (
                           <option value={colonias[0].municipio} selected={true}>
                             {colonias[0].municipio}
@@ -242,6 +288,14 @@ const NewAddress = () => {
                         <option value="" selected hidden>
                           Selecciona tu Colonia
                         </option>
+                        {addressDetails && (
+                          <option
+                            value={addressDetails.Colonia}
+                            selected={true}
+                          >
+                            {addressDetails.Colonia}
+                          </option>
+                        )}
                         {colonias.map((colonias, index) => (
                           <option key={index} value={colonias.colonia}>
                             {colonias.colonia}
@@ -356,15 +410,21 @@ const NewAddress = () => {
                   </div>
 
                   <div className="cont-btn">
-                    <button className="btn-secondary" onClick={handleBack}>
+                    <a className="btn-secondary" onClick={handleBack}>
                       Regresar
-                    </button>
+                    </a>
                     <button
                       type="submit"
                       className="btn-primary"
                       disabled={!capchaValue || captchaExpired || isSubmitting}
                     >
-                      {isSubmitting ? "Registrando..." : "Registrar"}
+                      {addressDetails
+                        ? isSubmitting
+                          ? "Actualizando..."
+                          : "Actualizar"
+                        : isSubmitting
+                        ? "Registrando..."
+                        : "Registrar"}
                     </button>
                   </div>
                 </div>

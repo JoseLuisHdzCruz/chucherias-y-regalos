@@ -102,7 +102,7 @@ const SecretQuestion = () => {
                   >
                     <Form>
                       <p className="login-box-msg">
-                        Puede recuperar el acceso s su cuenta mediante Pregunta
+                        Puede recuperar el acceso a su cuenta mediante Pregunta
                         Secreta. Solo tiene que responder correctamente a la
                         siguiente pregunta:
                       </p>

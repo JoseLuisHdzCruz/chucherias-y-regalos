@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { MdChevronRight } from "react-icons/md";
+import { MdChevronRight, MdHome } from "react-icons/md";
 
 const aliasMapping = {
   "product": "Detalle del Producto",
@@ -27,7 +27,7 @@ const Breadcrumbs = () => {
   return (
     <div className="cont-breadcrumbs mt-4">
       <h5 className="fw-semibold">
-        <Link to="/">Inicio</Link>
+        <Link to="/" color="gray"><MdHome size={30}/></Link>
         {pathnames.map((pathname, index) => (
           <React.Fragment key={index}>
             <MdChevronRight size={25} className="icon-aling" />

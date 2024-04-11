@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
@@ -84,40 +84,38 @@ const Profile = () => {
     <main>
       <PageTitle title="Chucherias & Regalos | Perfil de usuario" />
 
-      <h3 className="title-pag fw-bold text-uppercase">
-            Información Personal
-          </h3>
-          <hr className="hr-primary" />
-          {decodedToken ? (
-            <div className="container">
-              <div className="row">
-                <div className="profile-usr col-md-5">
-                  <h4 className="fw-bold">
-                    {decodedToken.nombre} {decodedToken.aPaterno}{" "}
-                    {decodedToken.aMaterno}
-                  </h4>
+      <h3 className="title-pag fw-bold text-uppercase">Información Personal</h3>
+      <hr className="hr-primary" />
+      {decodedToken ? (
+        <div className="container">
+          <div className="row">
+            <div className="profile-usr col-md-5">
+              <h4 className="fw-bold">
+                {decodedToken.nombre} {decodedToken.aPaterno}{" "}
+                {decodedToken.aMaterno}
+              </h4>
 
-                  {decodedToken.imagen !== null ? (
-                    <img
-                      src={decodedToken.imagen}
-                      className="img-fluid mt-2"
-                      alt="Chucherias & Regalos"
-                    />
-                  ) : selectedSexo === "masculino" ? (
-                    <img
-                      src="/images/user-masculino.png"
-                      className="img-fluid mt-2"
-                      alt="Chucherias & Regalos"
-                    />
-                  ) : (
-                    <img
-                      src="/images/OIP (1).jpg"
-                      className="img-fluid mt-2"
-                      alt="Chucherias & Regalos"
-                    />
-                  )}
+              {decodedToken.imagen !== null ? (
+                <img
+                  src={decodedToken.imagen}
+                  className="img-fluid mt-2"
+                  alt="Chucherias & Regalos"
+                />
+              ) : selectedSexo === "masculino" ? (
+                <img
+                  src="/images/user-masculino.png"
+                  className="img-fluid mt-2"
+                  alt="Chucherias & Regalos"
+                />
+              ) : (
+                <img
+                  src="/images/OIP (1).jpg"
+                  className="img-fluid mt-2"
+                  alt="Chucherias & Regalos"
+                />
+              )}
 
-                  {/* <div className="row text-center">
+              {/* <div className="row text-center">
                 <span
                   className="fw-bold mb-2"
                   style={{
@@ -143,121 +141,107 @@ const Profile = () => {
                   </div>
                 </div>
               </div> */}
+            </div>
 
-                  <Link
-                    to="/new-address"
-                    className="fw-bold mt-4"
-                    style={{
-                      color: "red",
-                      textDecoration: "none",
-                      fontSize: "20px",
-                    }}
-                  >
-                    Administrar direcciones
-                  </Link>
+            <div className="col-md-7 mt-2">
+              <h3 className="fw-bold">Datos de la cuenta</h3>
+
+              <div className="form-group mb-4 mt-2 col-sm-12">
+                <label htmlFor="Name" className="fw-bold">
+                  Nombre completo
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="Name"
+                  placeholder="Nombre y apellidos"
+                  value={`${decodedToken.nombre} ${decodedToken.aPaterno} ${decodedToken.aMaterno}`}
+                  readOnly
+                />
+              </div>
+
+              <div className="form-group mb-4 col-sm-12">
+                <label htmlFor="Email" className="fw-bold">
+                  Email
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="Email"
+                  placeholder="Email"
+                  value={`${decodedToken.correo}`}
+                  readOnly
+                />
+              </div>
+
+              <div className="form-group mb-4 row">
+                <div className="form-group col-sm-6">
+                  <label htmlFor="Telefono" className="fw-bold">
+                    Telefono
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="Telefono"
+                    placeholder="Telefono"
+                    value={`${decodedToken.telefono}`}
+                    readOnly
+                  />
                 </div>
+              </div>
 
-                <div className="col-md-7 mt-2">
-                  <h3 className="fw-bold">Datos de la cuenta</h3>
+              <div className="form-group mb-4 row">
+                <div className="form-group col-sm-7">
+                  <label htmlFor="Sexo" className="fw-bold">
+                    Sexo
+                  </label>
+                  <select
+                    className="form-control"
+                    id="Sexo"
+                    value={selectedSexo}
+                    disabled
+                  >
+                    <option value="" disabled selected hidden>
+                      Selecciona tu sexo
+                    </option>
+                    <option value="masculino">Masculino</option>
+                    <option value="femenino">Femenino</option>
+                  </select>
+                </div>
+                <div className="form-group col-sm-5">
+                  <label htmlFor="Edad" className="fw-bold">
+                    Edad
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="Edad"
+                    placeholder="Edad"
+                    value={edad !== null ? edad : ""}
+                    readOnly
+                  />
+                </div>
+              </div>
 
-                  <div className="form-group mb-4 mt-2 col-sm-12">
-                    <label htmlFor="Name" className="fw-bold">
-                      Nombre completo
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="Name"
-                      placeholder="Nombre y apellidos"
-                      value={`${decodedToken.nombre} ${decodedToken.aPaterno} ${decodedToken.aMaterno}`}
-                      readOnly
-                    />
-                  </div>
-
-                  <div className="form-group mb-4 col-sm-12">
-                    <label htmlFor="Email" className="fw-bold">
-                      Email
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="Email"
-                      placeholder="Email"
-                      value={`${decodedToken.correo}`}
-                      readOnly
-                    />
-                  </div>
-
-                  <div className="form-group mb-4 row">
-                    <div className="form-group col-sm-6">
-                      <label htmlFor="Telefono" className="fw-bold">
-                        Telefono
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="Telefono"
-                        placeholder="Telefono"
-                        value={`${decodedToken.telefono}`}
-                        readOnly
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group mb-4 row">
-                    <div className="form-group col-sm-7">
-                      <label htmlFor="Sexo" className="fw-bold">
-                        Sexo
-                      </label>
-                      <select
-                        className="form-control"
-                        id="Sexo"
-                        value={selectedSexo}
-                        disabled
-                      >
-                        <option value="" disabled selected hidden>
-                          Selecciona tu sexo
-                        </option>
-                        <option value="masculino">Masculino</option>
-                        <option value="femenino">Femenino</option>
-                      </select>
-                    </div>
-                    <div className="form-group col-sm-5">
-                      <label htmlFor="Edad" className="fw-bold">
-                        Edad
-                      </label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        id="Edad"
-                        placeholder="Edad"
-                        value={edad !== null ? edad : ""}
-                        readOnly
-                      />
-                    </div>
-                  </div>
-
-                  <div className="text-login mb-4">
+              {/* <div className="text-login mb-4">
                     <Link to="/forgot -password" className="fw-bold">
                       Cambiar contraseña
                     </Link>
-                  </div>
+                  </div> */}
 
-                  <div className="cont-btn mt-4">
-                    <button className="btn-secondary" onClick={handleBack}>
-                      Regresar
-                    </button>
-                    <button className="btn-primary">Actualizar</button>
-                  </div>
-                </div>
+              <div className="cont-btn mt-4">
+                <button className="btn-secondary" onClick={handleBack}>
+                  Regresar
+                </button>
+                {/* <button className="btn-warning">Actualizar <MdUpdate size={25}/></button> */}
               </div>
             </div>
-          ) : (
-            <p>No hay token disponible</p>
-          )}
-      
+          </div>
+        </div>
+      ) : (
+        <p>No hay token disponible</p>
+      )}
     </main>
-    
   );
 };
 

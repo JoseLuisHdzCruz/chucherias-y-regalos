@@ -22,6 +22,7 @@ import KeyVerifly from "./components/KeyVerifly";
 import KeyVeriflyWhatsApp from "./components/KeyVeriflyWhatsApp";
 
 import SecretQuestion from "./components/SecretQuestion";
+import GrowthCalculator from "./routes/Public/Mate";
 
 //Contenido Publico
 import Home from "./routes/Public/Home";
@@ -124,6 +125,7 @@ function App() {
             <Route path="/quienes-somos" element={<Layout><AcercaDe /></Layout>} />
             <Route path="/registro" element={<Layout><Register /></Layout>} />
             <Route path="/search" element={<Layout><Search /></Layout>} />
+            <Route path="/mate" element={<Layout><GrowthCalculator /></Layout>} />
 
             {/* Ruta por defecto para manejar cualquier otra ruta no definida */}
             <Route path="/back" element={<Layout><NavigateBack /></Layout>} />
@@ -161,6 +163,7 @@ function App() {
         <Route path="/admin/*" element={<AdminRoutes />} />
         <Route path="/*" element={<PublicRoutes />} />
         <Route path="/new-address" element={<GuardedLayout><NewAddress /></GuardedLayout>}/>
+        <Route path="/update-address/:id" element={<GuardedLayout><NewAddress /></GuardedLayout>}/>
         <Route path="/user-profile" element={<GuardedLayout><UserProfile /></GuardedLayout>}/>
         <Route path="/checkup" element={<GuardedLayout><Carrito /></GuardedLayout>}/>
         <Route path="/purchase-history" element={<GuardedLayout><PurchaseHistory /></GuardedLayout>}/>
