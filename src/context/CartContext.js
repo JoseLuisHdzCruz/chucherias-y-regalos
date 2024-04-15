@@ -55,23 +55,37 @@ const CartContextProvider = (props) => {
   const addToCart = async (product, quantity) => {
     try {
       const existingProduct = cart.find((item) => item.productoId === product.productoId);
-
+  
+      // Validar si existe el producto en el carrito y si la cantidad no excede la existencia
       if (existingProduct) {
-        const updatedCart = cart.map((item) =>
-          item.productoId === product.productoId ? { ...item, cantidad: item.cantidad + quantity } : item
-        );
-        setCart(updatedCart);
-        await updateCartItem(product.productoId, decodedToken.customerId, existingProduct.cantidad + quantity);
+        const newQuantity = existingProduct.cantidad + quantity;
+        if (newQuantity <= product.existencia) {
+          const updatedCart = cart.map((item) =>
+            item.productoId === product.productoId ? { ...item, cantidad: newQuantity } : item
+          );
+          setCart(updatedCart);
+          await updateCartItem(product.productoId, decodedToken.customerId, newQuantity);
+        } else {
+          console.log("No se puede agregar más cantidad. La existencia máxima es alcanzada.");
+          // Aquí puedes mostrar una notificación al usuario indicando que no se puede agregar más cantidad
+        }
       } else {
-        const newProduct = { ...product, cantidad: quantity };
-        const newCart = [...cart, newProduct];
-        setCart(newCart);
-        await addCartItem(newProduct);
+        // Validar si la cantidad no excede la existencia
+        if (quantity <= product.existencia) {
+          const newProduct = { ...product, cantidad: quantity };
+          const newCart = [...cart, newProduct];
+          setCart(newCart);
+          await addCartItem(newProduct);
+        } else {
+          console.log("No se puede agregar más cantidad. La existencia máxima es alcanzada.");
+          // Aquí puedes mostrar una notificación al usuario indicando que no se puede agregar más cantidad
+        }
       }
     } catch (error) {
       console.error("Error adding item to cart:", error);
     }
   };
+  
 
   const addCartItem = async (newProduct) => {
     try {

@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Field, Form } from "formik";
-import { Modal } from "react-bootstrap"; // Importa el Modal de React Bootstrap
-import { MdFilterAlt, MdRemove, MdFilterAltOff } from "react-icons/md";
+import { Modal, Button } from "react-bootstrap"; // Importa el Modal de React Bootstrap
+import {
+  MdFilterAlt,
+  MdRemove,
+  MdFilterAltOff,
+  MdLocalMall,
+} from "react-icons/md";
 import PageTitle from "../../components/PageTitle";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
@@ -12,11 +17,17 @@ const PurchaseHistory = () => {
   const { token } = useAuth();
   const [user, setUser] = useState(0);
   const [purchaseHistory, setPurchaseHistory] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pruchasesPerPage = 5;
   const [dataHistory, setDataHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedPurchase, setSelectedPurchase] = useState(null);
   const [venta, setVenta] = useState(null);
+  const [folioVenta, setFolioVenta] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  // Estados para manejar el motivo de la cancelación y la visibilidad del modal
+  const [cancelReason, setCancelReason] = useState("");
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [filterValues, setFilterValues] = useState({
     fechaInicial: "",
     fechaFinal: "",
@@ -55,6 +66,7 @@ const PurchaseHistory = () => {
           setPurchaseHistory(purchaseDetails);
           setDataHistory(purchaseDetails);
           setLoading(false);
+          setCurrentPage(1); // Resetear a la primera página cuando hay resultados de búsqueda
         } catch (error) {
           console.error("Error fetching purchase history:", error);
           setLoading(false);
@@ -88,6 +100,71 @@ const PurchaseHistory = () => {
     });
   };
 
+  // Cambiar de página
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Calcular el número total de páginas
+  const totalPages = Math.ceil(purchaseHistory.length / pruchasesPerPage);
+
+  // Función para abrir el modal de cancelación
+  const openCancelModal = async (folio) => {
+    setCancelModalOpen(true);
+    setFolioVenta(folio);
+  };
+
+  // Función para cerrar el modal de cancelación
+  const closeCancelModal = () => {
+    setCancelModalOpen(false);
+  };
+
+  // Función para manejar el cambio en el motivo de la cancelación
+  const handleCancelReasonChange = (event) => {
+    setCancelReason(event.target.value);
+  };
+
+  // Función para manejar la cancelación de la compra
+  const handleCancelPurchase = async () => {
+    try {
+      console.log(folioVenta, cancelReason);
+      // Aquí consumes la API para cambiar el estado de la venta al cancelarla
+      await axios.post(
+        `https://backend-c-r-production.up.railway.app/ventas/cancelar-venta`,
+        {
+          folio: folioVenta, // Folio de la venta
+          reason: cancelReason, // Razón de la cancelación
+        }
+      );
+
+      // Aquí puedes manejar la respuesta de la API, como mostrar un mensaje de éxito
+      toast.success("La compra ha sido cancelada correctamente.");
+
+      // Actualizar el estado de purchaseHistory para reflejar el cambio de estado de la venta cancelada
+      setPurchaseHistory((prevPurchaseHistory) =>
+        prevPurchaseHistory.map((purchase) => {
+          if (purchase.folio === folioVenta) {
+            // Actualizar el estado de la compra cancelada
+            return {
+              ...purchase,
+              statusVentaId: 5, // 5 representa el estado de venta cancelada
+            };
+          } else {
+            // Mantener el estado de las compras que no se han cancelado
+            return purchase;
+          }
+        })
+      );
+
+      // Aquí puedes cerrar el modal después de cancelar la compra
+      closeCancelModal();
+    } catch (error) {
+      // Aquí puedes manejar los errores, como mostrar un mensaje de error
+      console.error("Error canceling purchase:", error);
+      toast.error("Ha ocurrido un error al cancelar la compra.");
+    }
+  };
+
   return (
     <main>
       <PageTitle title="Chucherias & Regalos | Historial de compra" />
@@ -105,7 +182,7 @@ const PurchaseHistory = () => {
                 {
                   fechaInicial: values.fechaInicial,
                   fechaFinal: values.fechaFinal,
-                  customerId: user
+                  customerId: user,
                 }
               );
 
@@ -174,7 +251,7 @@ const PurchaseHistory = () => {
                 <h5>Filtrar por fecha:</h5>
                 <Field type="date" name="fechaInicial" />
                 <h5>
-                  <MdRemove size={25} />
+                  <MdRemove size={20} />
                 </h5>
                 <Field type="date" name="fechaFinal" />
                 <button
@@ -182,7 +259,7 @@ const PurchaseHistory = () => {
                   className="btn-filter btn-info"
                   disabled={isSubmitting}
                 >
-                  <MdFilterAlt size={25} />
+                  <MdFilterAlt size={20} />
                 </button>
                 <button
                   type="button"
@@ -203,89 +280,114 @@ const PurchaseHistory = () => {
             loading ? (
               <p>Cargando historial de compras...</p>
             ) : (
-              purchaseHistory.map((purchase) => (
-                <div key={purchase.ventaId} className="card mb-3 mt-4">
-                  <div className="card-body">
-                    <div className="row">
-                      <div className="col-md-2">
-                        <img
-                          src={
-                            purchase.detalleVenta &&
-                            purchase.detalleVenta.length > 0
-                              ? purchase.detalleVenta[0].imagen
-                              : ""
-                          }
-                          className="img-fluid"
-                          alt={
-                            purchase.detalleVenta &&
-                            purchase.detalleVenta.length > 0
-                              ? purchase.detalleVenta[0].producto
-                              : ""
-                          }
-                          style={{ borderRadius: "100px" }}
-                        />
-                      </div>
-                      <div className="col-md-7 row ml-1">
-                        <h4 className="text-primary mt-2">
-                          <strong>Productos: </strong>
-                          {purchase.detalleVenta
-                            .map((detalle) => detalle.producto)
-                            .join(", ")}
-                        </h4>
-                        <span>
-                          <strong>Folio: </strong>
-                          {purchase.folio}
-                        </span>
-                        <span>Cantidad de productos: {purchase.cantidad}</span>
-                        <span>Total: ${purchase.total}</span>
-                        <div className="cont-options">
-                          <span className="text-muted">
-                            Comprado el <strong>{purchase.fecha}</strong>
-                          </span>
-                        </div>
-                      </div>
-                      <div className="col-md-3 aling-center-cont">
-                        <div className="row">
-                        <div className="text-center">
-                        {purchase.statusVentaId === 1 && (
-                          <span className="text-success fw-bold">
-                            <strong>Estado de la venta: </strong>En proceso
-                          </span>
-                        )}
-                        {purchase.statusVentaId === 2 && (
-                          <span className="text-success fw-bold">
-                            <strong>Estado de la venta: </strong>En camino
-                          </span>
-                        )}
-                        {purchase.statusVentaId === 3 && (
-                          <span className="text-success fw-bold">
-                            <strong>Estado de la venta: </strong>Entregado
-                          </span>
-                        )}
-                        {purchase.statusVentaId === 4 && (
-                          <span className="text-warning fw-bold">
-                            <strong>Estado de la venta: </strong>En espera de
-                            recolección en sucursal
-                          </span>
-                        )}
-                        </div>
-                        <div className="cont-cant d-flex align-items-center justify-content-center">
-                          <button
-                            className="btn-primary my-4"
-                            onClick={() =>
-                              openModal(purchase, purchase.ventaId)
+              purchaseHistory
+                .slice(
+                  (currentPage - 1) * pruchasesPerPage,
+                  currentPage * pruchasesPerPage
+                )
+                .map((purchase) => (
+                  <div key={purchase.ventaId} className="card mb-3 mt-4">
+                    <div className="card-body">
+                      <div className="row">
+                        <div className="col-md-2">
+                          <img
+                            src={
+                              purchase.detalleVenta &&
+                              purchase.detalleVenta.length > 0
+                                ? purchase.detalleVenta[0].imagen
+                                : ""
                             }
-                          >
-                            Ver detalle
-                          </button>
+                            className="img-fluid"
+                            alt={
+                              purchase.detalleVenta &&
+                              purchase.detalleVenta.length > 0
+                                ? purchase.detalleVenta[0].producto
+                                : ""
+                            }
+                            style={{ borderRadius: "100px" }}
+                          />
                         </div>
+                        <div className="col-md-7 row ml-1">
+                          <h4 className="text-primary mt-2">
+                            <strong>Productos: </strong>
+                            {purchase.detalleVenta
+                              .map((detalle) => detalle.producto)
+                              .join(", ")}
+                          </h4>
+                          <span>
+                            <strong>Folio: </strong>
+                            {purchase.folio}
+                          </span>
+                          <span>
+                            Cantidad de productos: {purchase.cantidad}
+                          </span>
+                          <span>Total: ${purchase.total}</span>
+                          <div className="cont-options">
+                            <span className="text-muted">
+                              Comprado el <strong>{purchase.fecha}</strong>
+                            </span>
+                          </div>
                         </div>
-                        
+                        <div className="col-md-3 aling-center-cont">
+                          <div className="row">
+                            <div className="text-center">
+                              {purchase.statusVentaId === 1 && (
+                                <span className="text-success fw-bold">
+                                  <strong>Estado de la venta: </strong>En
+                                  proceso
+                                </span>
+                              )}
+                              {purchase.statusVentaId === 2 && (
+                                <span className="text-success fw-bold">
+                                  <strong>Estado de la venta: </strong>En camino
+                                </span>
+                              )}
+                              {purchase.statusVentaId === 3 && (
+                                <span className="text-success fw-bold">
+                                  <strong>Estado de la venta: </strong>Entregado
+                                </span>
+                              )}
+                              {purchase.statusVentaId === 4 && (
+                                <span className="text-warning fw-bold">
+                                  <strong>Estado de la venta: </strong>En espera
+                                  de recolección en sucursal
+                                </span>
+                              )}
+                              {purchase.statusVentaId === 5 && (
+                                <span className="text-danger fw-bold">
+                                  <strong>Estado de la venta: </strong>Cancelada
+                                </span>
+                              )}
+                            </div>
+                            <div className="cont-cant d-flex align-items-center justify-content-center">
+                              <button
+                                className="btn-primary my-4"
+                                onClick={() =>
+                                  openModal(purchase, purchase.ventaId)
+                                }
+                              >
+                                Ver detalle
+                              </button>
+                            </div>
+                            {(purchase.statusVentaId === 1 ||
+                              purchase.statusVentaId === 4) && (
+                              <div className="cont-cant d-flex align-items-center justify-content-center">
+                                <button
+                                  className="btn-danger"
+                                  onClick={() =>
+                                    openCancelModal(purchase.folio)
+                                  }
+                                >
+                                  Cancelar compra
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))
             )
           ) : (
             <div className="d-flex ml-4 text-center">
@@ -301,20 +403,28 @@ const PurchaseHistory = () => {
             <Modal.Title>Detalle de la compra</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {venta.domicilioId && venta.domicilioId !== null ? (
-              <p>
-                <strong>Metodo de entrega: </strong>Envio a domicilio
-              </p>
-            ) : (
-              <p>
-                <strong>Metodo de entrega: </strong>Recoleccion en socursal
-              </p>
-            )}
+            <div className="row">
+              <div className="col-sm-8">
+                {venta.domicilioId && venta.domicilioId !== null ? (
+                  <p>
+                    <strong>Metodo de entrega: </strong>Envio a domicilio
+                  </p>
+                ) : (
+                  <p>
+                    <strong>Metodo de entrega: </strong>Recoleccion en socursal
+                  </p>
+                )}
 
-            <p>Total de productos comprados ({venta.cantidad})</p>
-            <p className="text-secondary fw-bold">
-              Fecha de compra: {venta.fecha.split("T")[0]}
-            </p>
+                <p>Total de productos comprados ({venta.cantidad})</p>
+                <p className="text-secondary fw-bold">
+                  Fecha de compra: {venta.fecha.split("T")[0]}
+                </p>
+              </div>
+              <div className="col-sm-4 text-center">
+                <MdLocalMall size={80} color="#c9c9c9" />
+              </div>
+            </div>
+
             <table className="table">
               <thead>
                 <tr>
@@ -356,6 +466,57 @@ const PurchaseHistory = () => {
           </Modal.Body>
         </Modal>
       )}
+
+      {folioVenta && folioVenta !== null && (
+        <Modal show={cancelModalOpen} onHide={closeCancelModal} centered>
+          <Modal.Header closeButton className="bg-primary-c">
+            <Modal.Title>Cancelación de compra</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Formik
+              initialValues={{ reason: "" }}
+              onSubmit={(values) => {
+                // Manejar el motivo de la cancelación aquí
+                // Puedes enviar el motivo al backend si es necesario
+                handleCancelPurchase();
+              }}
+            >
+              <Form>
+                <div className="form-group">
+                  <span className="text-muted">Folio: {folioVenta}</span>
+                  <label htmlFor="reason">Motivo de la cancelación:</label>
+                  <Field
+                    as="textarea" // Utiliza la etiqueta textarea
+                    id="reason"
+                    name="reason"
+                    className="form-control"
+                    value={cancelReason}
+                    onChange={handleCancelReasonChange}
+                    style={{ height: "100px" }}
+                  />
+                </div>
+                <button type="submit" className="btn btn-danger">
+                  Confirmar cancelación
+                </button>
+              </Form>
+            </Formik>
+          </Modal.Body>
+        </Modal>
+      )}
+
+      {/* Agregar paginación */}
+      <ul className="pagination text-center mt-4">
+        {Array.from({ length: totalPages }).map((_, index) => (
+          <li
+            key={index}
+            className={`page-item ${currentPage === index + 1 ? "active" : ""}`}
+          >
+            <button onClick={() => paginate(index + 1)} className="page-link">
+              {index + 1}
+            </button>
+          </li>
+        ))}
+      </ul>
     </main>
   );
 };

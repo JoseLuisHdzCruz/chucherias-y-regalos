@@ -485,7 +485,8 @@ a {
 
 .btn-primary,
 .btn-secondary,
-.btn-warning {
+.btn-warning,
+.btn-danger {
   justify-content: center;
   display: flex;
   align-items: center;
@@ -914,7 +915,7 @@ main {
   background-color: #20b4d5;
 }
 
-.btn-primary {
+.btn-primary, .cont-cant .btn-danger{
   width: 250px;
   height: 40px;
   border-radius: 20px;
@@ -939,6 +940,13 @@ main {
   border-color: #999999 !important; /* Cambia el color del borde */
   cursor: not-allowed; /* Cambia el cursor cuando está deshabilitado */
 }
+
+.btn-warning:disabled {
+  background-color: #cccccc !important; /* Cambia el color de fondo */
+  border-color: #999999 !important; /* Cambia el color del borde */
+  cursor: not-allowed; /* Cambia el cursor cuando está deshabilitado */
+}
+
 .cont-btn {
   display: flex;
   justify-content: space-between;

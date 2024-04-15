@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef  } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/DropdownMenu.css'; // Archivo de estilos para el menú
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 function DropdownMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
   const dropdownRef = useRef(null);
 
   const toggleMenu = () => {
@@ -25,20 +26,28 @@ function DropdownMenu() {
     };
   }, []);
 
+  useEffect(() => {
+    // Hacer la solicitud a la API para obtener las categorías
+    fetch('https://backend-c-r-production.up.railway.app/products/categorias')
+      .then(response => response.json())
+      .then(data => setCategories(data))
+      .catch(error => console.error('Error fetching categories:', error));
+  }, []);
+
   return (
     <div className="dropdown" ref={dropdownRef}>
       <a onClick={toggleMenu}>
-      Categoría {isOpen ? <MdExpandLess size={25} className="icon-align" /> : <MdExpandMore size={25} className="icon-align" />}
+        Categoría {isOpen ? <MdExpandLess size={25} className="icon-align" /> : <MdExpandMore size={25} className="icon-align" />}
       </a>
       <ul className={`dropdown-list ${isOpen ? 'show' : ''}`}>
-        <Link><li>Peluches</li></Link>
-        <Link><li>Juguetes</li></Link>
-        <Link><li>Pelotas</li></Link>
-        {/* Agrega más opciones según sea necesario */}
+        {categories.map(category => (
+          <Link key={category.categoriaId} to={`/category/${category.categoriaId}`}>
+            <li>{category.categoria}</li>
+          </Link>
+        ))}
       </ul>
     </div>
   );
 }
 
 export default DropdownMenu;
-

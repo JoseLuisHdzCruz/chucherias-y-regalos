@@ -1,15 +1,12 @@
-import PageTitle from '../../components/PageTitle'
+import PageTitle from "../../components/PageTitle";
 import React, { useState, useEffect, useContext } from "react";
-import {
-  MdAdd,
-  MdRemove
-} from "react-icons/md";
+import { MdAdd, MdRemove, MdAddShoppingCart } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import CarruselProductos from "../../components/Public/CarruselProductos";
-import { CartContext } from '../../context/CartContext';
-import CartModal from '../../components/Public/CartModal';
-import { toast } from 'react-toastify';
+import { CartContext } from "../../context/CartContext";
+import CartModal from "../../components/Public/CartModal";
+import { toast } from "react-toastify";
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
@@ -20,7 +17,6 @@ const ProductDetail = () => {
   const [isCartModalOpen, setIsCartModalOpen] = useState(false); // Estado para controlar la apertura/cierre del modal del carrito
 
   useEffect(() => {
-
     // Hacer la solicitud a la API para obtener los detalles del producto
     fetch(`https://backend-c-r-production.up.railway.app/products/${id}`)
       .then((response) => response.json())
@@ -28,7 +24,6 @@ const ProductDetail = () => {
       .catch((error) =>
         console.error("Error fetching product details:", error)
       );
-    
   }, [id]);
 
   if (!product) {
@@ -47,13 +42,12 @@ const ProductDetail = () => {
   };
 
   const handleAddToCart = () => {
-    if(token){
+    if (token) {
       addToCart(product, quantity);
       setIsCartModalOpen(true); // Abrir el modal del carrito después de agregar al carrito
     } else {
-      toast.error("Para la siguiente accion debe iniciar sesión.")
+      toast.error("Para la siguiente accion debe iniciar sesión.");
     }
-    
   };
 
   const handleCloseCartModal = () => {
@@ -64,9 +58,7 @@ const ProductDetail = () => {
     <main>
       <PageTitle title="Chucherias & Regalos | Detalle del producto" />
 
-      <h3 className="title-pag fw-bold text-uppercase">
-        Detalle del producto
-      </h3>
+      <h3 className="title-pag fw-bold text-uppercase">Detalle del producto</h3>
       <hr className="hr-primary" />
 
       <div className="detail-product">
@@ -83,12 +75,12 @@ const ProductDetail = () => {
               <div className="col-md-6">
                 <div className="card-body">
                   <h2 className="title-product fw-bold">{product.nombre}</h2>
-                  <h2 className="text-price mt-2 fw-bold">$ {product.precioFinal}</h2>
+                  <h2 className="text-price mt-2 fw-bold">
+                    $ {product.precioFinal}
+                  </h2>
                   <span>IVA Incluido</span>
 
-                  <p className="card-text mt-4">
-                    {product.descripcion}
-                  </p>
+                  <p className="card-text mt-4">{product.descripcion}</p>
                 </div>
               </div>
             </div>
@@ -98,9 +90,14 @@ const ProductDetail = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="text-center">
-                Disponible:<strong className='text-primary ml-2'>{product.existencia} piezas</strong> 
+                Disponible:
+                <strong className="text-primary ml-2">
+                  {product.existencia} piezas
+                </strong>
               </h5>
-              <div className="cant mt-4">
+              {product.existencia > 0 ? (
+                <>
+                <div className="cant mt-4">
                 <h5>Cantidad</h5>
                 <div className="counter">
                   <button className="decrement" onClick={handleDecrement}>
@@ -113,9 +110,29 @@ const ProductDetail = () => {
                 </div>
               </div>
               <div className="cont-buttons text-center mt-4">
-                <button className="btn-secondary" style={{width:250}}>Comprar ahora</button>
-                <button className="btn-primary" onClick={handleAddToCart}>Agregar a carrito</button>
+                <button
+                  className="btn-primary"
+                  onClick={handleAddToCart}
+                  disabled={quantity > product.existencia}
+                >
+                  {quantity > product.existencia
+                    ? "Cantidad no disponible"
+                    : "Agregar a carrito"}
+                </button>
               </div>
+              {quantity && quantity > product.existencia && (
+                  <span className="text-center text-danger">
+                    Productos en existencia insuficientes
+                  </span>
+                )}
+                </>
+                
+              ):(
+                <span className="text-center">Producto actualmente agotado</span>
+              )}
+              
+              
+              
             </div>
           </div>
         </div>

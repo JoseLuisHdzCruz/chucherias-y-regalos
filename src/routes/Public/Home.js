@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PageTitle from "../../components/PageTitle";
 import { Link } from "react-router-dom";
 import BootstrapCarousel from "../../components/Public/BootstrapCarousel";
+import { MdFilterAlt } from "react-icons/md";
 
 function Home({ searchResults, searchTerm }) {
   const [products, setProducts] = useState([]);
@@ -67,7 +68,9 @@ function Home({ searchResults, searchTerm }) {
   };
 
   // Calcular el número total de páginas
-  const totalPages = Math.ceil(filteredAndSortedProducts().length / productsPerPage);
+  const totalPages = Math.ceil(
+    filteredAndSortedProducts().length / productsPerPage
+  );
 
   return (
     <>
@@ -79,16 +82,23 @@ function Home({ searchResults, searchTerm }) {
           <div className="advanced-search">
             <h2 className="text-center">Resultados para: {searchTerm}</h2>
 
-            <div className="cont-filter mt-4 ml-4">
-              <div className="price-range">
-                <div className="form-row">
-                  <div className="form-group col-sm-6">
+            <div className="row mt-4 ml-4">
+              <div className="col-md-1">
+                <span className="btn btn-info disabled">
+                  <MdFilterAlt size={20} /> Filtros
+                </span>
+              </div>
+              <div className="col-md-6">
+                <div className="row col-md-12">
+                  <div className="col-sm-3">
                     <label
                       htmlFor="min-price"
-                      className="col-form-label col-form-label-sm mr-2"
+                      className="col-form-label col-form-label-sm mr-2 d-flex justify-content-end"
                     >
                       Precio mínimo:
                     </label>
+                  </div>
+                  <div className="col-sm-3">
                     <input
                       type="number"
                       className="form-control"
@@ -97,13 +107,15 @@ function Home({ searchResults, searchTerm }) {
                       onChange={(e) => setMinPrice(e.target.value)}
                     />
                   </div>
-                  <div className="form-group col-sm-6">
+                  <div className="col-sm-3">
                     <label
                       htmlFor="max-price"
-                      className="col-form-label col-form-label-sm mr-2"
+                      className="col-form-label col-form-label-sm mr-2 d-flex justify-content-end"
                     >
                       Precio máximo:
                     </label>
+                  </div>
+                  <div className="col-sm-3">
                     <input
                       type="number"
                       className="form-control"
@@ -114,32 +126,40 @@ function Home({ searchResults, searchTerm }) {
                   </div>
                 </div>
               </div>
-              <div className="order-by">
-                <div className="form-check form-check-inline">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="orderByDesc"
-                    checked={orderBy === "desc"}
-                    onChange={() =>
-                      setOrderBy(orderBy === "desc" ? "" : "desc")
-                    }
-                  />
-                  <label className="form-check-label" htmlFor="orderByDesc">
-                    Ordenar de mayor a menor
-                  </label>
-                </div>
-                <div className="form-check form-check-inline">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="orderByAsc"
-                    checked={orderBy === "asc"}
-                    onChange={() => setOrderBy(orderBy === "asc" ? "" : "asc")}
-                  />
-                  <label className="form-check-label" htmlFor="orderByAsc">
-                    Ordenar de menor a mayor
-                  </label>
+              <div className="col-md-5">
+                <div className="row col-md-12">
+                  <div className="col-sm-1 d-flex justify-content-end">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="orderByDesc"
+                      checked={orderBy === "desc"}
+                      onChange={() =>
+                        setOrderBy(orderBy === "desc" ? "" : "desc")
+                      }
+                    />
+                  </div>
+                  <div className="col-sm-5">
+                    <label className="form-check-label" htmlFor="orderByDesc">
+                      Ordenar de mayor a menor
+                    </label>
+                  </div>
+                  <div className="col-sm-1 d-flex justify-content-end">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="orderByAsc"
+                      checked={orderBy === "asc"}
+                      onChange={() =>
+                        setOrderBy(orderBy === "asc" ? "" : "asc")
+                      }
+                    />
+                  </div>
+                  <div className="col-sm-5">
+                    <label className="form-check-label" htmlFor="orderByAsc">
+                      Ordenar de menor a mayor
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -153,7 +173,10 @@ function Home({ searchResults, searchTerm }) {
         <div className="catalog">
           {filteredAndSortedProducts().length > 0 ? (
             filteredAndSortedProducts()
-              .slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage)
+              .slice(
+                (currentPage - 1) * productsPerPage,
+                currentPage * productsPerPage
+              )
               .map((product) => (
                 <Link
                   to={`/product/${product.productoId}`}

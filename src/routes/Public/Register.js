@@ -543,9 +543,9 @@ const Register = () => {
                         !aceptaTerminos
                       }
                     >
-                      {isSubmitting ? "Registrando..." : "Registrar"}
+                      
                     </button>
-                  </div>
+                  </div>{isSubmitting ? "Registrando..." : "Registrar"}
                 </Form>
               )}
             </Formik>

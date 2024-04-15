@@ -1,7 +1,7 @@
 // PublicHeader.js
 import React, { useState, useEffect, useContext } from "react";
-import { MdSearch, MdShoppingCart } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { MdSearch, MdShoppingCart, MdClose } from "react-icons/md";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import ModalComponent from "./Modal";
 import "../../styles/styles.css";
@@ -14,6 +14,7 @@ import axios from "axios";
 function PublicHeader({ onSearch }) {
   const [usuario, setUsuario] = useState(1);
   const [selectedSexo, setSelectedSexo] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [verificacionRealizada, setVerificacionRealizada] = useState(false);
   const { token, logout } = useAuth();
@@ -23,14 +24,24 @@ function PublicHeader({ onSearch }) {
     0
   );
 
+  const navigate = useNavigate();
+
   // Función para manejar la búsqueda
   const handleSearch = (event) => {
     const searchTerm = event.target.value; // Obtener el valor del campo de búsqueda
+    setSearchTerm(searchTerm);
     if (searchTerm !== null && searchTerm !== "") {
       onSearch(searchTerm); // Llamar a la función de búsqueda solo si el término de búsqueda no está vacío
+      navigate("/");
     } else {
       onSearch(null); // Si el campo de búsqueda está vacío, enviar null o 0 según sea necesario
+      event.target.value = "";
     }
+  };
+
+  const limpiarBusqueda = () => {
+    setSearchTerm("");
+    onSearch(null);
   };
 
   useEffect(() => {
@@ -132,23 +143,24 @@ function PublicHeader({ onSearch }) {
         <div className="search-bar">
           <input
             type="text"
+            id="busquedaTermino"
             placeholder="¿Qué productos buscas el dia de hoy?"
             onChange={handleSearch}
           />
-          <button>
-            <MdSearch size={25} />
-          </button>
+          {searchTerm && searchTerm.length > 0 ? (
+            <button onClick={limpiarBusqueda}>
+              <MdClose size={25} />
+            </button>
+          ) : (
+            <button>
+              <MdSearch size={25} />
+            </button>
+          )}
         </div>
         <nav className="mt-3">
           <ul>
             <li className="cinta-opciones">
               <DropdownMenu />
-            </li>
-            <li className="cinta-opciones">
-              <Link to="/purchase-history">Historial</Link>
-            </li>
-            <li className="cinta-opciones">
-              <Link to="">Compras</Link>
             </li>
             <li className="cinta-opciones">
               <Link to="">Ofertas</Link>
@@ -161,43 +173,44 @@ function PublicHeader({ onSearch }) {
                 )}
               </li>
             ) : (
-              <li className="cinta-opciones">
-                <Link onClick={cerrarSesion}>Cerrar sesión</Link>
-              </li>
+              <>
+                <li className="cinta-opciones">
+                  <Link to="/purchase-history">Historial de compras</Link>
+                </li>
+                <li className="cinta-opciones">
+                  <Link onClick={cerrarSesion}>Cerrar sesión</Link>
+                </li>
+              </>
             )}
           </ul>
         </nav>
       </div>
       <div className="columna" style={{ width: "25%" }}>
         <div className="profile">
-          
-
           {!usuario ? (
             <img
               className="logo-user"
               src="/images/user.png"
               alt="Banner de Usuario"
             />
-          ):(
-            usuario && usuario.imagen !== null ? (
-              <img
-                src={usuario.imagen}
-                className="img-fluid mt-2"
-                alt="Chucherias & Regalos"
-              />
-            ) : selectedSexo === "masculino" ? (
-              <img
-                src="/images/user-masculino.png"
-                className="logo-user"
-                alt="Chucherias & Regalos"
-              />
-            ) : (
-              <img
-                src="/images/OIP (1).jpg"
-                className="logo-user"
-                alt="Chucherias & Regalos"
-              />
-            )
+          ) : usuario && usuario.imagen !== null ? (
+            <img
+              src={usuario.imagen}
+              className="img-fluid mt-2"
+              alt="Chucherias & Regalos"
+            />
+          ) : selectedSexo === "masculino" ? (
+            <img
+              src="/images/user-masculino.png"
+              className="logo-user"
+              alt="Chucherias & Regalos"
+            />
+          ) : (
+            <img
+              src="/images/OIP (1).jpg"
+              className="logo-user"
+              alt="Chucherias & Regalos"
+            />
           )}
 
           {/* Mostrar el nombre de usuario si está disponible */}

@@ -26,6 +26,7 @@ import GrowthCalculator from "./routes/Public/Mate";
 
 //Contenido Publico
 import Home from "./routes/Public/Home";
+import CategoriaProductos from "./routes/Public/CategoriaProductos";
 import ProductDetail from "./routes/Public/ProductDetail";
 // import ProductDetail2 from "./routes/Public/ProductDetail2";
 import PrivacyPolicy from "./routes/Public/PrivacyPolicy";
@@ -118,6 +119,7 @@ function App() {
           <Routes>
             {/* Rutas publicas */}
             <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/category/:id" element={<Layout><CategoriaProductos /></Layout>} />
             <Route path="/product/:id" element={<Layout><ProductDetail /></Layout>} />
             <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
             <Route path="/terms-cond" element={<Layout><Terms /></Layout>} />
