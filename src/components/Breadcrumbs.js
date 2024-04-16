@@ -23,7 +23,9 @@ const aliasMapping = {
   "update-address": "Actualizar dirección",
   "ofertas": "Productos en oferta",
   "notifications": "Notificaciones",
-  "FAQs": "Preguntas frecuentes"
+  "FAQs": "Preguntas frecuentes",
+  "select-address": "Selección método de entrega",
+  "select-payment": "Selección forma de pago"
 };
 
 const Breadcrumbs = () => {
