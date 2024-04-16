@@ -23,6 +23,7 @@ const aliasMapping = {
   "update-address": "Actualizar dirección",
   "ofertas": "Productos en oferta",
   "notifications": "Notificaciones",
+  "FAQs": "Preguntas frecuentes"
 };
 
 const Breadcrumbs = () => {
