@@ -1140,6 +1140,7 @@ table {
 
 .cont-breadcrumbs {
   background-color: #f8c6f9;
+  width: 100%;
 }
 
 .cont-breadcrumbs a {

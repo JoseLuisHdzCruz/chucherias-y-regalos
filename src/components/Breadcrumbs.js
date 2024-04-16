@@ -33,9 +33,9 @@ const Breadcrumbs = () => {
   const pathnames = location.pathname.split("/").filter((x) => x);
 
   return (
-    <div className="cont-breadcrumbs row">
-      <span className="fw-semibold ml-4 text-muted">
-        <Link to="/" color="gray"><MdHome size={30}/></Link>
+    <div className="cont-breadcrumbs">
+      <span className="fw-semibold text-muted">
+        <Link to="/" color="gray"><MdHome size={30} className="ml-4"/></Link>
         {pathnames.map((pathname, index) => (
           <React.Fragment key={index}>
             <MdChevronRight size={25} className="icon-aling" />
