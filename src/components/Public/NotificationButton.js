@@ -30,7 +30,6 @@ function NotificationButton() {
   }, [decodedToken]);
 
   const unreadNotifications = notifications.filter(notification => notification.estado === "No leído");
-  console.log("Notificaciones no leídas:", unreadNotifications);
 
   const buttonStyle = {
     borderRadius: "100%",

@@ -6,6 +6,7 @@ import { MdFilterAlt } from "react-icons/md";
 
 function Ofertas() {
   const [products, setProducts] = useState([]);
+  const [promos, setPromos] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 20;
   const [minPrice, setMinPrice] = useState("");
@@ -13,13 +14,30 @@ function Ofertas() {
   const [orderBy, setOrderBy] = useState("");
 
   useEffect(() => {
-        fetch("https://backend-c-r-production.up.railway.app/products/productos/mas-vendidos")
-        .then((response) => response.json())
-        .then((data) => setProducts(data))
-        .catch((error) => console.error("Error fetching products:", error));
-      setCurrentPage(1); // Resetear a la primera página cuando hay resultados de búsqueda
-      
-    }, []);
+    // Obtener la fecha actual
+    const fechaActual = new Date().toISOString().split("T")[0];
+    fetch(
+      `https://backend-c-r-production.up.railway.app/products/promos/${fechaActual}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setPromos(data);
+        console.log(data); // Asegúrate de que promos tenga datos aquí
+        if (data.length > 0) {
+          fetch(
+            `https://backend-c-r-production.up.railway.app/products/categoria/${data[0].categoriaId}`
+          ) // Aquí asumo que solo estás usando la categoría del primer producto de promos, ajusta según tus necesidades
+            .then((response) => response.json())
+            .then((data) => {
+              setProducts(data);
+              setCurrentPage(1); // Resetear a la primera página cuando hay resultados de búsqueda
+            })
+            .catch((error) => console.error("Error fetching products:", error));
+        }
+      })
+      .catch((error) => console.error("Error fetching products:", error));
+  }, []);
+  
 
   useEffect(() => {
     // Limpiar los filtros cuando no hay término de búsqueda
@@ -65,7 +83,9 @@ function Ofertas() {
   };
 
   // Calcular el número total de páginas
-  const totalPages = Math.ceil(filteredAndSortedProducts().length / productsPerPage);
+  const totalPages = Math.ceil(
+    filteredAndSortedProducts().length / productsPerPage
+  );
 
   return (
     <>
@@ -73,102 +93,112 @@ function Ofertas() {
       <main>
         <PageTitle title="Chucherias & Regalos | Inicio" />
 
-        <h3 className="title-pag fw-bold text-uppercase">Productos en oferta</h3>
+        <h3 className="title-pag fw-bold text-uppercase">
+          Productos en oferta
+        </h3>
         <hr className="hr-primary" />
 
         {products && products.length > 0 && (
           <div className="advanced-search">
-
-          <div className="row mt-4 ml-4">
-            <div className="col-md-1">
-              <span className="btn btn-info disabled">
-                <MdFilterAlt size={20} /> Filtros
-              </span>
-            </div>
-            <div className="col-md-6">
-              <div className="row col-md-12">
-                <div className="col-sm-3">
-                  <label
-                    htmlFor="min-price"
-                    className="col-form-label col-form-label-sm mr-2 d-flex justify-content-end"
-                  >
-                    Precio mínimo:
-                  </label>
-                </div>
-                <div className="col-sm-3">
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="min-price"
-                    value={minPrice}
-                    onChange={(e) => setMinPrice(e.target.value)}
-                  />
-                </div>
-                <div className="col-sm-3">
-                  <label
-                    htmlFor="max-price"
-                    className="col-form-label col-form-label-sm mr-2 d-flex justify-content-end"
-                  >
-                    Precio máximo:
-                  </label>
-                </div>
-                <div className="col-sm-3">
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="max-price"
-                    value={maxPrice}
-                    onChange={(e) => setMaxPrice(e.target.value)}
-                  />
+            <div className="row mt-4 ml-4">
+              <div className="col-md-1">
+                <span className="btn btn-info disabled">
+                  <MdFilterAlt size={20} /> Filtros
+                </span>
+              </div>
+              <div className="col-md-6">
+                <div className="row col-md-12">
+                  <div className="col-sm-3">
+                    <label
+                      htmlFor="min-price"
+                      className="col-form-label col-form-label-sm mr-2 d-flex justify-content-end"
+                    >
+                      Precio mínimo:
+                    </label>
+                  </div>
+                  <div className="col-sm-3">
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="min-price"
+                      value={minPrice}
+                      onChange={(e) => setMinPrice(e.target.value)}
+                    />
+                  </div>
+                  <div className="col-sm-3">
+                    <label
+                      htmlFor="max-price"
+                      className="col-form-label col-form-label-sm mr-2 d-flex justify-content-end"
+                    >
+                      Precio máximo:
+                    </label>
+                  </div>
+                  <div className="col-sm-3">
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="max-price"
+                      value={maxPrice}
+                      onChange={(e) => setMaxPrice(e.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-md-5">
-              <div className="row col-md-12">
-                <div className="col-sm-1 d-flex justify-content-end">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="orderByDesc"
-                    checked={orderBy === "desc"}
-                    onChange={() =>
-                      setOrderBy(orderBy === "desc" ? "" : "desc")
-                    }
-                  />
-                </div>
-                <div className="col-sm-5">
-                  <label className="form-check-label" htmlFor="orderByDesc">
-                    Ordenar de mayor a menor
-                  </label>
-                </div>
-                <div className="col-sm-1 d-flex justify-content-end">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="orderByAsc"
-                    checked={orderBy === "asc"}
-                    onChange={() =>
-                      setOrderBy(orderBy === "asc" ? "" : "asc")
-                    }
-                  />
-                </div>
-                <div className="col-sm-5">
-                  <label className="form-check-label" htmlFor="orderByAsc">
-                    Ordenar de menor a mayor
-                  </label>
+              <div className="col-md-5">
+                <div className="row col-md-12">
+                  <div className="col-sm-1 d-flex justify-content-end">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="orderByDesc"
+                      checked={orderBy === "desc"}
+                      onChange={() =>
+                        setOrderBy(orderBy === "desc" ? "" : "desc")
+                      }
+                    />
+                  </div>
+                  <div className="col-sm-5">
+                    <label className="form-check-label" htmlFor="orderByDesc">
+                      Ordenar de mayor a menor
+                    </label>
+                  </div>
+                  <div className="col-sm-1 d-flex justify-content-end">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="orderByAsc"
+                      checked={orderBy === "asc"}
+                      onChange={() =>
+                        setOrderBy(orderBy === "asc" ? "" : "asc")
+                      }
+                    />
+                  </div>
+                  <div className="col-sm-5">
+                    <label className="form-check-label" htmlFor="orderByAsc">
+                      Ordenar de menor a mayor
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         )}
 
         <hr className="hr-primary" />
 
+        <h2 className="title-pag fw-bold text-center">
+              {(promos && promos.length > 0) && (
+                "Aprovecha las promos este " + promos[0].evento + " en los siguientes productos:"
+              )}
+            </h2>
+
         <div className="catalog">
           {filteredAndSortedProducts().length > 0 ? (
             filteredAndSortedProducts()
-              .slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage)
+              .slice(
+                (currentPage - 1) * productsPerPage,
+                currentPage * productsPerPage
+              )
               .map((product) => (
                 <Link
                   to={`/product/${product.productoId}`}
