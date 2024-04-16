@@ -38,6 +38,7 @@ import Terms from "./routes/Public/Terms";
 import AcercaDe from "./routes/Public/AcercaDe";
 import Register from "./routes/Public/Register";
 import Cookies from "./routes/Public/Cookies";
+import FAQs from "./routes/Public/FAQs";
 import NewAddress from "./routes/Public/NewAddress";
 import UserProfile from "./routes/Public/UserProfile";
 import Carrito from "./routes/Public/Carrito";
@@ -129,6 +130,7 @@ function App() {
             <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
             <Route path="/terms-cond" element={<Layout><Terms /></Layout>} />
             <Route path="/cookies" element={<Layout><Cookies /></Layout>} />
+            <Route path="/FAQs" element={<Layout><FAQs /></Layout>} />
             <Route path="/quienes-somos" element={<Layout><AcercaDe /></Layout>} />
             <Route path="/registro" element={<Layout><Register /></Layout>} />
             <Route path="/search" element={<Layout><Search /></Layout>} />

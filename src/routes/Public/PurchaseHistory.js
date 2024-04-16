@@ -170,7 +170,7 @@ const PurchaseHistory = () => {
     return (
       <main>
         <div className="d-flex ml-4 text-center">
-              <h2 className="text-center">Su ha realizado compras por el momento</h2>
+              <h2 className="text-center">No se han realizado compras por el momento</h2>
             </div>
 
             <hr className="hr-primary" />
