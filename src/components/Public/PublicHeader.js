@@ -1,7 +1,7 @@
 // PublicHeader.js
 import React, { useState, useEffect, useContext } from "react";
 import { MdSearch, MdShoppingCart, MdClose } from "react-icons/md";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import ModalComponent from "./Modal";
 import "../../styles/styles.css";
@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
 import { CartContext } from "../../context/CartContext";
+import ButtonCart from "./ButtonCart";
 import axios from "axios";
 
 function PublicHeader({ onSearch }) {
@@ -163,7 +164,10 @@ function PublicHeader({ onSearch }) {
               <DropdownMenu />
             </li>
             <li className="cinta-opciones">
-              <Link to="">Ofertas</Link>
+              <Link to="/ofertas">Ofertas</Link>
+            </li>
+            <li className="cinta-opciones">
+              <Link to="/mas-vendidos">Más vendidos</Link>
             </li>
             {!usuario ? (
               <li className="cinta-opciones">
@@ -175,7 +179,7 @@ function PublicHeader({ onSearch }) {
             ) : (
               <>
                 <li className="cinta-opciones">
-                  <Link to="/purchase-history">Historial de compras</Link>
+                  <Link to="/purchase-history">Historial de compra</Link>
                 </li>
                 <li className="cinta-opciones">
                   <Link onClick={cerrarSesion}>Cerrar sesión</Link>
@@ -189,26 +193,26 @@ function PublicHeader({ onSearch }) {
         <div className="profile">
           {!usuario ? (
             <img
-              className="logo-user"
+              className="logo-user rounded-image"
               src="/images/user.png"
               alt="Banner de Usuario"
             />
           ) : usuario && usuario.imagen !== null ? (
             <img
               src={usuario.imagen}
-              className="img-fluid mt-2"
+              className="img-fluid mt-2 rounded-image"
               alt="Chucherias & Regalos"
             />
           ) : selectedSexo === "masculino" ? (
             <img
               src="/images/user-masculino.png"
-              className="logo-user"
+              className="logo-user rounded-image"
               alt="Chucherias & Regalos"
             />
           ) : (
             <img
               src="/images/OIP (1).jpg"
-              className="logo-user"
+              className="logo-user rounded-image"
               alt="Chucherias & Regalos"
             />
           )}
@@ -233,16 +237,7 @@ function PublicHeader({ onSearch }) {
             </Link>
           )}
         </div>
-        <div className="cart">
-          <Link to="/checkup">
-            <MdShoppingCart size={40} />
-            {totalItemsEnCarrito > 0 && (
-              <span className="numero-items-carrito fw-bold">
-                {totalItemsEnCarrito}
-              </span>
-            )}
-          </Link>
-        </div>
+        <ButtonCart />
       </div>
     </header>
   );

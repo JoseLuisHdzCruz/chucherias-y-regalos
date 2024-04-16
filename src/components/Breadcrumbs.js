@@ -17,7 +17,12 @@ const aliasMapping = {
   "error-500": "Error 500",
   "forgot-password": "Recuperar Contraseña",
   "change-password": "Cambiar contraseña",
-  "forgot-passworg-secret-question": "Recuperar cuenta por pregunta secreta"
+  "forgot-passworg-secret-question": "Recuperar cuenta por pregunta secreta",
+  "mas-vendidos": "Productos más vendidos",
+  "category" : "Categoria",
+  "update-address": "Actualizar dirección",
+  "ofertas": "Productos en oferta",
+  "notifications": "Notificaciones",
 };
 
 const Breadcrumbs = () => {
@@ -25,8 +30,8 @@ const Breadcrumbs = () => {
   const pathnames = location.pathname.split("/").filter((x) => x);
 
   return (
-    <div className="cont-breadcrumbs mt-4">
-      <h5 className="fw-semibold">
+    <div className="cont-breadcrumbs row">
+      <span className="fw-semibold ml-4 text-muted">
         <Link to="/" color="gray"><MdHome size={30}/></Link>
         {pathnames.map((pathname, index) => (
           <React.Fragment key={index}>
@@ -36,7 +41,7 @@ const Breadcrumbs = () => {
             </Link>
           </React.Fragment>
         ))}
-      </h5>
+      </span>
     </div>
   );
 };

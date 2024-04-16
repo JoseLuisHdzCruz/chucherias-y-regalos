@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Field, Form } from "formik";
-import { Modal, Button } from "react-bootstrap"; // Importa el Modal de React Bootstrap
+import { Modal } from "react-bootstrap"; // Importa el Modal de React Bootstrap
 import {
   MdFilterAlt,
   MdRemove,
   MdFilterAltOff,
   MdLocalMall,
+  MdProductionQuantityLimits
 } from "react-icons/md";
 import PageTitle from "../../components/PageTitle";
 import axios from "axios";
@@ -164,6 +165,21 @@ const PurchaseHistory = () => {
       toast.error("Ha ocurrido un error al cancelar la compra.");
     }
   };
+
+  if (purchaseHistory.length === 0) {
+    return (
+      <main>
+        <div className="d-flex ml-4 text-center">
+              <h2 className="text-center">Su ha realizado compras por el momento</h2>
+            </div>
+
+            <hr className="hr-primary" />
+            <div className="text-center">
+              <MdProductionQuantityLimits size={250} color="gray" />
+            </div>
+      </main>
+    );
+  }
 
   return (
     <main>

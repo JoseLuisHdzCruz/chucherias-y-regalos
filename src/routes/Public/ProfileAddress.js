@@ -95,15 +95,16 @@ const ProfileAddress = () => {
                           <Card.Text>{domicilio.Referencias}</Card.Text>
                         </div>
                         <div className="row">
-                        <div className="d-flex justify-content-end">
-                          <Link to={`/update-address/${domicilio.DomicilioId}`}>
-                            <button className="btn-warning fw-bold">
-                              Actualizar <MdUpdate size={25} />
-                            </button>
-                          </Link>
+                          <div className="d-flex justify-content-end">
+                            <Link
+                              to={`/update-address/${domicilio.DomicilioId}`}
+                            >
+                              <button className="btn-warning fw-bold">
+                                Actualizar <MdUpdate size={25} />
+                              </button>
+                            </Link>
+                          </div>
                         </div>
-                        </div>
-                        
                       </div>
                     </Card.Body>
                   </Card>

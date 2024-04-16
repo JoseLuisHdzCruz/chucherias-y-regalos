@@ -3,28 +3,23 @@ import PageTitle from "../../components/PageTitle";
 import { Link } from "react-router-dom";
 import BootstrapCarousel from "../../components/Public/BootstrapCarousel";
 import { MdFilterAlt } from "react-icons/md";
-import { useParams } from "react-router-dom";
 
-function CategoriaProductos() {
+function MasVendidos() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 20;
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [orderBy, setOrderBy] = useState("");
-  const { id } = useParams();
 
   useEffect(() => {
-    if ( id ) {
-        fetch(`https://backend-c-r-production.up.railway.app/products/categoria/${id}`)
+        fetch("https://backend-c-r-production.up.railway.app/products/productos/mas-vendidos")
         .then((response) => response.json())
         .then((data) => setProducts(data))
         .catch((error) => console.error("Error fetching products:", error));
       setCurrentPage(1); // Resetear a la primera página cuando hay resultados de búsqueda
-    } else {
       
-    }
-  }, [id]);
+    }, []);
 
   useEffect(() => {
     // Limpiar los filtros cuando no hay término de búsqueda
@@ -77,6 +72,9 @@ function CategoriaProductos() {
       <BootstrapCarousel />
       <main>
         <PageTitle title="Chucherias & Regalos | Inicio" />
+
+        <h3 className="title-pag fw-bold text-uppercase">Productos más vendidos</h3>
+        <hr className="hr-primary" />
 
         {products && products.length > 0 && (
           <div className="advanced-search">
@@ -189,7 +187,7 @@ function CategoriaProductos() {
                         <h5>{product.nombre}</h5>
                       </div>
                       <div className="cont-price mt-4">
-                        <h3 className="fw-bold">{`$ ${product.precioFinal}`}</h3>
+                        <h3 className="fw-bold">{`$ ${product.precio}`}</h3>
                       </div>
                     </div>
                   </div>
@@ -220,4 +218,4 @@ function CategoriaProductos() {
   );
 }
 
-export default CategoriaProductos;
+export default MasVendidos;

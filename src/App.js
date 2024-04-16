@@ -27,7 +27,10 @@ import GrowthCalculator from "./routes/Public/Mate";
 //Contenido Publico
 import Home from "./routes/Public/Home";
 import CategoriaProductos from "./routes/Public/CategoriaProductos";
+import MasVendidos from "./routes/Public/MasVendifos";
+import Ofertas from "./routes/Public/Ofertas";
 import ProductDetail from "./routes/Public/ProductDetail";
+import Notifications from "./routes/Public/Notifications";
 // import ProductDetail2 from "./routes/Public/ProductDetail2";
 import PrivacyPolicy from "./routes/Public/PrivacyPolicy";
 import Terms from "./routes/Public/Terms";
@@ -120,6 +123,8 @@ function App() {
             {/* Rutas publicas */}
             <Route path="/" element={<Layout><Home /></Layout>} />
             <Route path="/category/:id" element={<Layout><CategoriaProductos /></Layout>} />
+            <Route path="/mas-vendidos" element={<Layout><MasVendidos /></Layout>} />
+            <Route path="/ofertas" element={<Layout><Ofertas /></Layout>} />
             <Route path="/product/:id" element={<Layout><ProductDetail /></Layout>} />
             <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
             <Route path="/terms-cond" element={<Layout><Terms /></Layout>} />
@@ -171,6 +176,7 @@ function App() {
         <Route path="/purchase-history" element={<GuardedLayout><PurchaseHistory /></GuardedLayout>}/>
         <Route path="/select-address" element={<GuardedLayout><SelectAddress /></GuardedLayout>}/>
         <Route path="/select-payment" element={<GuardedLayout><SelectPayment /></GuardedLayout>}/>
+        <Route path="/notifications" element={<GuardedLayout><Notifications /></GuardedLayout>}/>
 
       </Routes>
       <ToastContainer 

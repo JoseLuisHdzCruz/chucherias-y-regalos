@@ -2,7 +2,6 @@
   font-family: '';
 } */
 
-
 /*
 Sidebar
 */
@@ -11,49 +10,53 @@ Sidebar
   background-color: #7dbbdd !important;
 }
 
-.btn{
+.btn {
   width: auto !important;
 }
 
-.item-sidebar{
+.item-sidebar {
   display: flex;
   height: 60px;
   margin-left: 30px;
   align-items: center;
 }
 
-.list-unstyled li:hover{
- background-color:rgb(223 223 224);
+.list-unstyled li:hover {
+  background-color: rgb(223 223 224);
 }
 
 /*
 Sidebar end
 */
-.btn-delete{
+.btn-delete {
   background-color: red;
   border-radius: 100%;
   height: 50px;
-  width: 50px; 
+  width: 50px;
 }
 
-.selector-item{
+.selector-item {
   cursor: pointer;
+}
+
+.rounded-image{
+  border-radius: 100%;
 }
 
 .numero-items-carrito {
   position: absolute;
-    top: 80px;
-    right: 167px;
-    background-color: red;
-    border-radius: 50%;
-    color: white;
-    font-size: 12px;
-    padding: 2px 4px;
-    justify-content: center;
-    display: flex;
-    width: 20px;
-    height: 20px;
-    align-items: center;
+  top: 80px;
+  right: 167px;
+  background-color: red;
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+  padding: 2px 4px;
+  justify-content: center;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
 }
 
 /* Modal de carrito */
@@ -294,16 +297,16 @@ header nav ul {
   font-weight: lighter;
 }
 
-.text-user{
+.text-user {
   font-size: 28px;
   text-decoration: none;
 }
 
-.text-idUser{
+.text-idUser {
   font-size: 11px;
 }
 
-.text-user:hover{
+.text-user:hover {
   font-weight: bold;
   color: #000;
 }
@@ -486,7 +489,8 @@ a {
 .btn-primary,
 .btn-secondary,
 .btn-warning,
-.btn-danger {
+.btn-danger,
+.btn-info {
   justify-content: center;
   display: flex;
   align-items: center;
@@ -773,17 +777,16 @@ main {
 .search-bar-history button:hover {
   background-color: #38ccec !important;
 }
-.bg-primary-c{
-  background-color: #c543c7 ;
+.bg-primary-c {
+  background-color: #c543c7;
   align-items: center;
   color: white;
 }
 
-.bg-primary-c .modal-header{
-  
+.bg-primary-c .modal-header {
   display: flex !important;
-    justify-content: center;
-    align-items: center !important;
+  justify-content: center;
+  align-items: center !important;
 }
 .vertical-line {
   border-left: 20px solid green; /* Cambia el color y el ancho de la línea según tus necesidades */
@@ -915,7 +918,9 @@ main {
   background-color: #20b4d5;
 }
 
-.btn-primary, .cont-cant .btn-danger{
+.btn-primary,
+.cont-cant .btn-danger,
+.cont-not .btn-info {
   width: 250px;
   height: 40px;
   border-radius: 20px;
@@ -1134,7 +1139,7 @@ table {
 }
 
 .cont-breadcrumbs {
-  margin-left: 50px;
+  background-color: #f8c6f9;
 }
 
 .cont-breadcrumbs a {
