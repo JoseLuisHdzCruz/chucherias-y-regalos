@@ -33,7 +33,9 @@ const FAQs = () => {
               </p>
               <h3>¿Ofrecen descuentos?</h3>
               <p>
-                Sí, ofrecemos descuentos especiales durante fechas significativas, como lo son dias del niño, dia del amor y la amistad, navidad, entre otras.
+                Sí, ofrecemos descuentos especiales durante fechas
+                significativas, como lo son días del niño, día del amor y la
+                amistad, Navidad, entre otras.
               </p>
               <h3>¿Puedo cancelar mi pedido?</h3>
               <p>
@@ -49,6 +51,23 @@ const FAQs = () => {
                 reservamos el derecho de suspender temporalmente tu cuenta para
                 evitar abusos.
               </p>
+              {/* Nuevas preguntas frecuentes basadas en los términos y condiciones */}
+              <h3>¿Cuál es el período de garantía para los productos de Chucherias & Regalos?</h3>
+              <p>Ofrecemos una garantía de devolución de dinero de 30 días en todos nuestros productos.</p>
+              <h3>¿Cómo puedo solicitar un reembolso si no estoy satisfecho con mi compra?</h3>
+              <p>Para iniciar el proceso de devolución y obtener un reembolso, comunícate con nuestro servicio de atención al cliente.</p>
+              <h3>¿Cuánto tiempo tarda en procesarse un reembolso después de devolver un producto?</h3>
+              <p>Procesaremos tu reembolso dentro de los próximos 5 días hábiles después de recibir y aprobar el producto devuelto.</p>
+              <h3>¿Puedo cancelar mi pedido después de realizar la compra?</h3>
+              <p>Sí, puedes cancelar tu pedido dentro de las 24 horas posteriores a su realización.</p>
+              <h3>¿Cuál es la edad mínima para realizar una compra en Chucherias & Regalos?</h3>
+              <p>Debes tener al menos 18 años de edad para realizar una compra.</p>
+              <h3>¿Qué métodos de pago se aceptan en Chucherias & Regalos?</h3>
+              <p>Aceptamos pagos con tarjetas de crédito y débito, así como pagos directos en nuestra sucursal física.</p>
+              <h3>¿Cuál es el alcance de envío de Chucherias & Regalos?</h3>
+              <p>Actualmente, solo realizamos envíos dentro del municipio de Huejutla de Reyes, Hidalgo, México.</p>
+              <h3>¿Qué debo hacer si tengo alguna pregunta o inquietud sobre mi compra después de recibirla?</h3>
+              <p>Si tienes alguna pregunta o inquietud, contáctanos a través de nuestro correo electrónico de atención al cliente.</p>
             </div>
           </div>
         </div>

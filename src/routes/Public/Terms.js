@@ -301,6 +301,21 @@ const Terms = () => {
                     todas las condiciones establecidas en esta sección.
                   </li>
                 </ul>
+                <li>Cancelaciones y Reembolsos:</li>
+                <ul>
+                  <li>
+                    Si decides cancelar tu compra, el reembolso del dinero se procesará en los próximos 5 días hábiles después de haber realizado la cancelación, cable aclarar ue esto esta sujeto ciertas condiciones, por ejemplo el estado de la commpra, una vez despachada la orden no se puede cancelar la compra.
+                  </li>
+                  <li>
+                    En caso de que un usuario realice múltiples cancelaciones de compras, ya sea como comprador o morador, nos reservamos el derecho de aplicar sanciones, incluyendo el bloqueo temporal de su cuenta.
+                  </li>
+                </ul>
+                <li>Compra con Recogida en Sucursal:</li>
+                <ul>
+                  <li>
+                  Ofrecemos la opción de recoger y pagar el producto directamente en nuestra sucursal física. Este proceso debe completarse dentro de un lapso de 5 días después de la compra. Si la recogida y el pago no se realizan dentro de este período, la compra será cancelada automáticamente.
+                  </li>
+                </ul>
               </ul>
             </article>
 
