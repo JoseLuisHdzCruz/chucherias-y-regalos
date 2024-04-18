@@ -58,6 +58,8 @@ import Sidebar from "./components/Admin/Sidebar";
 import HomeAdmin from "./routes/Admin/Home";
 import Inventario from "./routes/Admin/Inventario";
 import AddProduct from "./routes/Admin/AddProduct";
+import PrecioEnvios from "./routes/Admin/PrecioEnvios";
+import NotificationAdmin from "./routes/Admin/NotificationAdmin";
 
 const GuardedLayout = ({ children }) => {
   const { token } = useAuth();
@@ -156,6 +158,8 @@ function App() {
       <Sidebar />
       <Routes>
         <Route path="/" element={<HomeAdmin title={title} />} />
+        <Route path="/precio-envios" element={<PrecioEnvios title={title} />} />
+        <Route path="/notifications" element={<NotificationAdmin title={title} />} />
         <Route path="/inventory" element={<Inventario title={title} />} />
         <Route
           path="/inventory/add-product"

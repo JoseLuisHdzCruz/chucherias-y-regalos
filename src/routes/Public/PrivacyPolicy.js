@@ -1,6 +1,5 @@
 import React from "react";
 import PageTitle from '../../components/PageTitle'
-import { MdChevronRight } from "react-icons/md";
 
 const PrivacyPolicy = () => {
   return (

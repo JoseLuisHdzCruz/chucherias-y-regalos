@@ -3,8 +3,10 @@ import { NavLink } from "react-router-dom";
 import {
   MdAttachMoney,
   MdFormatListNumbered,
-  MdShowChart,
+  MdQueryStats,
   MdPercent,
+  MdLocalShipping,
+  MdNotifications
 } from "react-icons/md";
 
 const Sidebar = () => {
@@ -43,11 +45,31 @@ const Sidebar = () => {
 
             <li className="nav-item d-flex">
               <NavLink
+                to="/admin/notifications"
+                className="nav-link"
+                activeClassName="active"
+              >
+                <MdNotifications /> Notificaciones
+              </NavLink>
+            </li>
+
+            <li className="nav-item d-flex">
+              <NavLink
+                to="/admin/precio-envios"
+                className="nav-link"
+                activeClassName="active"
+              >
+                <MdLocalShipping /> Costos de envio
+              </NavLink>
+            </li>
+
+            <li className="nav-item d-flex">
+              <NavLink
                 to="/admin/statistics"
                 className="nav-link"
                 activeClassName="active"
               >
-                <MdShowChart /> Estadisticas
+                <MdQueryStats/> Estadisticas
               </NavLink>
             </li>
 

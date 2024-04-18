@@ -141,10 +141,10 @@ const Inventario = ({ title }) => {
                         <td>{product.precio}</td>
                         <td>{product.existencia}</td>
                         <td>{product.categoriaId}</td>
-                        <td>{product.created}</td>
-                        <td>{product.modified}</td>
+                        <td>{product.createdAt}</td>
+                        <td>{product.updatedAt}</td>
                         <td className="item-center">
-                          {product.statusId === "1" ? (
+                          {product.statusId === 1 ? (
                             <i className="fas fa-check-circle text-success"></i>
                           ) : (
                             <i className="fas fa-times-circle text-danger"></i>

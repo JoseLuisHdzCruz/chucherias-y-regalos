@@ -8,7 +8,7 @@ const AdminFooter = () => {
           <b>Versión</b> 1.0 
         </div>
         <strong>
-          &copy; 2023 <a href="http://innego.net" className='link-footer'>Chucherias & Regalos</a>. | Todos los derechos
+          &copy; 2023 <a href="https://chucherias-y-regalos.vercel.app/" className='link-footer'>Chucherias & Regalos</a>. | Todos los derechos
           reservados.
         </strong>
     </footer>
