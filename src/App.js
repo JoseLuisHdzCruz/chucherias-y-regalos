@@ -159,7 +159,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomeAdmin title={title} />} />
         <Route path="/precio-envios" element={<PrecioEnvios title={title} />} />
-        <Route path="/notifications" element={<NotificationAdmin title={title} />} />
+        <Route path="/notificationsAdmin" element={<NotificationAdmin title={title} />} />
         <Route path="/inventory" element={<Inventario title={title} />} />
         <Route
           path="/inventory/add-product"

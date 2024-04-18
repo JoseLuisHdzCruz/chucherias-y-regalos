@@ -45,7 +45,7 @@ const Sidebar = () => {
 
             <li className="nav-item d-flex">
               <NavLink
-                to="/admin/notifications"
+                to="/admin/notificationsAdmin"
                 className="nav-link"
                 activeClassName="active"
               >
