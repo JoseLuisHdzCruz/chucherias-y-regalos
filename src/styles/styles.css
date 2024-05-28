@@ -6,6 +6,11 @@
 Sidebar
 */
 
+.page-item button{
+  height: 50px;
+  width: 50px;
+}
+
 .bg-info-i {
   background-color: #7dbbdd !important;
 }

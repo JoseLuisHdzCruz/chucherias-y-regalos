@@ -2,6 +2,14 @@
     width: 100%;
 }
 
+.login-page{
+    height: 100vh !important;
+}
+
+.login-box{
+    width: 600px !important;
+}
+
 .nav-item li:hover{
     width: 100%;
 }

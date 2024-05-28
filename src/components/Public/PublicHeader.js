@@ -1,6 +1,6 @@
 // PublicHeader.js
 import React, { useState, useEffect, useContext } from "react";
-import { MdSearch, MdShoppingCart, MdClose } from "react-icons/md";
+import { MdSearch, MdClose } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import ModalComponent from "./Modal";
@@ -8,7 +8,6 @@ import "../../styles/styles.css";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
-import { CartContext } from "../../context/CartContext";
 import ButtonCart from "./ButtonCart";
 import axios from "axios";
 
@@ -19,11 +18,6 @@ function PublicHeader({ onSearch }) {
   const [scrolled, setScrolled] = useState(false);
   const [verificacionRealizada, setVerificacionRealizada] = useState(false);
   const { token, logout } = useAuth();
-  const { cart } = useContext(CartContext);
-  const totalItemsEnCarrito = cart.reduce(
-    (total, item) => total + item.cantidad,
-    0
-  );
 
   const navigate = useNavigate();
 
