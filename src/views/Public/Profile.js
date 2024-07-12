@@ -62,7 +62,7 @@ const Profile = () => {
       formData.append("imagen", selectedImage); // Cambiado de "image" a "imagen" para que coincida con la clave esperada en el servidor
 
       const response = await axios.post(
-        `http://localhost:5000/users/usuario/${decodedToken.customerId}/imagen`,
+        `https://backend-c-r-production.up.railway.app/users/usuario/${decodedToken.customerId}/imagen`,
         formData
       );
 

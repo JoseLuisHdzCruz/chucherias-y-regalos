@@ -11,7 +11,7 @@ const NotificationAdmin = ({ title }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://backend-c-r-production.up.railway.app/admin/1"
+          "https://backend-c-r-production.up.railway.app/admin/notification/1"
         );
         setData(response.data); // Guardar los datos en el estado
       } catch (error) {

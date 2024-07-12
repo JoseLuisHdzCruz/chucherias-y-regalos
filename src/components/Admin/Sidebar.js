@@ -1,19 +1,21 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import {
   MdAttachMoney,
   MdFormatListNumbered,
   MdQueryStats,
   MdPercent,
   MdLocalShipping,
-  MdNotifications
+  MdNotifications,
+  MdPerson,
+  MdBlock
 } from "react-icons/md";
 
 const Sidebar = () => {
 
   return (
     <aside className="main-sidebar sidebar-dark-primary elevation-2">
-      <a href="/admin" className="brand-link">
+      <Link to="/admin/home" className="brand-link">
         <img
           src="/images/Imagen1-3n4j4J1C4-transformed (1).jpg"
           alt="Logo"
@@ -23,7 +25,7 @@ const Sidebar = () => {
         <span className="brand-text font-weight-light">
           Chucherias & Regalos
         </span>
-      </a>
+      </Link>
 
       <section className="sidebar">
         <nav className="mt-2">
@@ -40,6 +42,26 @@ const Sidebar = () => {
                 activeClassName="active"
               >
                 <MdFormatListNumbered /> Inventario
+              </NavLink>
+            </li>
+
+            <li className="nav-item d-flex">
+              <NavLink
+                to="/admin/employs"
+                className="nav-link"
+                activeClassName="active"
+              >
+                <MdPerson /> Empleados
+              </NavLink>
+            </li>
+
+            <li className="nav-item d-flex">
+              <NavLink
+                to="/admin/suspended-users"
+                className="nav-link"
+                activeClassName="active"
+              >
+                <MdBlock /> Suspencion Usuarios
               </NavLink>
             </li>
 
@@ -65,7 +87,7 @@ const Sidebar = () => {
 
             <li className="nav-item d-flex">
               <NavLink
-                to="/admin/statistics"
+                to="/admin/sales-statictics"
                 className="nav-link"
                 activeClassName="active"
               >
@@ -75,7 +97,7 @@ const Sidebar = () => {
 
             <li className="nav-item d-flex">
               <NavLink
-                to="/admin/stock"
+                to="/admin/edit-stock"
                 className="nav-link"
                 activeClassName="active"
               >
@@ -85,7 +107,7 @@ const Sidebar = () => {
 
             <li className="nav-item d-flex">
               <NavLink
-                to="/admin/price"
+                to="/admin/edit-price"
                 className="nav-link"
                 activeClassName="active"
               >
