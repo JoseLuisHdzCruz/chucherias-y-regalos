@@ -1,17 +1,21 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
-import {
+import { 
   MdAttachMoney,
-  MdFormatListNumbered,
+  MdInventory,
   MdQueryStats,
   MdPercent,
   MdLocalShipping,
   MdNotifications,
   MdPerson,
-  MdBlock
+  MdBlock,
+  MdWebhook,
+  MdSell
 } from "react-icons/md";
+import { useAdminAuth } from "../../context/AdminAuthContext";
 
 const Sidebar = () => {
+  const { admin } = useAdminAuth(); // Obtén la información del administrador desde el contexto
 
   return (
     <aside className="main-sidebar sidebar-dark-primary elevation-2">
@@ -41,19 +45,54 @@ const Sidebar = () => {
                 className="nav-link"
                 activeClassName="active"
               >
-                <MdFormatListNumbered /> Inventario
+                <MdInventory /> Inventario
               </NavLink>
             </li>
 
+            {admin?.role === "Administrador" && (
+              <>
+                <li className="nav-item d-flex">
+                  <NavLink
+                    to="/admin/webhook"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    <MdWebhook /> Nosotros
+                  </NavLink>
+                </li>
+
+                <li className="nav-item d-flex">
+                  <NavLink
+                    to="/admin/employs"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    <MdPerson /> Empleados
+                  </NavLink>
+                </li>
+
+                <li className="nav-item d-flex">
+                  <NavLink
+                    to="/admin/sales-statictics"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    <MdQueryStats /> Estadisticas
+                  </NavLink>
+                </li>
+              </>
+            )}
+
             <li className="nav-item d-flex">
               <NavLink
-                to="/admin/employs"
+                to="/admin/promociones"
                 className="nav-link"
                 activeClassName="active"
               >
-                <MdPerson /> Empleados
+                <MdSell /> Promociones
               </NavLink>
             </li>
+
 
             <li className="nav-item d-flex">
               <NavLink
@@ -82,16 +121,6 @@ const Sidebar = () => {
                 activeClassName="active"
               >
                 <MdLocalShipping /> Costos de envio
-              </NavLink>
-            </li>
-
-            <li className="nav-item d-flex">
-              <NavLink
-                to="/admin/sales-statictics"
-                className="nav-link"
-                activeClassName="active"
-              >
-                <MdQueryStats/> Estadisticas
               </NavLink>
             </li>
 

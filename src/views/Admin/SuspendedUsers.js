@@ -1,26 +1,40 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { MdFilterAlt, MdAdd } from "react-icons/md";
+import { MdFilterAlt, MdAdd, MdDeleteForever } from "react-icons/md";
 import { Form } from "react-bootstrap";
 
 const Empleados = ({ title }) => {
   const [usuarios, setUsuarios] = useState([]);
+  const [statuses, setStatuses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const employeesPerPage = 15;
 
-  useEffect(() => {
-    const fetchUsuarios = async () => {
-      try {
-        const response = await axios.get("https://backend-c-r-production.up.railway.app/users");
-        setUsuarios(response.data);
-      } catch (error) {
-        console.error("Error al obtener usuarios:", error);
-      }
-    };
+  const [filterCorreo, setFilterCorreo] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
 
+  useEffect(() => {
     fetchUsuarios();
+    fetchStatuses();
   }, []);
+
+  const fetchUsuarios = async () => {
+    try {
+      const response = await axios.get("https://backend-c-r-production.up.railway.app/users");
+      setUsuarios(response.data);
+    } catch (error) {
+      console.error("Error al obtener usuarios:", error);
+    }
+  };
+
+  const fetchStatuses = async () => {
+    try {
+      const response = await axios.get('https://backend-c-r-production.up.railway.app/products/status/getAll');
+      setStatuses(response.data);
+    } catch (error) {
+      console.error('Error fetching statuses:', error);
+    }
+  };
 
   const handleToggle = async (userId, nuevoEstado) => {
     try {
@@ -38,12 +52,28 @@ const Empleados = ({ title }) => {
     }
   };
 
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('https://backend-c-r-production.up.railway.app/users/searchAdvance', {
+        correo: filterCorreo,
+        statusId: filterStatus
+      });
+      setUsuarios(response.data);
+    } catch (error) {
+      console.error('Error searching users:', error);
+    }
+  };
+
+  const handleClearFilters = () => {
+    setFilterCorreo('');
+    setFilterStatus('');
+    fetchUsuarios();
+  };
+
   const indexOfLastEmployee = currentPage * employeesPerPage;
   const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
-  const currentEmployees = usuarios.slice(
-    indexOfFirstEmployee,
-    indexOfLastEmployee
-  );
+  const currentEmployees = usuarios.slice(indexOfFirstEmployee, indexOfLastEmployee);
 
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(usuarios.length / employeesPerPage); i++) {
@@ -83,7 +113,7 @@ const Empleados = ({ title }) => {
           </div>
           <div className="card-body">
             <div className="col-sm-12">
-              <form action="" method="POST">
+              <form onSubmit={handleSearch}>
                 <div className="form-group row">
                   <label htmlFor="filterCorreo" className="col-sm-2 col-form-label">
                     Correo:
@@ -94,24 +124,38 @@ const Empleados = ({ title }) => {
                       className="form-control"
                       id="filterCorreo"
                       name="filterCorreo"
-                      value=""
+                      placeholder="Ingrese el correo"
+                      value={filterCorreo}
+                      onChange={(e) => setFilterCorreo(e.target.value)}
                     />
                   </div>
                   <label htmlFor="filterStatus" className="col-sm-2 col-form-label">
                     Estatus:
                   </label>
                   <div className="col-sm-3">
-                    <input
-                      type="number"
+                    <select
                       className="form-control"
                       id="filterStatus"
                       name="filterStatus"
-                      value=""
-                    />
+                      value={filterStatus}
+                      onChange={(e) => setFilterStatus(e.target.value)}
+                    >
+                      <option value="">Seleccione un estatus</option>
+                      {statuses.map(status => (
+                        <option key={status.statusId} value={status.statusId}>
+                          {status.status}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="col-sm-1">
                     <button type="submit" className="btn btn-success">
                       <MdFilterAlt size={25} />
+                    </button>
+                  </div>
+                  <div className="col-sm-2">
+                    <button type="button" className="btn btn-secondary" onClick={handleClearFilters}>
+                      Limpiar <MdDeleteForever size={25}/>
                     </button>
                   </div>
                 </div>
@@ -124,27 +168,22 @@ const Empleados = ({ title }) => {
               <table className="table table-striped table-bordered table-hover table-sm">
                 <thead>
                   <tr>
-                    <th>#</th>
                     <th>Usuario</th>
-                    <th>Status</th>
-                    <th>Habilitar / Deshabilitar</th>
+                    <th className="item-center">Status</th>
+                    <th className="item-center">Habilitar / Deshabilitar</th>
                   </tr>
                 </thead>
                 <tbody>
                   {currentEmployees.length > 0 ? (
                     currentEmployees.map((usuario, index) => (
                       <tr key={usuario.id}>
-                        <td>{indexOfFirstEmployee + index + 1}</td>
+                        {/* <td>{indexOfFirstEmployee + index + 1}</td> */}
                         <td>
                             <h5>{usuario.nombre} {usuario.aPaterno} {usuario.aMaterno}</h5>
                             <span className="mb-4">{usuario.correo}</span>
                         </td>
                         <td className="item-center">
-                          {usuario.statusId === 1 ? (
-                            <i className="fas fa-check-circle text-success"></i>
-                          ) : (
-                            <i className="fas fa-times-circle text-danger"></i>
-                          )}
+                          {statuses.find(status => status.statusId === usuario.statusId)?.status || "Desconocido"}
                         </td>
                         <td className="item-center">
                           <label className="switch">

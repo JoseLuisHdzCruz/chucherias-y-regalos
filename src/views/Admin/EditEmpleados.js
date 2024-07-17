@@ -57,6 +57,7 @@ const EditEmployee = ({ title }) => {
             NumExterior,
             Referencias,
             correo,
+            statusId
         } = response.data;
         setInitialValues({
             nombre,
@@ -72,6 +73,7 @@ const EditEmployee = ({ title }) => {
             NumExterior,
             Referencias,
             correo,
+            statusId
         });
       } catch (error) {
         console.error("Error al obtener los datos del empleado:", error);
@@ -338,6 +340,31 @@ const EditEmployee = ({ title }) => {
                         />
                         <ErrorMessage
                           name="Referencias"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <div className="row">
+                      <div className="col-md-5">
+                        <label htmlFor="statusId">Estatus de producto</label>
+                        <Field
+                          as="select"
+                          id="statusId"
+                          name="statusId"
+                          className="form-select"
+                        >
+                          <option value="" disabled hidden>
+                            Seleccione la categoría
+                          </option>
+                          <option value="1">Activo</option>
+                          <option value="2">Inactivo</option>
+                          <option value="3">Suspendido</option>
+                        </Field>
+                        <ErrorMessage
+                          name="statusId"
                           component="div"
                           className="text-danger"
                         />

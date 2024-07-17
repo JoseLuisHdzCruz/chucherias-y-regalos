@@ -1,39 +1,99 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { MdFilterAlt, MdUpdate } from "react-icons/md";
-import { Form } from "react-bootstrap";
+import { MdFilterAlt, MdUpdate, MdDeleteForever } from "react-icons/md";
+import { toast } from "react-toastify";
 
 const EditStockProducts = ({ title }) => {
-    const [productos, setProductos] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 15;
-  
-    useEffect(() => {
-      const fetchProductos = async () => {
-        try {
-          const response = await axios.get("https://backend-c-r-production.up.railway.app/products");
-          setProductos(response.data);
-        } catch (error) {
-          console.error("Error al obtener productos:", error);
-        }
-      };
-  
-      fetchProductos();
-    }, []);
-  
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = productos.slice(indexOfFirstProduct, indexOfLastProduct);
-  
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(productos.length / productsPerPage); i++) {
-      pageNumbers.push(i);
+  const [productos, setProductos] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [statuses, setStatuses] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [newExistencias, setNewExistencias] = useState({});
+  const [inputValues, setInputValues] = useState({}); // Nuevo estado para los valores de los inputs
+
+  const productsPerPage = 15;
+
+  const [filterNombre, setFilterNombre] = useState("");
+  const [filterCategoria, setFilterCategoria] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const [productsResponse, categoriesResponse, statusesResponse] = await Promise.all([
+        axios.get('https://backend-c-r-production.up.railway.app/products/'),
+        axios.get('https://backend-c-r-production.up.railway.app/products/categories/getAll'),
+        axios.get('https://backend-c-r-production.up.railway.app/products/status/getAll')
+      ]);
+
+      setProductos(productsResponse.data);
+      setCategories(categoriesResponse.data);
+      setStatuses(statusesResponse.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-  
-    const handleClick = (event) => {
-      setCurrentPage(Number(event.target.id));
-    };
+  };
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('https://backend-c-r-production.up.railway.app/products/search-advance', {
+        nombre: filterNombre,
+        categoriaId: filterCategoria,
+        statusId: filterStatus
+      });
+      setProductos(response.data);
+    } catch (error) {
+      console.error('Error searching products:', error);
+    }
+  };
+
+  const handleClear = () => {
+    setFilterNombre("");
+    setFilterCategoria("");
+    setFilterStatus("");
+    fetchData();
+  };
+
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = productos.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(productos.length / productsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+  const handleClick = (event) => {
+    setCurrentPage(Number(event.target.id));
+  };
+
+  const handleInputChange = (productId, value) => {
+    setNewExistencias((prevState) => ({
+      ...prevState,
+      [productId]: value
+    }));
+  };
+
+  const handleUpdate = async (productId) => {
+    const nuevaExistencia = newExistencias[productId];
+    try {
+      await axios.put(`https://backend-c-r-production.up.railway.app/products/update/${productId}`, {
+        existencia: nuevaExistencia
+      });
+      setInputValues((prevState) => ({
+        ...prevState,
+        [productId]: ''
+      }));
+      toast.success('Stock registrado exitosamente!');
+      fetchData();
+    } catch (error) {
+      console.error('Error updating product:', error);
+    }
+  };
 
   return (
     <div className="content-wrapper">
@@ -64,7 +124,7 @@ const EditStockProducts = ({ title }) => {
           </div>
           <div className="card-body">
             <div className="col-sm-12">
-              <form action="" method="POST">
+              <form onSubmit={handleSearch}>
                 <div className="form-group row">
                   <label htmlFor="filterNombre" className="col-sm-2 col-form-label">
                     Nombre:
@@ -75,24 +135,38 @@ const EditStockProducts = ({ title }) => {
                       className="form-control"
                       id="filterNombre"
                       name="filterNombre"
-                      value=""
+                      value={filterNombre}
+                      onChange={(e) => setFilterNombre(e.target.value)}
                     />
                   </div>
                   <label htmlFor="filterCategoria" className="col-sm-2 col-form-label">
                     Categoría:
                   </label>
                   <div className="col-sm-3">
-                    <input
+                    <select
                       type="text"
                       className="form-control"
                       id="filterCategoria"
                       name="filterCategoria"
-                      value=""
-                    />
+                      value={filterCategoria}
+                      onChange={(e) => setFilterCategoria(e.target.value)}
+                    >
+                      <option value="" disabled></option>
+                      {categories.map(category => (
+                        <option key={category.categoriaId} value={category.categoriaId}>
+                          {category.categoria}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="col-sm-1">
                     <button type="submit" className="btn btn-success">
                       <MdFilterAlt size={25} />
+                    </button>
+                  </div>
+                  <div className="col-sm-2">
+                    <button type="button" className="btn btn-secondary" onClick={handleClear}>
+                      Limpiar <MdDeleteForever size={25}/>
                     </button>
                   </div>
                 </div>
@@ -115,21 +189,33 @@ const EditStockProducts = ({ title }) => {
                 <tbody>
                   {currentProducts.length > 0 ? (
                     currentProducts.map((producto, index) => (
-                      <tr key={producto.id}>
+                      <tr key={producto.productoId}>
                         <td>{indexOfFirstProduct + index + 1}</td>
                         <td>{producto.nombre}</td>
                         <td className="item-center">{producto.existencia}</td>
                         <td className="item-center">
-                            <input type="number" className="form-control"/>
+                          <input
+                            type="number"
+                            className="form-control"
+                            value={newExistencias[producto.productoId] || ''}
+                            onChange={(e) => handleInputChange(producto.productoId, e.target.value)}
+                          />
                         </td>
                         <td className="item-center">
-                            <button type="submit" className="btn btn-warning" disabled="true">Actualizar <MdUpdate size={25}/></button>
+                          <button
+                            type="button"
+                            className="btn btn-warning"
+                            onClick={() => handleUpdate(producto.productoId)}
+                            disabled={!newExistencias[producto.productoId]}
+                          >
+                            Actualizar <MdUpdate size={25} />
+                          </button>
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="4" className="text-center">
+                      <td colSpan="5" className="text-center">
                         No se encontraron productos.
                       </td>
                     </tr>
@@ -149,7 +235,7 @@ const EditStockProducts = ({ title }) => {
                     <a
                       onClick={handleClick}
                       className="page-link"
-                      id={number}
+                      productoId={number}
                       href="#"
                     >
                       {number}

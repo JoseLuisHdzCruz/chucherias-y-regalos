@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   MdEmail,
   MdCall,
@@ -11,18 +11,35 @@ import {
 import { Link } from "react-router-dom"; // Importar Link desde react-router-dom
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
+import axios from "axios";
 
 function PublicFooter() {
+  const [data, setData] = useState({
+    quienesSomos: "",
+    facebook: "",
+    correo: "",
+    telefono: ""
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("https://backend-c-r-production.up.railway.app/admin/getNosotros/1");
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <footer className="d-flex">
         <div className="column">
           <h3>¿Quiénes somos?</h3>
-          <p>
-            En Chucherías & Regalos, creamos magia para todas las edades: desde
-            juguetes que inspiran sonrisas hasta regalos y accesorios que añaden
-            elegancia a la vida de las damas. Celebra la vida con nosotros.
-          </p>
+          <p>{data.quienesSomos}</p>
         </div>
         <div className="column">
           <h3>Contacto</h3>
@@ -38,22 +55,19 @@ function PublicFooter() {
               <div className="icon-container">
                 <FontAwesomeIcon icon={faFacebook} />
               </div>
-
-              <a href="https://www.facebook.com/profile.php?id=100064085971615">
-                Chucherías y Regalos
-              </a>
+              <a href="https://www.facebook.com/profile.php?id=100064085971615">{data.facebook}</a>
             </li>
             <li>
               <div className="icon-container">
                 <MdEmail size={25} />
               </div>
-              chucheriasyregalos@gmail.com
+              {data.correo}
             </li>
             <li>
               <div className="icon-container">
                 <MdCall size={25} />
               </div>
-              771 342 4284
+              {data.telefono}
             </li>
           </ul>
         </div>

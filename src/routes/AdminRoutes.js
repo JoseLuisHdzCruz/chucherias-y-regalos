@@ -17,6 +17,9 @@ const SuspendedUsers = lazy(() => import('../views/Admin/SuspendedUsers'));
 const SalesStatistics = lazy(() => import('../views/Admin/SalesStatistics'));
 const EditPriceProducts = lazy(() => import('../views/Admin/EditPriceProducts'));
 const EditStockProducts = lazy(() => import('../views/Admin/EditStockProducts'));
+const Nosotros = lazy(() => import('../views/Admin/Nosotros'));
+const Promociones = lazy(() => import('../views/Admin/Promociones'));
+const ProductDetail = lazy(() => import('../views/Admin/ProductDetail'));
 
 const title = "Chucherías & Regalos";
 
@@ -40,10 +43,27 @@ const AdminRoutes = () => (
           } 
         />
         <Route 
+          path="/promociones" 
+          element={
+            <PrivateRoute>
+              <AdminLayout><Promociones title={title} /></AdminLayout>
+            </PrivateRoute>
+          } 
+        />
+        <Route 
           path="/precio-envios" 
           element={
             <PrivateRoute>
               <AdminLayout><PrecioEnvios title={title} /></AdminLayout>
+            </PrivateRoute>
+          } 
+        />
+
+        <Route 
+          path="/webhook" 
+          element={
+            <PrivateRoute>
+              <AdminLayout><Nosotros title={title} /></AdminLayout>
             </PrivateRoute>
           } 
         />
@@ -108,6 +128,14 @@ const AdminRoutes = () => (
           element={
             <PrivateRoute>
               <AdminLayout><EditProduct title={title} /></AdminLayout>
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/inventory/show-details/:productId" 
+          element={
+            <PrivateRoute>
+              <AdminLayout><ProductDetail title={title} /></AdminLayout>
             </PrivateRoute>
           } 
         />

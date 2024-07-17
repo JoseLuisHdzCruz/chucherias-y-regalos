@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import { MdFilterAlt, MdAdd, MdEdit } from "react-icons/md";
+import { Link } from "react-router-dom";
+import { MdFilterAlt, MdAdd, MdEdit, MdDeleteForever, MdInfo } from "react-icons/md";
 
 const Inventario = ({ title }) => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [statuses, setStatuses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 15;
+
+  const [filterNombre, setFilterNombre] = useState("");
+  const [filterCategoria, setFilterCategoria] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -14,11 +20,39 @@ const Inventario = ({ title }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://backend-c-r-production.up.railway.app/products/');
+      const [productsResponse, categoriesResponse, statusesResponse] = await Promise.all([
+        axios.get('https://backend-c-r-production.up.railway.app/products/'),
+        axios.get('https://backend-c-r-production.up.railway.app/products/categories/getAll'),
+        axios.get('https://backend-c-r-production.up.railway.app/products/status/getAll')
+      ]);
+
+      setProducts(productsResponse.data);
+      setCategories(categoriesResponse.data);
+      setStatuses(statusesResponse.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('https://backend-c-r-production.up.railway.app/products/search-advance', {
+        nombre: filterNombre,
+        categoriaId: filterCategoria,
+        statusId: filterStatus
+      });
       setProducts(response.data);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error searching products:', error);
     }
+  };
+
+  const handleClear = () => {
+    setFilterNombre("");
+    setFilterCategoria("");
+    setFilterStatus("");
+    fetchData();
   };
 
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -63,7 +97,7 @@ const Inventario = ({ title }) => {
           </div>
           <div className="card-body">
             <div className="col-sm-12">
-              <form action="" method="POST">
+              <form onSubmit={handleSearch}>
                 <div className="form-group row">
                   <label htmlFor="filterNombre" className="col-sm-2 col-form-label">
                     Nombre:
@@ -74,46 +108,63 @@ const Inventario = ({ title }) => {
                       className="form-control"
                       id="filterNombre"
                       name="filterNombre"
-                      value=""
+                      value={filterNombre}
+                      onChange={(e) => setFilterNombre(e.target.value)}
                     />
                   </div>
-                  <label
-                    htmlFor="filterTipoSangre"
-                    className="col-sm-2 col-form-label"
-                  >
+                  <label htmlFor="filterCategoria" className="col-sm-2 col-form-label">
                     Categoria:
                   </label>
                   <div className="col-sm-2">
                     <select
-                      className="form-control"
-                      id="filterTipoSangre"
-                      name="filterTipoSangre"
+                      className="form-select"
+                      id="filterCategoria"
+                      name="filterCategoria"
+                      value={filterCategoria}
+                      onChange={(e) => setFilterCategoria(e.target.value)}
                     >
-                      <option disabled selected></option>
+                      <option value="" disabled selected></option>
+                      {categories.map(category => (
+                        <option key={category.categoriaId} value={category.categoriaId}>
+                          {category.categoria}
+                        </option>
+                      ))}
                     </select>
                   </div>
-                  <label htmlFor="filterEdad" className="col-sm-1 col-form-label">
+                  <label htmlFor="filterStatus" className="col-sm-1 col-form-label">
                     Estatus:
                   </label>
                   <div className="col-sm-2">
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="filterEdad"
-                      name="filterEdad"
-                      value=""
-                    />
+                    <select
+                      className="form-select"
+                      id="filterStatus"
+                      name="filterStatus"
+                      value={filterStatus}
+                      onChange={(e) => setFilterStatus(e.target.value)}
+                    >
+                      <option value="" disabled selected></option>
+                      {statuses.map(status => (
+                        <option key={status.statusId} value={status.statusId}>
+                          {status.status}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="col-sm-1">
                     <button type="submit" className="btn btn-success">
                       <MdFilterAlt size={25} />
                     </button>
                   </div>
+                  <div className="col-sm-2">
+                    <button type="button" className="btn btn-secondary" onClick={handleClear}>
+                      Limpiar <MdDeleteForever size={25}/>
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>
 
-            <hr class="border border-primary border-3 opacity-75"/>
+            <hr className="border border-primary border-3 opacity-75"/>
 
             <p>
               <Link to="/admin/inventory/add-product" className="btn btn-primary btn-add">
@@ -122,13 +173,9 @@ const Inventario = ({ title }) => {
             </p>
 
             <div className="table-responsive">
-              <table
-                id="productsTable"
-                className="table table-striped table-bordered table-hover table-sm"
-              >
+              <table id="productsTable" className="table table-striped table-bordered table-hover table-sm">
                 <thead>
                   <tr>
-                    {/* <th></th> */}
                     <th>Nombre</th>
                     <th className="item-center">Precio</th>
                     <th className="item-center">Existencia</th>
@@ -141,11 +188,12 @@ const Inventario = ({ title }) => {
                   {currentProducts.length > 0 ? (
                     currentProducts.map((product, index) => (
                       <tr key={product.productoId}>
-                        {/* <td>{indexOfFirstProduct + index + 1}</td> */}
                         <td>{product.nombre}</td>
                         <td className="item-center">{product.precioFinal}</td>
                         <td className="item-center">{product.existencia}</td>
-                        <td className="item-center">{product.categoriaId === 1 ? "Peluches" : "otro"}</td>
+                        <td className="item-center">
+  {categories.find(category => category.categoriaId === product.categoriaId)?.categoria || "otro"}
+</td>
                         <td className="item-center">
                           {product.statusId === 1 ? (
                             <i className="fas fa-check-circle text-success"></i>
@@ -154,13 +202,22 @@ const Inventario = ({ title }) => {
                           )}
                         </td>
                         <td className="item-center">
-                          <Link
+                          
+                        <Link
                             to={`edit-product/${product.productoId}`}
                             className="btn btn-warning mr-2"
                             data-toggle="tooltip"
-                            title="Editar"
+                            title={`Modificar producto: ${product.nombre}`}
                           >
                             <MdEdit size={20} />
+                          </Link>
+                          <Link
+                            to={`show-details/${product.productoId}`}
+                            className="btn btn-info mr-2"
+                            data-toggle="tooltip"
+                            title={`Ver detalle del producto: ${product.nombre}`}
+                          >
+                            <MdInfo size={20} />
                           </Link>
                         </td>
                       </tr>
@@ -178,7 +235,7 @@ const Inventario = ({ title }) => {
           </div>
           <div className="card-footer">
             <nav>
-              <ul className="pagination justify-content-center"  style={{ marginBottom: 80 }}>
+              <ul className="pagination justify-content-center" style={{ marginBottom: 80 }}>
                 {pageNumbers.map((number) => (
                   <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
                     <a onClick={handleClick} className="page-link" id={number}>

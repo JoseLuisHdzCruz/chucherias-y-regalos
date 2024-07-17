@@ -16,7 +16,7 @@ const AdminHeader = () => {
   const cerrarSesion = async () => {
       adminLogout()
       // Realizar otras acciones (por ejemplo, mostrar un mensaje de éxito)
-      toast.error("Cierre de sesión exitoso. ¡Hasta pronto!");
+      toast.success("Cierre de sesión exitoso. ¡Hasta pronto!");
   };
 
   return (

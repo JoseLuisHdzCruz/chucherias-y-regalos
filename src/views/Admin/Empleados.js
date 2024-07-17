@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { MdFilterAlt, MdAdd, MdEdit } from "react-icons/md";
+import { MdFilterAlt, MdAdd, MdEdit, MdDeleteForever } from "react-icons/md";
 
 const Empleados = ({ title }) => {
   const [employees, setEmployees] = useState([]);
+  const [statuses, setStatuses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const employeesPerPage = 15;
 
+  const [filterCorreo, setFilterCorreo] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
+
   useEffect(() => {
     fetchData();
+    fetchStatuses();
   }, []);
 
   const fetchData = async () => {
@@ -19,6 +24,34 @@ const Empleados = ({ title }) => {
     } catch (error) {
       console.error('Error fetching employees:', error);
     }
+  };
+
+  const fetchStatuses = async () => {
+    try {
+      const response = await axios.get('https://backend-c-r-production.up.railway.app/products/status/getAll');
+      setStatuses(response.data);
+    } catch (error) {
+      console.error('Error fetching statuses:', error);
+    }
+  };
+
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('https://backend-c-r-production.up.railway.app/admin/searchEmployee', {
+        correo: filterCorreo,
+        statusId: filterStatus
+      });
+      setEmployees(response.data);
+    } catch (error) {
+      console.error('Error searching employees:', error);
+    }
+  };
+
+  const handleClearFilters = () => {
+    setFilterCorreo('');
+    setFilterStatus('');
+    fetchData();
   };
 
   const indexOfLastEmployee = currentPage * employeesPerPage;
@@ -63,7 +96,7 @@ const Empleados = ({ title }) => {
           </div>
           <div className="card-body">
             <div className="col-sm-12">
-              <form action="" method="POST">
+              <form onSubmit={handleSearch}>
                 <div className="form-group row">
                   <label htmlFor="filterCorreo" className="col-sm-2 col-form-label">
                     Correo:
@@ -74,24 +107,38 @@ const Empleados = ({ title }) => {
                       className="form-control"
                       id="filterCorreo"
                       name="filterCorreo"
-                      value=""
+                      placeholder="Ingrese el correo"
+                      value={filterCorreo}
+                      onChange={(e) => setFilterCorreo(e.target.value)}
                     />
                   </div>
                   <label htmlFor="filterStatus" className="col-sm-2 col-form-label">
                     Estatus:
                   </label>
                   <div className="col-sm-3">
-                    <input
-                      type="number"
+                    <select
                       className="form-control"
                       id="filterStatus"
                       name="filterStatus"
-                      value=""
-                    />
+                      value={filterStatus}
+                      onChange={(e) => setFilterStatus(e.target.value)}
+                    >
+                      <option value="">Seleccione un estatus</option>
+                      {statuses.map(status => (
+                        <option key={status.statusId} value={status.statusId}>
+                          {status.status}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="col-sm-1">
                     <button type="submit" className="btn btn-success">
                       <MdFilterAlt size={25} />
+                    </button>
+                  </div>
+                  <div className="col-sm-2">
+                    <button type="button" className="btn btn-secondary" onClick={handleClearFilters}>
+                      Limpiar <MdDeleteForever size={25}/>
                     </button>
                   </div>
                 </div>
@@ -113,29 +160,25 @@ const Empleados = ({ title }) => {
               >
                 <thead>
                   <tr>
-                    <th>#</th>
+                    {/* <th>#</th> */}
                     <th>Nombre</th>
                     <th>Apellido Paterno</th>
                     <th>Apellido Materno</th>
-                    <th>Status</th>
+                    <th className="item-center">Status</th>
                     <th>Correo</th>
-                    <th>Acciones</th>
+                    <th className="item-center">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   {currentEmployees.length > 0 ? (
                     currentEmployees.map((employee, index) => (
                       <tr key={employee.empleadoId}>
-                        <td>{indexOfFirstEmployee + index + 1}</td>
+                        {/* <td>{indexOfFirstEmployee + index + 1}</td> */}
                         <td>{employee.nombre}</td>
                         <td>{employee.apPaterno}</td>
                         <td>{employee.apMaterno}</td>
                         <td className="item-center">
-                          {employee.statusId === 1 ? (
-                            <i className="fas fa-check-circle text-success"></i>
-                          ) : (
-                            <i className="fas fa-times-circle text-danger"></i>
-                          )}
+                          {statuses.find(status => status.statusId === employee.statusId)?.status || "Desconocido"}
                         </td>
                         <td>{employee.correo}</td>
                         <td className="item-center">
