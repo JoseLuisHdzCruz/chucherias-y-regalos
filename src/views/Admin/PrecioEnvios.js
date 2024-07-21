@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
-import { MdUpdate } from "react-icons/md";
+import { MdUpdate, MdDeleteForever } from "react-icons/md";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Formik, Form, Field } from "formik";
@@ -27,7 +27,7 @@ const PrecioEnvios = ({ title }) => {
     };
 
     fetchColonias();
-  }, [reloadColonias]); // Se volverá a cargar cuando reloadColonias cambie
+  }, [reloadColonias]);
 
   const handleColoniaChange = (event) => {
     const selectedColoniaId = event.target.value;
@@ -46,6 +46,10 @@ const PrecioEnvios = ({ title }) => {
     setBusqueda(value.toLowerCase());
   };
 
+  const handleLimpiarBusqueda = () => {
+    setBusqueda("");
+  };
+
   const handleActualizarPrecio = async (values, { resetForm }) => {
     try {
       await axios.put(
@@ -55,8 +59,17 @@ const PrecioEnvios = ({ title }) => {
         }
       );
       toast.success("¡Precio actualizado exitosamente!");
+
+      setColonias((prevColonias) =>
+        prevColonias.map((colonia) =>
+          colonia.id === parseInt(coloniaSeleccionada)
+            ? { ...colonia, envio: values.newPrecio }
+            : colonia
+        )
+      );
+
+      setPrecioActual(values.newPrecio);
       resetForm();
-      setReloadColonias(!reloadColonias); // Se recargan las colonias
     } catch (error) {
       console.error("Error al actualizar el precio:", error);
     }
@@ -115,7 +128,7 @@ const PrecioEnvios = ({ title }) => {
                       Buscar colonia:{" "}
                     </label>
                   </div>
-                  <div className="col-md-10">
+                  <div className="col-md-8">
                     <input
                       type="text"
                       name="search"
@@ -124,6 +137,15 @@ const PrecioEnvios = ({ title }) => {
                       value={busqueda}
                       onChange={handleBusquedaChange}
                     />
+                  </div>
+                  <div className="col-md-2">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={handleLimpiarBusqueda}
+                    >
+                      Limpiar <MdDeleteForever size={25}/>
+                    </button>
                   </div>
                 </div>
                 <hr
@@ -146,7 +168,7 @@ const PrecioEnvios = ({ title }) => {
                         className="form-select"
                         onChange={handleColoniaChange}
                       >
-                        <option value="" disabled hidden selected="true">
+                        <option value="" disabled hidden selected>
                           Selecciona la colonia
                         </option>
                         {coloniasFiltradas.map((colonia) => (

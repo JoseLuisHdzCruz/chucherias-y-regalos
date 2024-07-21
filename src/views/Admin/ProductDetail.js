@@ -91,7 +91,16 @@ const ProductDetail = ({ title }) => {
                     <strong>Precio Final:</strong> ${productData.precioFinal}
                   </li>
                   <li className="list-group-item">
-                    <strong>Precio Final:</strong> ${productData.precioFinal}
+                    <p
+                      className="card-text mt-3 mb-4"
+                    >
+                      <small className="text-muted">
+                        Creado:{" "}
+                        {new Date(productData.createdAt).toLocaleDateString()} |
+                        Actualizado:{" "}
+                        {new Date(productData.updatedAt).toLocaleDateString()}
+                      </small>
+                    </p>
                   </li>
                 </ul>
               </div>
@@ -100,9 +109,7 @@ const ProductDetail = ({ title }) => {
           <div className="card-footer">
             <p className="card-text mt-3 mb-4" style={{ marginBottom: 600 }}>
               <small className="text-muted">
-                Creado: {new Date(productData.createdAt).toLocaleDateString()} |
-                Actualizado:{" "}
-                {new Date(productData.updatedAt).toLocaleDateString()}
+                Chucherias & Regalos
               </small>
             </p>
           </div>

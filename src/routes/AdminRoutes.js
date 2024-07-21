@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AdminAuthProvider, useAdminAuth } from '../context/AdminAuthContext';
 import AdminLayout from '../layout/AdminLayout';
+import LoadingSpinner from '../components/Admin/LoadingSpinner';
 
 const AdminLogin = lazy(() => import('../components/Admin/AdminLogin'));
 const HomeAdmin = lazy(() => import('../views/Admin/Home'));
@@ -21,6 +22,10 @@ const Nosotros = lazy(() => import('../views/Admin/Nosotros'));
 const Promociones = lazy(() => import('../views/Admin/Promociones'));
 const ProductDetail = lazy(() => import('../views/Admin/ProductDetail'));
 
+const AdminForgotPassword = lazy(() => import('../components/Admin/AdminForgotPassword'));
+const AdminKeyVerifly = lazy(() => import('../components/Admin/AdminKeyVerifly'));
+const AdminChangePassword = lazy(() => import('../components/Admin/AdminChangePassword'));
+
 const title = "Chucherías & Regalos";
 
 // Componente para proteger las rutas administrativas
@@ -31,9 +36,12 @@ const PrivateRoute = ({ children }) => {
 
 const AdminRoutes = () => (
   <AdminAuthProvider>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingSpinner />}>
       <Routes>
         <Route path="/" element={<AdminLogin />} />
+        <Route path="/forgot-password/:role" element={<AdminForgotPassword />} />
+        <Route path="/keyVerifly/:role/:correo" element={<AdminKeyVerifly />} />
+        <Route path="changePassword/:role/:correo" element={<AdminChangePassword />} />
         <Route 
           path="/home" 
           element={

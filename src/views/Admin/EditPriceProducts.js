@@ -180,7 +180,7 @@ const EditPriceProducts = ({ title }) => {
               <table className="table table-striped table-bordered table-hover table-sm">
                 <thead>
                   <tr>
-                    <th>#</th>
+                    {/* <th>#</th> */}
                     <th className="col-producto">Producto</th>
                     <th className="item-center">Precio</th>
                     <th className="item-center">IVA (16%)</th>
@@ -193,7 +193,7 @@ const EditPriceProducts = ({ title }) => {
                   {currentProducts.length > 0 ? (
                     currentProducts.map((producto, index) => (
                       <tr key={producto.productoId}>
-                        <td>{indexOfFirstProduct + index + 1}</td>
+                        {/* <td>{indexOfFirstProduct + index + 1}</td> */}
                         <td>{producto.nombre}</td>
                         <td className="item-center">{producto.precio}</td>
                         <td className="item-center">{(producto.precio * 0.16).toFixed(2)}</td>

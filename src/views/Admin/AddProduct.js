@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -16,6 +16,7 @@ const validationSchema = Yup.object().shape({
 
 const AddProduct = ({ title }) => {
   const navigate = useNavigate();
+  const [previewImage, setPreviewImage] = useState(null);
   const initialValues = {
     nombre: '',
     categoriaId: '',
@@ -27,8 +28,22 @@ const AddProduct = ({ title }) => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      console.log(values)
-      const response = await axios.post('https://backend-c-r-production.up.railway.app/products/add', values);
+      console.log("Values:", values);
+      const formData = new FormData();
+      formData.append("nombre", values.nombre);
+      formData.append("categoriaId", values.categoriaId);
+      formData.append("descripcion", values.descripcion);
+      formData.append("precio", values.precio);
+      formData.append("existencia", values.existencia);
+      formData.append("imagen", values.imagen);
+
+      console.log("FormData:", formData);
+
+      const response = await axios.post('http://localhost:5000/products/add', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       console.log(response.data);
       toast.success('¡Producto registrado exitosamente!');
       setTimeout(() => {
@@ -86,13 +101,13 @@ const AddProduct = ({ title }) => {
           <div className="card-body">
             <div className="text-center mb-4">
               <img
-                src="/images/Icono-producto.png"
+                src={previewImage || "/images/Icono-producto.png"}
                 alt="Producto"
                 className="img-fluid rounded-circle"
                 style={{ width: "150px", height: "150px", objectFit: "cover" }}
               />
             </div>
-            <hr class="border border-primary border-3 opacity-75"/>
+            <hr className="border border-primary border-3 opacity-75" />
 
             <Formik
               initialValues={initialValues}
@@ -112,22 +127,22 @@ const AddProduct = ({ title }) => {
                     <ErrorMessage name="descripcion" component="div" className="text-danger" />
                   </div>
                   <div className="form-group">
-                    <div className='row'>
-                      <div className='col-md-4'>
+                    <div className="row">
+                      <div className="col-md-4">
                         <label htmlFor="precio">Precio</label>
                         <Field type="number" id="precio" name="precio" className="form-control" />
                         <ErrorMessage name="precio" component="div" className="text-danger" />
                       </div>
-                      <div className='col-md-3'>
-                        <label htmlFor="existencia">existencia</label>
+                      <div className="col-md-3">
+                        <label htmlFor="existencia">Existencia</label>
                         <Field type="number" id="existencia" name="existencia" className="form-control" />
                         <ErrorMessage name="existencia" component="div" className="text-danger" />
                       </div>
-                      <div className='col-md-5'>
+                      <div className="col-md-5">
                         <label htmlFor="categoriaId">Categoría</label>
                         <Field as="select" id="categoriaId" name="categoriaId" className="form-select">
                           <option value="" disabled hidden>
-                            Seleccione la categoria
+                            Seleccione la categoría
                           </option>
                           <option value="1">Peluches</option>
                           <option value="2">Muñecos</option>
@@ -135,11 +150,9 @@ const AddProduct = ({ title }) => {
                           <option value="4">Juguetes electrónicos</option>
                           <option value="5">Balones / Pelotas</option>
                         </Field>
-
                         <ErrorMessage name="categoriaId" component="div" className="text-danger" />
                       </div>
                     </div>
-                    
                   </div>
                   <div className="form-group">
                     <label htmlFor="imagen">Imagen del producto</label>
@@ -148,14 +161,26 @@ const AddProduct = ({ title }) => {
                       name="imagen"
                       type="file"
                       className="form-control"
+                      accept="image/*"
                       onChange={(event) => {
-                        setFieldValue("imagen", event.currentTarget.files[0]);
+                        const file = event.currentTarget.files[0];
+                        setFieldValue("imagen", file);
+
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          setPreviewImage(reader.result);
+                        };
+                        if (file) {
+                          reader.readAsDataURL(file);
+                        } else {
+                          setPreviewImage(null);
+                        }
                       }}
                     />
                     <ErrorMessage name="imagen" component="div" className="text-danger" />
                   </div>
-                  <div class="d-flex justify-content-end">
-                    <button type="submit" className="btn btn-primary ml-3 " disabled={isSubmitting} style={{marginBottom: 80}}>
+                  <div className="d-flex justify-content-end">
+                    <button type="submit" className="btn btn-primary ml-3" disabled={isSubmitting} style={{ marginBottom: 80 }}>
                       {isSubmitting ? 'Registrando...' : 'Registrar'} <MdAddCircle size={25} />
                     </button>
                     <ErrorMessage name="submit" component="div" className="text-danger" />

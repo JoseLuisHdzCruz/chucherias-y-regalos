@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { MdFilterAlt, MdAdd, MdDeleteForever } from "react-icons/md";
-import { Form } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { MdFilterAlt, MdDeleteForever } from "react-icons/md";
 
 const Empleados = ({ title }) => {
   const [usuarios, setUsuarios] = useState([]);
@@ -36,18 +35,23 @@ const Empleados = ({ title }) => {
     }
   };
 
-  const handleToggle = async (userId, nuevoEstado) => {
+  const handleToggle = async (userId, habilitado) => {
     try {
-      await axios.put(`https://backend-c-r-production.up.railway.app/usuarios/${userId}`, {
-        habilitado: nuevoEstado,
+      const nuevoEstado = habilitado ? 1 : 2;
+      await axios.put(`http://localhost:5000/admin/status/${userId}`, {
+        statusId: nuevoEstado,
       });
 
       setUsuarios((prevUsuarios) =>
         prevUsuarios.map((usuario) =>
-          usuario.id === userId ? { ...usuario, habilitado: nuevoEstado } : usuario
+          usuario.id === userId ? { ...usuario, statusId: nuevoEstado } : usuario
         )
       );
+      fetchUsuarios();
+      toast.success("Status del usuario actualizado correctamente")
+
     } catch (error) {
+      toast.error("Error al actualizar el status del usuario")
       console.error("Error al actualizar usuario:", error);
     }
   };
@@ -59,6 +63,7 @@ const Empleados = ({ title }) => {
         correo: filterCorreo,
         statusId: filterStatus
       });
+      console.log(response.data)
       setUsuarios(response.data);
     } catch (error) {
       console.error('Error searching users:', error);
@@ -177,10 +182,9 @@ const Empleados = ({ title }) => {
                   {currentEmployees.length > 0 ? (
                     currentEmployees.map((usuario, index) => (
                       <tr key={usuario.id}>
-                        {/* <td>{indexOfFirstEmployee + index + 1}</td> */}
                         <td>
-                            <h5>{usuario.nombre} {usuario.aPaterno} {usuario.aMaterno}</h5>
-                            <span className="mb-4">{usuario.correo}</span>
+                          <h5>{usuario.nombre} {usuario.aPaterno} {usuario.aMaterno}</h5>
+                          <span className="mb-4">{usuario.correo}</span>
                         </td>
                         <td className="item-center">
                           {statuses.find(status => status.statusId === usuario.statusId)?.status || "Desconocido"}
@@ -191,7 +195,7 @@ const Empleados = ({ title }) => {
                               type="checkbox"
                               checked={usuario.statusId === 1}
                               onChange={(e) =>
-                                handleToggle(usuario.id, e.target.checked)
+                                handleToggle(usuario.customerId, e.target.checked)
                               }
                             />
                             <span className="slider round"></span>

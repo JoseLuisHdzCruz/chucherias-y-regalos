@@ -22,6 +22,7 @@ const validationSchema = Yup.object().shape({
 
 const EditProduct = ({ title }) => {
   const navigate = useNavigate();
+  const [previewImage, setPreviewImage] = useState(null);
   const [initialValues, setInitialValues] = useState({
     nombre: "",
     categoriaId: "",
@@ -71,11 +72,28 @@ const EditProduct = ({ title }) => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const response = await axios.put(
-        `https://backend-c-r-production.up.railway.app/products/${productId}`,
-        values
-      );
-      console.log(response.data);
+      console.log("Values:", values);
+      // Crear un objeto FormData
+      const formData = new FormData();
+      formData.append("nombre", values.nombre);
+      formData.append("categoriaId", values.categoriaId);
+      formData.append("descripcion", values.descripcion);
+      formData.append("precio", values.precio);
+      formData.append("existencia", values.existencia);
+      formData.append("statusId", values.statusId);
+
+      // Agregar la imagen si está presente
+      if (values.imagen) {
+        formData.append("imagen", values.imagen, values.imagen.name);
+      }
+
+      console.log("FormData:", formData);
+
+      await axios.put(`http://localhost:5000/products/${productId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       toast.success("¡Producto actualizado exitosamente!");
       setTimeout(() => {
         navigate("/admin/inventory"); // Redirige al panel de administración
@@ -140,7 +158,7 @@ const EditProduct = ({ title }) => {
                 style={{ width: "150px", height: "150px", objectFit: "cover" }}
               />
             </div>
-            <hr class="border border-primary border-3 opacity-75" />
+            <hr className="border border-primary border-3 opacity-75" />
             <Formik
               enableReinitialize // Permite reinicializar Formik cuando initialValues cambia
               initialValues={initialValues}
@@ -243,7 +261,7 @@ const EditProduct = ({ title }) => {
                           className="form-select"
                         >
                           <option value="" disabled hidden>
-                            Seleccione la categoría
+                            Seleccione el estatus
                           </option>
                           <option value="1">Activo</option>
                           <option value="2">Inactivo</option>
@@ -258,23 +276,54 @@ const EditProduct = ({ title }) => {
                     </div>
                   </div>
                   <div className="form-group">
-                    <label htmlFor="imagen">Imagen del producto</label>
-                    <input
-                      id="imagen"
-                      name="imagen"
-                      type="file"
-                      className="form-control"
-                      onChange={(event) => {
-                        setFieldValue("imagen", event.currentTarget.files[0]);
-                      }}
-                    />
-                    <ErrorMessage
-                      name="imagen"
-                      component="div"
-                      className="text-danger"
-                    />
+                    <div className="row">
+                      <div className="col-md-7">
+                        <label htmlFor="imagen">Imagen del producto</label>
+                        <input
+                          id="imagen"
+                          name="imagen"
+                          type="file"
+                          className="form-control"
+                          accept="image/*"
+                          onChange={(event) => {
+                            const file = event.currentTarget.files[0];
+                            setFieldValue("imagen", file);
+
+                            // Crear una URL de objeto para la vista previa
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              setPreviewImage(reader.result);
+                            };
+                            if (file) {
+                              reader.readAsDataURL(file);
+                            } else {
+                              setPreviewImage(null);
+                            }
+                          }}
+                        />
+                        <ErrorMessage
+                          name="imagen"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="col-md-5 item-center">
+                        {previewImage && (
+                          <img
+                            src={previewImage}
+                            alt="Vista previa"
+                            className="img-fluid shadow"
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              objectFit: "cover",
+                            }}
+                          />
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div class="d-flex justify-content-end">
+                  <div className="d-flex justify-content-end">
                     <button
                       type="submit"
                       className="btn btn-warning ml-3"

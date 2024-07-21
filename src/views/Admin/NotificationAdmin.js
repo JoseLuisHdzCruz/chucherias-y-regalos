@@ -76,9 +76,15 @@ const NotificationAdmin = ({ title }) => {
                       />
                     </div>
                     <div className="col-md-8 mt-4 ml-4">
+                      <div className="d-flex justify-content-between mx-2">
                       <Card.Text>
-                        <strong>Fecha:</strong> {item.fecha}
+                      <strong>Fecha:</strong> {new Date(item.fecha).toLocaleDateString()} 
                       </Card.Text>
+                      <Card.Text>
+                      <strong>Hora:</strong>  {new Date(item.fecha).toLocaleTimeString()}
+                      </Card.Text>
+                      </div>
+                      
                       <Card.Text>{item.descripcion}</Card.Text>
                     </div>
                     {item.estado === "No leído" && (

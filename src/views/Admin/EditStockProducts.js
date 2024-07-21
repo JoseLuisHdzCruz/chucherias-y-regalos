@@ -9,7 +9,6 @@ const EditStockProducts = ({ title }) => {
   const [statuses, setStatuses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [newExistencias, setNewExistencias] = useState({});
-  const [inputValues, setInputValues] = useState({}); // Nuevo estado para los valores de los inputs
 
   const productsPerPage = 15;
 
@@ -84,7 +83,7 @@ const EditStockProducts = ({ title }) => {
       await axios.put(`https://backend-c-r-production.up.railway.app/products/update/${productId}`, {
         existencia: nuevaExistencia
       });
-      setInputValues((prevState) => ({
+      setNewExistencias((prevState) => ({
         ...prevState,
         [productId]: ''
       }));
@@ -92,6 +91,7 @@ const EditStockProducts = ({ title }) => {
       fetchData();
     } catch (error) {
       console.error('Error updating product:', error);
+      toast.error('Error al registrar el stock.');
     }
   };
 
@@ -179,7 +179,7 @@ const EditStockProducts = ({ title }) => {
               <table className="table table-striped table-bordered table-hover table-sm">
                 <thead>
                   <tr>
-                    <th>#</th>
+                    {/* <th>#</th> */}
                     <th className="col-producto-existencia">Producto</th>
                     <th className="item-center">Existencia</th>
                     <th className="item-center">Nueva existencia</th>
@@ -190,7 +190,7 @@ const EditStockProducts = ({ title }) => {
                   {currentProducts.length > 0 ? (
                     currentProducts.map((producto, index) => (
                       <tr key={producto.productoId}>
-                        <td>{indexOfFirstProduct + index + 1}</td>
+                        {/* <td>{indexOfFirstProduct + index + 1}</td> */}
                         <td>{producto.nombre}</td>
                         <td className="item-center">{producto.existencia}</td>
                         <td className="item-center">

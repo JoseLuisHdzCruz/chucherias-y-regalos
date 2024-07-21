@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useAdminAuth } from "../../context/AdminAuthContext";
+import { useEmployAuth } from "../../context/EmployAuthContext";
 import { toast } from "react-toastify";
 
 const LoginSchema = Yup.object().shape({
@@ -11,10 +11,10 @@ const LoginSchema = Yup.object().shape({
   contraseña: Yup.string().required("Contraseña es obligatoria"),
 });
 
-const Login = () => {
-  const { setAdminAuthToken } = useAdminAuth();
+const EmployLogin = () => {
+  const { setEmployAuthToken } = useEmployAuth();
   const navigate = useNavigate();
-  const role = "Administrador"
+  const role = "Empleado"
 
   const handleSubmit = (values, { setSubmitting, setErrors }) => {
     const loginData = {
@@ -25,10 +25,10 @@ const Login = () => {
       .post("https://backend-c-r-production.up.railway.app/admin/login", loginData)
       .then((response) => {
         const { token } = response.data;
-        setAdminAuthToken(token);
+        setEmployAuthToken(token);
         toast.success("Inicio de sesion exitoso")
         setTimeout(() => {
-          navigate("/admin/home"); // Redirige al panel de administración
+          navigate("/employ/home"); // Redirige al panel de administración
         }, 2800);
       })
       .catch((error) => {
@@ -119,7 +119,7 @@ const Login = () => {
 
                   <div className="row mt-4">
                     <div className="col-9">
-                      <Link to={`/admin/forgot-password/${role}`}>Olvidé mi contraseña</Link>
+                      <Link to={`/employ/forgot-password/${role}`}>Olvidé mi contraseña</Link>
                     </div>
                     <div className="col-3 d-flex justify-content-end">
                       <button
@@ -143,4 +143,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default EmployLogin;
