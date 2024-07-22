@@ -340,7 +340,7 @@ const PurchaseHistory = () => {
                           <span>Total: ${purchase.total}</span>
                           <div className="cont-options">
                             <span className="text-muted">
-                              Comprado el <strong>{purchase.fecha}</strong>
+                              Comprado el <strong>{new Date(purchase.fecha).toLocaleDateString()}</strong>
                             </span>
                           </div>
                         </div>

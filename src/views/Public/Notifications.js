@@ -98,9 +98,16 @@ const Notifications = () => {
                           />
                         </div>
                         <div className="col-md-8 mt-4 ml-4">
+                        <div className="d-flex justify-content-between mx-2">
                           <Card.Text>
-                            <strong>Fecha:</strong> {notification.fecha}
+                            <strong>Fecha:</strong>{" "}
+                            {new Date(notification.fecha).toLocaleDateString()}
                           </Card.Text>
+                          <Card.Text>
+                            <strong>Hora:</strong>{" "}
+                            {new Date(notification.fecha).toLocaleTimeString()}
+                          </Card.Text>
+                        </div>
                           <Card.Text>{notification.descripcion}</Card.Text>
                         </div>
                         {notification.estado === "No leído" && (

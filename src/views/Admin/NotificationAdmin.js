@@ -27,8 +27,7 @@ const NotificationAdmin = ({ title }) => {
       .put(
         `https://backend-c-r-production.up.railway.app/users/notificaciones/${notificationId}`
       )
-      .then((response) => {
-      })
+      .then((response) => {})
       .catch((error) => console.error(error));
   };
 
@@ -58,56 +57,53 @@ const NotificationAdmin = ({ title }) => {
         <div className="container-fluid">
           <div className="row">
             {data.map((item) => (
-              <div
-              key={item.notificationId}
-              className="col-md-12 mb-4"
-            >
-              <Card className="custom-card">
-                <Card.Header as="h5" className="card-header bg-info-i">
-                  {item.evento}
-                </Card.Header>
-                <Card.Body>
-                  <div className="row col-md-12">
-                    <div className="col-md-3 text-center">
-                      <img
-                        src="/images/email-mensaje.jpg"
-                        alt="Recuperar contraseña"
-                        className="img-fluid mt-4"
-                      />
-                    </div>
-                    <div className="col-md-8 mt-4 ml-4">
-                      <div className="d-flex justify-content-between mx-2">
-                      <Card.Text>
-                      <strong>Fecha:</strong> {new Date(item.fecha).toLocaleDateString()} 
-                      </Card.Text>
-                      <Card.Text>
-                      <strong>Hora:</strong>  {new Date(item.fecha).toLocaleTimeString()}
-                      </Card.Text>
+              <div key={item.notificationId} className="col-md-12 mb-4">
+                <Card className="custom-card">
+                  <Card.Header as="h5" className="card-header bg-info-i">
+                    {item.evento}
+                  </Card.Header>
+                  <Card.Body>
+                    <div className="row col-md-12">
+                      <div className="col-md-3 text-center">
+                        <img
+                          src="/images/email-mensaje.jpg"
+                          alt="Recuperar contraseña"
+                          className="img-fluid mt-4"
+                        />
                       </div>
-                      
-                      <Card.Text>{item.descripcion}</Card.Text>
-                    </div>
-                    {item.estado === "No leído" && (
-                      <div className="row">
-                        <div className="d-flex justify-content-end cont-not">
-                          <button
-                            className="btn-info fw-bold"
-                            onClick={() =>
-                              markNotificationAsRead(
-                                item.notificationId
-                              )
-                            }
-                          >
-                            Marcar como leido{" "}
-                            <MdDrafts className="ml-4" size={25} />
-                          </button>
+                      <div className="col-md-8 mt-4 ml-4">
+                        <div className="d-flex justify-content-between mx-2">
+                          <Card.Text>
+                            <strong>Fecha:</strong>{" "}
+                            {new Date(item.fecha).toLocaleDateString()}
+                          </Card.Text>
+                          <Card.Text>
+                            <strong>Hora:</strong>{" "}
+                            {new Date(item.fecha).toLocaleTimeString()}
+                          </Card.Text>
                         </div>
+
+                        <Card.Text>{item.descripcion}</Card.Text>
                       </div>
-                    )}
-                  </div>
-                </Card.Body>
-              </Card>
-            </div>
+                      {item.estado === "No leído" && (
+                        <div className="row">
+                          <div className="d-flex justify-content-end cont-not">
+                            <button
+                              className="btn-info fw-bold"
+                              onClick={() =>
+                                markNotificationAsRead(item.notificationId)
+                              }
+                            >
+                              Marcar como leido{" "}
+                              <MdDrafts className="ml-4" size={25} />
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </Card.Body>
+                </Card>
+              </div>
             ))}
           </div>
         </div>

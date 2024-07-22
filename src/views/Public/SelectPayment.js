@@ -134,6 +134,8 @@ const SelectPayment = () => {
 
   const handleStripeCheckout = async () => {
     try {
+      const customerId = decodedToken.customerId;
+
       const items = venta.productos.map((item) => ({
         title: item.producto,
         quantity: item.cantidad,
@@ -150,11 +152,15 @@ const SelectPayment = () => {
         };
       }
   
-      const response = await axios.post('https://backend-c-r-production.up.railway.app/ventas/create-checkout-session', {
+      const response = await axios.post('http://localhost:5000/ventas/create-checkout-session', {
         items,
         shipping,
-        venta
+        venta, 
+        customerId,
+        metodoPagoId: 4
       });
+
+      console.log(venta)
   
       const { id } = response.data;
       const stripe = window.Stripe('pk_test_51Pf8IA2NI1ZNadeOLivsZnTK9wtGno4CEo8viraLEc0NBdl9CFbhubTvVVuo7gpznAfJt6mqR10IhaeVQQNutEQ500WkPoYuht');
