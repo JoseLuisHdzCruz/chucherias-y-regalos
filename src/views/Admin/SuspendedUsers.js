@@ -38,7 +38,7 @@ const Empleados = ({ title }) => {
   const handleToggle = async (userId, habilitado) => {
     try {
       const nuevoEstado = habilitado ? 1 : 2;
-      await axios.put(`http://localhost:5000/admin/status/${userId}`, {
+      await axios.put(`https://backend-c-r-production.up.railway.app/admin/status/${userId}`, {
         statusId: nuevoEstado,
       });
 

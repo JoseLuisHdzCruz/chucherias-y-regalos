@@ -122,8 +122,7 @@ function PublicFooter() {
           <b>Versión</b> 1.0
         </div>
         <strong>
-          &copy; 2023 <Link to="/">Chucherias & Regalos</Link>. | Todos los
-          derechos reservados.
+          &copy; 2023 <Link to="/">Chucherias & Regalos</Link>. | Sitio elaborado con fines educativos.
         </strong>
       </div>
     </>

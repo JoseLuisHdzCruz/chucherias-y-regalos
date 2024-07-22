@@ -89,7 +89,7 @@ const EditProduct = ({ title }) => {
 
       console.log("FormData:", formData);
 
-      await axios.put(`http://localhost:5000/products/${productId}`, formData, {
+      await axios.put(`https://backend-c-r-production.up.railway.app/products/${productId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

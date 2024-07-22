@@ -86,7 +86,7 @@ const Promociones = ({ title }) => {
   const handleAddSave = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/admin/createPromociones",
+        "https://backend-c-r-production.up.railway.app/admin/createPromociones",
         newPromocion
       );
       fetchPromociones();

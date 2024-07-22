@@ -19,7 +19,7 @@ const SalesStatistics = ({ title }) => {
   const fetchMonthlySales = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/ventas/",
+        "https://backend-c-r-production.up.railway.app/ventas/",
         {
           params: {
             startDate,
@@ -36,7 +36,7 @@ const SalesStatistics = ({ title }) => {
   const fetchProductDetails = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/ventas/getAllDetailSale"
+        "https://backend-c-r-production.up.railway.app/ventas/getAllDetailSale"
       );
       const productDetails = response.data;
 

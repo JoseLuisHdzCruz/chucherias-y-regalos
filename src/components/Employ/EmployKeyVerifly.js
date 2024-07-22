@@ -45,7 +45,7 @@ const AdminKeyVerifly = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/admin/keyCompare",
+        "https://backend-c-r-production.up.railway.app/admin/keyCompare",
         {
           correo: correo,
           clave: clave,
@@ -92,7 +92,7 @@ const AdminKeyVerifly = () => {
       setIsResending(true);
 
       await axios.post(
-        "http://localhost:5000/admin/forgotPassword",
+        "https://backend-c-r-production.up.railway.app/admin/forgotPassword",
         {
           correo,
           role

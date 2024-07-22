@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import LoadingSpinner from '../components/Admin/LoadingSpinner';
 
 import PublicLayout from '../layout/PublicLayout';
 import NotFound from '../components/Public/NotFound';
@@ -18,6 +19,7 @@ const Carrito = lazy(() => import('../views/Public/Carrito'));
 const PurchaseHistory = lazy(() => import('../views/Public/PurchaseHistory'));
 const SelectAddress = lazy(() => import('../views/Public/SelectAddress'));
 const SelectPayment = lazy(() => import('../views/Public/SelectPayment'));
+const StripPayment = lazy(() => import('../views/Public/StripPayment'));
 const Notifications = lazy(() => import('../views/Public/Notifications'));
 
 const Home = lazy(() => import('../views/Public/Home'));
@@ -35,7 +37,7 @@ const Search = lazy(() => import('../views/Public/Search'));
 const GrowthCalculator = lazy(() => import('../views/Public/Mate'));
 
 const PublicRoutes = () => (
-  <Suspense fallback={<div>Loading...</div>}>
+  <Suspense fallback={<LoadingSpinner />}>
     <Routes>
       <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
       <Route path="/category/:id" element={<PublicLayout><CategoriaProductos /></PublicLayout>} />
@@ -67,6 +69,7 @@ const PublicRoutes = () => (
       <Route path="/purchase-history" element={<GuardedLayout><PurchaseHistory /></GuardedLayout>} />
       <Route path="/select-address" element={<GuardedLayout><SelectAddress /></GuardedLayout>} />
       <Route path="/select-payment" element={<GuardedLayout><SelectPayment /></GuardedLayout>} />
+      <Route path="/strip-payment" element={<GuardedLayout><StripPayment /></GuardedLayout>} />
       <Route path="/notifications" element={<GuardedLayout><Notifications /></GuardedLayout>} />
     </Routes>
   </Suspense>
