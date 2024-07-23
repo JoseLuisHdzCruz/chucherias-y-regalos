@@ -8,7 +8,7 @@ import {
   MdNotifications,
   MdBlock,
   MdSell,
-  MdQueryStats
+  MdPointOfSale
 } from "react-icons/md";
 
 const EmploySidebar = () => {
@@ -61,7 +61,7 @@ const EmploySidebar = () => {
                     className="nav-link"
                     activeClassName="active"
                   >
-                    <MdQueryStats /> Gestion Ventas
+                    <MdPointOfSale /> Gestion Ventas
                   </NavLink>
                 </li>
 

@@ -10,7 +10,8 @@ import {
   MdPerson,
   MdBlock,
   MdWebhook,
-  MdSell
+  MdSell,
+  MdPointOfSale
 } from "react-icons/md";
 import { useAdminAuth } from "../../context/AdminAuthContext";
 
@@ -77,7 +78,7 @@ const Sidebar = () => {
                     className="nav-link"
                     activeClassName="active"
                   >
-                    <MdQueryStats /> Gestion Ventas
+                    <MdPointOfSale /> Gestion Ventas
                   </NavLink>
                 </li>
 
