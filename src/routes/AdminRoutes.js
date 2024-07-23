@@ -21,6 +21,7 @@ const EditStockProducts = lazy(() => import('../views/Admin/EditStockProducts'))
 const Nosotros = lazy(() => import('../views/Admin/Nosotros'));
 const Promociones = lazy(() => import('../views/Admin/Promociones'));
 const ProductDetail = lazy(() => import('../views/Admin/ProductDetail'));
+const GestionVenta = lazy(() => import('../views/Admin/GestionVenta'));
 
 const AdminForgotPassword = lazy(() => import('../components/Admin/AdminForgotPassword'));
 const AdminKeyVerifly = lazy(() => import('../components/Admin/AdminKeyVerifly'));
@@ -55,6 +56,14 @@ const AdminRoutes = () => (
           element={
             <PrivateRoute>
               <AdminLayout><Promociones title={title} /></AdminLayout>
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/gestionSale" 
+          element={
+            <PrivateRoute>
+              <AdminLayout><GestionVenta title={title} /></AdminLayout>
             </PrivateRoute>
           } 
         />

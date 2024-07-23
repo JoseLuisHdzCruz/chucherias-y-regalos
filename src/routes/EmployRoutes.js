@@ -16,6 +16,9 @@ const EditPriceProducts = lazy(() => import('../views/Admin/EditPriceProducts'))
 const EditStockProducts = lazy(() => import('../views/Admin/EditStockProducts'));
 const Promociones = lazy(() => import('../views/Admin/Promociones'));
 const ProductDetail = lazy(() => import('../views/Admin/ProductDetail'));
+const GestionVenta = lazy(() => import('../views/Admin/GestionVenta'));
+
+
 
 const EmployForgotPassword = lazy(() => import('../components/Employ/EmployForgotPassword'));
 const EmployKeyVerifly = lazy(() => import('../components/Employ/EmployKeyVerifly'));
@@ -50,6 +53,14 @@ const EmployRoutes = () => (
           element={
             <PrivateRoute>
               <EmployLayout><Promociones title={title} /></EmployLayout>
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/gestionSale" 
+          element={
+            <PrivateRoute>
+              <EmployLayout><GestionVenta title={title} /></EmployLayout>
             </PrivateRoute>
           } 
         />

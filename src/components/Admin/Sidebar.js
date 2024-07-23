@@ -73,6 +73,16 @@ const Sidebar = () => {
 
                 <li className="nav-item d-flex">
                   <NavLink
+                    to="/admin/gestionSale"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    <MdQueryStats /> Gestion Ventas
+                  </NavLink>
+                </li>
+
+                <li className="nav-item d-flex">
+                  <NavLink
                     to="/admin/sales-statictics"
                     className="nav-link"
                     activeClassName="active"
