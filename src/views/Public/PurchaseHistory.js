@@ -348,23 +348,23 @@ const PurchaseHistory = () => {
                           <div className="row">
                             <div className="text-center">
                               {purchase.statusVentaId === 1 && (
-                                <span className="text-success fw-bold">
+                                <span className="fw-bold">
                                   <strong>Estado de la venta: </strong>En
                                   proceso
                                 </span>
                               )}
                               {purchase.statusVentaId === 2 && (
-                                <span className="text-success fw-bold">
+                                <span className="fw-bold">
                                   <strong>Estado de la venta: </strong>En camino
                                 </span>
                               )}
                               {purchase.statusVentaId === 3 && (
-                                <span className="text-success fw-bold">
+                                <span className="fw-bold">
                                   <strong>Estado de la venta: </strong>Entregado
                                 </span>
                               )}
                               {purchase.statusVentaId === 4 && (
-                                <span className="text-warning fw-bold">
+                                <span className="fw-bold">
                                   <strong>Estado de la venta: </strong>En espera
                                   de recolección en sucursal
                                 </span>
