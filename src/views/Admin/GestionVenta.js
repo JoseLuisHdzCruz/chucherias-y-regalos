@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
-import { MdLocalMall } from "react-icons/md";
-import { MdVisibility } from "react-icons/md";
+import { MdLocalMall, MdVisibility } from "react-icons/md";
 import { toast } from "react-toastify";
 
 const ViewOrders = ({ title }) => {
   const [ventas, setVentas] = useState([]);
   const [statuses, setStatuses] = useState([]);
+  const [usuarios, setUsuarios] = useState([]); // Estado para usuarios
   const [currentPage, setCurrentPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedVenta, setSelectedVenta] = useState(null);
@@ -18,6 +18,7 @@ const ViewOrders = ({ title }) => {
   useEffect(() => {
     fetchVentas();
     fetchStatuses();
+    fetchUsuarios(); // Fetch usuarios
   }, []);
 
   const fetchVentas = async () => {
@@ -25,7 +26,6 @@ const ViewOrders = ({ title }) => {
       const response = await axios.get(
         "https://backend-c-r-production.up.railway.app/ventas/"
       );
-      // Sort the ventas by date in descending order (most recent first)
       const sortedVentas = response.data.sort(
         (a, b) => new Date(b.fecha) - new Date(a.fecha)
       );
@@ -43,6 +43,17 @@ const ViewOrders = ({ title }) => {
       setStatuses(response.data);
     } catch (error) {
       console.error("Error fetching statuses:", error);
+    }
+  };
+
+  const fetchUsuarios = async () => {
+    try {
+      const response = await axios.get(
+        "https://backend-c-r-production.up.railway.app/users/"
+      );
+      setUsuarios(response.data);
+    } catch (error) {
+      console.error("Error fetching usuarios:", error);
     }
   };
 
@@ -70,7 +81,7 @@ const ViewOrders = ({ title }) => {
   const handleChangeStatus = async () => {
     try {
       await axios.put(
-        `https://backend-c-r-production.up.railway.app/ventas/updateStatusVenta/${selectedVenta.folio}`,
+        `https://backend-c-r-production.up.railway.app/ventas/updateStatusVenta/${selectedVenta.ventaId}`,
         {
           statusVentaId: newStatus,
         }
@@ -82,6 +93,11 @@ const ViewOrders = ({ title }) => {
       console.error("Error updating sale status:", error);
       toast.error("Error al actualizar el estado de venta.");
     }
+  };
+
+  const getUserName = (userId) => {
+    const user = usuarios.find((usuario) => usuario.customerId === userId);
+    return user ? user.correo : "Desconocido";
   };
 
   const indexOfLastOrder = currentPage * ordersPerPage;
@@ -126,7 +142,7 @@ const ViewOrders = ({ title }) => {
                 <thead>
                   <tr>
                     <th>Fecha</th>
-                    <th>Folio</th>
+                    <th>Usuario</th>
                     <th>Cantidad</th>
                     <th>Total</th>
                     <th>Status</th>
@@ -138,7 +154,7 @@ const ViewOrders = ({ title }) => {
                     currentOrders.map((venta) => (
                       <tr key={venta.ventaId}>
                         <td>{new Date(venta.fecha).toLocaleDateString()}</td>
-                        <td>{venta.folio}</td>
+                        <td>{getUserName(venta.customerId)}</td>
                         <td>{venta.cantidad}</td>
                         <td>${venta.total}</td>
                         <td>
@@ -213,7 +229,7 @@ const ViewOrders = ({ title }) => {
                   </p>
                 ) : (
                   <p className="fs-5">
-                    <strong>Metodo de entrega: </strong>Recoleccion en socursal
+                    <strong>Metodo de entrega: </strong>Recoleccion en sucursal
                   </p>
                 )}
 
@@ -229,76 +245,82 @@ const ViewOrders = ({ title }) => {
             </div>
             <div className="col-sm-12 mt-1 mb-4">
               <div className="row">
-                  <div className="col-sm-6">
-                    <select
-                      className="form-select"
-                      value={newStatus}
-                      onChange={(e) => setNewStatus(e.target.value)}
+                <div className="col-sm-6">
+                  
+                  <select
+                  className="form-select"
+                  value={newStatus}
+                  onChange={(e) => setNewStatus(e.target.value)}
+                >
+                  <option value="" disabled>
+                    Seleccionar nuevo estado
+                  </option>
+                  {statuses.map((status) => (
+                    <option
+                      key={status.statusVentaId}
+                      value={status.statusVentaId}
                     >
-                      <option value="" disabled selected>
-                        Seleccionar nuevo estado
-                      </option>
-                      {statuses.map((status) => (
-                        <option
-                          key={status.statusVentaId}
-                          value={status.statusVentaId}
-                        >
-                          {status.statusVenta}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="col-sm-6">
-                    <Button
-                      variant="primary"
-                      onClick={handleChangeStatus}
-                    >
-                      Cambiar
-                    </Button>
-                  </div>
-                
+                      {status.statusVenta}
+                    </option>
+                  ))}
+                </select>
+                </div>
+                <div className="col-sm-6">
+                  <Button
+                    variant="success"
+                    onClick={handleChangeStatus}
+                    disabled={!newStatus}
+                  >
+                    Cambiar estado de venta
+                  </Button>
+                </div>
               </div>
             </div>
-
-            <table className="table">
+            <table className="table table-striped table-bordered table-hover table-sm">
               <thead>
                 <tr>
-                  <th>Imagen</th>
+                    <th></th>
                   <th>Producto</th>
-                  <th>Precio</th>
                   <th>Cantidad</th>
-                  <th>Total</th>
+                  <th>Precio unitario</th>
+                  <th>Subtotal</th>
                 </tr>
               </thead>
               <tbody>
                 {detalleVenta.map((detalle) => (
-                  <tr key={detalle.detalleVentaId}>
-                    <td>
-                      <img
+                  <tr key={detalle.productoId}>
+                    <img
                         src={detalle.imagen}
                         alt={detalle.producto}
                         style={{ borderRadius: "100px", height: "80px" }}
                       />
-                    </td>
                     <td>{detalle.producto}</td>
+                    <td>{detalle.cantidad}</td>
                     <td>${detalle.precio}</td>
-                    <td className="text-center">{detalle.cantidad}</td>
                     <td>${detalle.totalDV}</td>
                   </tr>
                 ))}
               </tbody>
-              <tfoot>
-                <tr>
-                  <td colSpan="3"></td>
-                  <td className="fw-bold text-danger">Total:</td>
-                  <td className="fw-bold text-danger">
-                    ${selectedVenta.total}
-                  </td>
-                </tr>
-              </tfoot>
             </table>
-            <span className="text-muted">Folio: {selectedVenta.folio}</span>
+            <div className="row justify-content-between">
+              <div className="col-sm-4">
+                <p className="text-secondary fs-6">
+                  <strong>Folio de compra: </strong>
+                  {selectedVenta.folio}
+                </p>
+              </div>
+              <div className="col-sm-4">
+                <p className="text-secondary fs-6">
+                  <strong>Total de la compra: </strong>${selectedVenta.total}
+                </p>
+              </div>
+            </div>
           </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setModalOpen(false)}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
         </Modal>
       )}
     </div>
