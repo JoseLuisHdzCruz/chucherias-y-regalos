@@ -252,7 +252,7 @@ const ViewOrders = ({ title }) => {
                   value={newStatus}
                   onChange={(e) => setNewStatus(e.target.value)}
                 >
-                  <option value="" disabled>
+                  <option value="" selected disabled>
                     Seleccionar nuevo estado
                   </option>
                   {statuses.map((status) => (

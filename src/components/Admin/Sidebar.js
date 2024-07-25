@@ -103,6 +103,15 @@ const Sidebar = () => {
                 <MdSell /> Promociones
               </NavLink>
             </li>
+            <li className="nav-item d-flex">
+              <NavLink
+                to="/admin/cupones"
+                className="nav-link"
+                activeClassName="active"
+              >
+                <MdSell /> Cupones
+              </NavLink>
+            </li>
 
 
             <li className="nav-item d-flex">
