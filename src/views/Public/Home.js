@@ -11,6 +11,8 @@ function Home({ searchResults, searchTerm }) {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [orderBy, setOrderBy] = useState("");
+  const [startPage, setStartPage] = useState(1);
+  const pagesToShow = 5;
 
   useEffect(() => {
     if (searchResults && searchResults.length > 0) {
@@ -71,6 +73,20 @@ function Home({ searchResults, searchTerm }) {
   const totalPages = Math.ceil(
     filteredAndSortedProducts().length / productsPerPage
   );
+
+  const goToPreviousSet = () => {
+    if (startPage > 1) {
+      setStartPage(startPage - pagesToShow);
+      paginate(startPage - pagesToShow);
+    }
+  };
+
+  const goToNextSet = () => {
+    if (startPage + pagesToShow <= totalPages) {
+      setStartPage(startPage + pagesToShow);
+      paginate(startPage + pagesToShow);
+    }
+  };
 
   return (
     <>
@@ -208,18 +224,33 @@ function Home({ searchResults, searchTerm }) {
 
         {/* Agregar paginación */}
         <ul className="pagination text-center mt-4">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <li
-              key={index}
-              className={`page-item ${
-                currentPage === index + 1 ? "active" : ""
-              }`}
-            >
-              <button onClick={() => paginate(index + 1)} className="page-link">
-                {index + 1}
-              </button>
-            </li>
-          ))}
+          <li className={`page-item ${startPage === 1 ? "disabled" : ""}`}>
+            <button onClick={goToPreviousSet} className="page-link">
+              &laquo;
+            </button>
+          </li>
+
+          {Array.from({ length: Math.min(pagesToShow, totalPages - startPage + 1) }).map((_, index) => {
+            const pageIndex = startPage + index;
+            return (
+              <li
+                key={pageIndex}
+                className={`page-item ${currentPage === pageIndex ? "active" : ""}`}
+              >
+                <button onClick={() => paginate(pageIndex)} className="page-link">
+                  {pageIndex}
+                </button>
+              </li>
+            );
+          })}
+
+          <li
+            className={`page-item ${startPage + pagesToShow > totalPages ? "disabled" : ""}`}
+          >
+            <button onClick={goToNextSet} className="page-link">
+              &raquo;
+            </button>
+          </li>
         </ul>
       </main>
     </>

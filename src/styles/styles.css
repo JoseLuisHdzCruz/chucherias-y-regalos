@@ -582,9 +582,8 @@ main {
 .catalog {
   display: flex;
   flex-wrap: wrap;
-  gap: 58px; /* Espacio entre las cartas */
-  width: 95%;
-  margin-left: 30px;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .catalog a {

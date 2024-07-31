@@ -3,7 +3,7 @@ import { CartContext } from "../../context/CartContext";
 import { Link } from "react-router-dom";
 import { MdShoppingCart } from "react-icons/md";
 
-function ButtonCart() {
+function ButtonCartResponsive() {
     const { cart } = useContext(CartContext);
     const totalItemsEnCarrito = cart.reduce(
       (total, item) => total + item.cantidad,
@@ -13,11 +13,8 @@ function ButtonCart() {
   return (
     <>
       <Link
+  className="carrito-button"
   to="/checkup"
-  style={{
-    position: 'relative',
-    display: 'inline-block',
-  }}
 >
   <MdShoppingCart size={40} />
   {totalItemsEnCarrito > 0 && (
@@ -25,8 +22,8 @@ function ButtonCart() {
       className="text-center"
       style={{
         position: 'absolute',
-        top: '-3px', // Ajusta este valor para pantallas grandes
-        right: '-3px', // Ajusta este valor para pantallas grandes
+        top: '5px', // Ajusta este valor para pantallas grandes
+        right: '5px', // Ajusta este valor para pantallas grandes
         backgroundColor: 'red',
         color: 'white',
         borderRadius: '50%',
@@ -49,4 +46,4 @@ function ButtonCart() {
   );
 }
 
-export default ButtonCart;
+export default ButtonCartResponsive;

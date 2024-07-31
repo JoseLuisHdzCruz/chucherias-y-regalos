@@ -36,10 +36,10 @@ function PublicFooter() {
 
   return (
     <>
-      <footer className="d-flex">
+      <footer className="footer-public d-flex">
         <div className="column">
           <h3>¿Quiénes somos?</h3>
-          <p>{data.quienesSomos}</p>
+          <p style={{textAlign: "justify"}}>{data.quienesSomos}</p>
         </div>
         <div className="column">
           <h3>Contacto</h3>
