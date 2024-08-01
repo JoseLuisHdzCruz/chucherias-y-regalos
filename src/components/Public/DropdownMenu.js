@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/DropdownMenu.css'; // Archivo de estilos para el menú
-import { MdExpandMore, MdExpandLess } from 'react-icons/md';
+import { MdExpandMore, MdExpandLess, MdCategory } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 function DropdownMenu() {
@@ -37,7 +37,7 @@ function DropdownMenu() {
   return (
     <div className="dropdown" ref={dropdownRef}>
       <a onClick={toggleMenu}>
-        Categoría {isOpen ? <MdExpandLess size={25} className="icon-align" /> : <MdExpandMore size={25} className="icon-align" />}
+      <MdCategory size={25} />  Categoría {isOpen ? <MdExpandLess size={25} className="icon-align" /> : <MdExpandMore size={25} className="icon-align" />}
       </a>
       <ul className={`dropdown-list ${isOpen ? 'show' : ''}`}>
         {categories.map(category => (

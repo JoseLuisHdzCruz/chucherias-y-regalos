@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MdSearch, MdClose, MdMenu } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
@@ -21,6 +21,7 @@ function PublicHeader({ onSearch }) {
   const [verificacionRealizada, setVerificacionRealizada] = useState(false);
   const { token, logout } = useAuth();
   const [menuVisible, setMenuVisible] = useState(false);
+  const overlayRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -43,6 +44,12 @@ function PublicHeader({ onSearch }) {
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
+  };
+
+  const handleClickOutside = (event) => {
+    if (overlayRef.current && !overlayRef.current.contains(event.target)) {
+      setMenuVisible(false);
+    }
   };
 
   useEffect(() => {
@@ -69,11 +76,13 @@ function PublicHeader({ onSearch }) {
     };
 
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("click", handleClickOutside);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("click", handleClickOutside);
     };
-  }, [token]);
+  }, [token, menuVisible]);
 
   useEffect(() => {
     if (usuario && usuario.sesion && !verificacionRealizada) {
@@ -244,15 +253,19 @@ function PublicHeader({ onSearch }) {
           {menuVisible ? <MdClose size={25} /> : <MdMenu size={25} />}
         </button>
       </header>
+
+      {/* Overlay */}
+      {menuVisible && <div className="overlay" onClick={toggleMenu}></div>}
+
       {/* Sidebar Component */}
       <SidebarMenu
-        usuario={usuario}
         activarModal={activarModal}
         mostrarModal={mostrarModal}
         cerrarModal={cerrarModal}
         cerrarSesion={cerrarSesion}
         menuVisible={menuVisible}
         toggleMenu={toggleMenu}
+        setMenuVisible={setMenuVisible}
       />
     </>
   );
