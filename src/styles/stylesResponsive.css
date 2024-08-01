@@ -3,7 +3,7 @@
   display: none; /* Asegúrate de que siempre esté visible */
 }
 
-.carrito-button{
+.carrito-button {
   display: none;
 }
 
@@ -25,18 +25,12 @@
   transform: translateX(0); /* Mostrar el contenido */
 }
 
-.Menu{
+.Menu {
   display: none;
 }
 
-
-
-
-
-
 /* Estilos responsivos */
 @media (max-width: 768px) {
-
   /* Sidebar Styles */
 
   .header-public {
@@ -57,16 +51,16 @@
   }
 
   /* Estilo para el botón de cerrar */
-.close-btn {
-  position: absolute;
-  top: 25px;
-  right: 15px;
-  background-color: #fff;
+  .close-btn {
+    position: absolute;
+    top: 25px;
+    right: 15px;
+    background-color: #fff;
     border: none;
     padding: 10px;
     border-radius: 5px;
-    cursor: pointer
-}
+    cursor: pointer;
+  }
 
   .carrito-button {
     position: fixed;
@@ -99,65 +93,59 @@
     left: 0;
     height: 100%;
     width: 250px;
-    background-color: #f8c6f9;
+    background-color: #b685b7;
     color: #ffffff;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 1000;
   }
-  
+
   .Menu.open {
     transform: translateX(0);
   }
 
   /* styles.css */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-}
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
 
-.header-public.show-menu {
-  z-index: 1000; /* Asegúrate de que el header esté encima del overlay */
-}
-
-  
-  
   /* Estilo para la lista del menú */
   ul {
     list-style: none;
     padding: 0;
-    margin: 60px 0 0 0; /* Deja espacio para el botón de cerrar */
+    margin: 60px 0 0 0;
   }
-  
+
   .sidebar-item {
     margin: 15px 0;
-    color: #000000;
-  
+    color: white;
   }
-  
+
   .sidebar-item a {
-    color: #000000;
+    color: #ffffff;
     text-decoration: none;
     display: block;
     padding: 10px 15px;
     border-radius: 5px;
+    background-color: #b685b7;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
-  
+
   .sidebar-item a:hover {
-    background-color: #8b5f98;
-    color: #fff;
+    background-color: #f8c6f9;
+    color: #060606;
   }
-  
   .logout a:hover {
     background-color: #d63722;
     color: #fff;
   }
-  
+
   .login a:hover {
     background-color: #328e41;
     color: #ffffff;
@@ -178,12 +166,12 @@
     text-align: center;
   }
 
-  .footer-public .column{
+  .footer-public .column {
     width: 100%;
     text-align: center;
   }
 
-  .footer-public .column ul{
+  .footer-public .column ul {
     margin-left: 45px;
   }
 
@@ -202,24 +190,81 @@
     height: 60px;
   }
 
-
   .sidebar-toggle {
     display: block;
   }
 
-  .sidebar-item .logo-user{
+  .sidebar-item .logo-user {
     width: 50px;
   }
 
   .header-public .opciones-cinta {
-    display: none; /* Hide the original options bar on mobile */
+    display: none;
   }
-  .dropdown{
+  .dropdown {
     width: 100%;
   }
 
   .dropdown-list li:hover {
-    background-color: #8b5f98 
-    !important; 
+    background-color: #8b5f98 !important;
+  }
+
+  .carousel-container {
+    max-height: 80px !important;
+  }
+  .icons-sidebar {
+    border-radius: 100%;
+    background-color: rgb(232, 247, 255);
+    padding: 3px;
+    color: #000000;
+    font-size: 35px;
+  }
+  .category-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Estilo general para la lista de categorías */
+  .lista-categorias {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background-color: #b685b7;
+    border-left: 2px solid #6c757d;
+  }
+
+  .lista-categorias li {
+    padding: 10px 15px;
+    font-size: 14px;
+    border-bottom: 1px solid #d0d1d1;
+    transition: background-color 0.3s ease;
+  }
+
+  .border-slider {
+    border-color: #d0d1d1;
+    border: solid;
+  }
+
+  .lista-categorias li:hover {
+    background-color: #f8c6f9;
+  }
+
+  .lista-categorias li a {
+    color: #ffffff;
+    text-decoration: none;
+    display: block;
+  }
+
+  .lista-categorias li a:hover {
+    color: #060606;
+  }
+
+  .lista-categorias ul {
+    display: none;
+  }
+
+  .lista-categorias.open ul {
+    display: block;
   }
 }

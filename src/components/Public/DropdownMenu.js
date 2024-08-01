@@ -37,7 +37,7 @@ function DropdownMenu() {
   return (
     <div className="dropdown" ref={dropdownRef}>
       <a onClick={toggleMenu}>
-      <MdCategory size={25} />  Categoría {isOpen ? <MdExpandLess size={25} className="icon-align" /> : <MdExpandMore size={25} className="icon-align" />}
+        Categoría {isOpen ? <MdExpandLess size={25} className="icon-align" /> : <MdExpandMore size={25} className="icon-align" />}
       </a>
       <ul className={`dropdown-list ${isOpen ? 'show' : ''}`}>
         {categories.map(category => (
