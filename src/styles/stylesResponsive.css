@@ -218,6 +218,7 @@
     padding: 3px;
     color: #000000;
     font-size: 35px;
+    margin-right: 5px;
   }
   .category-item {
     display: flex;
