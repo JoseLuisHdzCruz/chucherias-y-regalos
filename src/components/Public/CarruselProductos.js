@@ -8,10 +8,12 @@ const CarruselProductos = () => {
   const elementsPerPage = 3;
 
   useEffect(() => {
-    fetch("https://backend-c-r-production.up.railway.app/products/randomProducts")
-      .then(response => response.json())
-      .then(data => setProducts(data))
-      .catch(error => console.error("Error fetching products:", error));
+    fetch(
+      "https://backend-c-r-production.up.railway.app/products/randomProducts"
+    )
+      .then((response) => response.json())
+      .then((data) => setProducts(data))
+      .catch((error) => console.error("Error fetching products:", error));
   }, []);
 
   const handleMoveLeft = () => {
@@ -33,27 +35,32 @@ const CarruselProductos = () => {
       <h4 className="title-pag fw-bold mt-3">También podría gustarte</h4>
 
       <div className="carrusel-container mb-4">
-        <div className="carrusel-detalle mt-4">
-          {products.slice(startIdx, startIdx + elementsPerPage).map(product => (
-            <Link to={`/product/${product.productoId}`} key={product.productoId}>
-              <div className="card mt-4">
-                <div className="cont-img-carrusel">
-                  <img
-                    src={product.imagen}
-                    className="card-img-top img-catalog"
-                    alt={product.nombre}
-                  />
-                </div>
-                <div className="card-body mt-2">
-                  <div className="cont-description">
-                    <h5>{product.nombre}</h5>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
+        <div className="carrusel-detalle catalogo mt-4">
+          {products
+            .slice(startIdx, startIdx + elementsPerPage)
+            .map((product) => (
+              <Link
+                      to={`/product/${product.productoId}`}
+                      className="text-decoration-none"
+                    >
+                      <div className="card shadow-sm">
+                        <div className="cont-img item-center">
+                          <img
+                            src={product.imagen}
+                            className="card-img-top img-catalog"
+                            alt={product.nombre}
+                          />
+                        </div>
+                        <div className="card-body">
+                          <h5 className="card-title">{product.nombre}</h5>
+                          <p className="card-text fw-bold mt-3">{`$ ${product.precioFinal}`}</p>
+                        </div>
+                      </div>
+                    </Link>
+            ))}
         </div>
       </div>
+
       {startIdx > 0 && (
         <button
           type="button"

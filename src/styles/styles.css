@@ -6,7 +6,6 @@
 Sidebar
 */
 
-
 .page-item button{
   height: 50px;
   width: 50px;
@@ -556,10 +555,13 @@ footer a {
 }
 
 /* Estilos para el cuerpo de la página */
+main, .section{
+  background-color: #f9f9f9;
+}
+
 main {
   flex: 1;
   padding: 20px;
-  margin-left: 35px;
 }
 
 .title-pag {
@@ -591,26 +593,33 @@ main {
   color: #000000;
 }
 
+.img-catalog{
+  min-width: 305px !important;
+  max-width: 305px !important;
+}
+
 /* Estilo base para la tarjeta */
-.catalog .card {
-  transition: box-shadow 0.3s ease; /* Transición de la sombra */
+.row .card {
+  transition: box-shadow 0.3s ease !important; 
+  border: 0.5px solid #f8c6f9;
 }
 
 /* Efecto de sombra al pasar el ratón sobre la tarjeta */
-.catalog .card:hover {
+.row .catalogo .card:hover {
   box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
-    0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Efecto de transición cuando se selecciona la tarjeta (por ejemplo, haciendo clic en ella) */
-.catalog .card:active {
+.row .card:active {
   transform: scale(1.05); /* Escala la tarjeta al hacer clic */
   box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
-    0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
 }
 
 .carrusel-detalle .card {
-  transition: box-shadow 0.3s ease; /* Transición de la sombra */
+  transition: box-shadow 0.3s ease !important; 
+  border: 0.5px solid #f8c6f9;
 }
 
 /* Efecto de sombra al pasar el ratón sobre la tarjeta */
@@ -626,12 +635,9 @@ main {
     0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
-.catalog .card {
+.row .card {
   padding: 20px;
-  max-height: 450px;
-  background-color: #f0f0f0;
   border-radius: 20px;
-  width: 20%;
 }
 
 .carrusel-detalle {
@@ -643,18 +649,6 @@ main {
   justify-content: center;
 }
 
-.carrusel-detalle a {
-  text-decoration: none;
-  color: #000000;
-}
-
-.carrusel-detalle .card {
-  padding: 20px;
-  max-height: 340px;
-  background-color: #f0f0f0;
-  border-radius: 20px;
-  width: 15rem;
-}
 
 .carrusel-button {
   background-color: #f8c6f9;
@@ -684,14 +678,6 @@ main {
   right: 25px;
 }
 
-.cont-img-carrusel {
-  width: 100%;
-}
-
-.cont-img-carrusel img {
-  height: 200px;
-  border-radius: 20px;
-}
 
 .product-card {
   margin-top: 20px;
@@ -700,6 +686,18 @@ main {
   padding: 0px;
   border-radius: 20px;
   background-color: #f0f0f0;
+}
+
+.product-detail-img{
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ border-radius: 20px;
+}
+
+.product-detail-img img{
+  width: 400px;
+  height: auto;
 }
 
 .cont-img {

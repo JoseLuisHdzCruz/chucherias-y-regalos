@@ -12,6 +12,10 @@
     position: relative;
     overflow: hidden;
   }
+
+  .content-wrapper section, main{
+    background-color: #f9f9f9;
+  }
   
   .login-page::before {
     content: '';

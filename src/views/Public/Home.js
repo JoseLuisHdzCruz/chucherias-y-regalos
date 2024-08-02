@@ -28,7 +28,7 @@ function Home({ searchResults, searchTerm }) {
 
   useEffect(() => {
     // Limpiar los filtros cuando no hay término de búsqueda
-    if (!searchResults && searchResults.length <= 0) {
+    if (!searchResults || searchResults.length <= 0) {
       setMinPrice("");
       setMaxPrice("");
       setOrderBy("");
@@ -92,29 +92,24 @@ function Home({ searchResults, searchTerm }) {
     <>
       <BootstrapCarousel />
       <main>
-        <PageTitle title="Chucherias & Regalos | Inicio" />
+        <PageTitle title="Chucherías & Regalos | Inicio" />
 
         {searchResults && searchResults.length > 0 ? (
           <div className="advanced-search">
             <h2 className="text-center">Resultados para: {searchTerm}</h2>
 
             <div className="row mt-4 ml-4">
-              <div className="col-md-1">
-                <span className="btn btn-info disabled">
-                  <MdFilterAlt size={20} /> Filtros
-                </span>
-              </div>
-              <div className="col-md-6">
-                <div className="row col-md-12">
-                  <div className="col-sm-3">
+              <div className="col-12 col-md-5 mb-3 mb-md-0">
+                <div className="row">
+                  <div className="col-6 col-sm-3 d-flex justify-content-end align-items-center">
                     <label
                       htmlFor="min-price"
-                      className="col-form-label col-form-label-sm mr-2 d-flex justify-content-end"
+                      className="col-form-label col-form-label-sm"
                     >
                       Precio mínimo:
                     </label>
                   </div>
-                  <div className="col-sm-3">
+                  <div className="col-6 col-sm-3">
                     <input
                       type="number"
                       className="form-control"
@@ -123,15 +118,15 @@ function Home({ searchResults, searchTerm }) {
                       onChange={(e) => setMinPrice(e.target.value)}
                     />
                   </div>
-                  <div className="col-sm-3">
+                  <div className="col-6 col-sm-3 d-flex justify-content-end align-items-center">
                     <label
                       htmlFor="max-price"
-                      className="col-form-label col-form-label-sm mr-2 d-flex justify-content-end"
+                      className="col-form-label col-form-label-sm"
                     >
                       Precio máximo:
                     </label>
                   </div>
-                  <div className="col-sm-3">
+                  <div className="col-6 col-sm-3">
                     <input
                       type="number"
                       className="form-control"
@@ -142,9 +137,10 @@ function Home({ searchResults, searchTerm }) {
                   </div>
                 </div>
               </div>
-              <div className="col-md-5">
-                <div className="row col-md-12">
-                  <div className="col-sm-1 d-flex justify-content-end">
+
+              <div className="col-12 col-md-5">
+                <div className="row">
+                  <div className="col-2 col-sm-1 d-flex justify-content-end align-items-center">
                     <input
                       className="form-check-input"
                       type="checkbox"
@@ -155,12 +151,12 @@ function Home({ searchResults, searchTerm }) {
                       }
                     />
                   </div>
-                  <div className="col-sm-5">
+                  <div className="col-10 col-sm-5 d-flex align-items-center">
                     <label className="form-check-label" htmlFor="orderByDesc">
-                      Ordenar de mayor a menor
+                      Mayor a menor
                     </label>
                   </div>
-                  <div className="col-sm-1 d-flex justify-content-end">
+                  <div className="col-2 col-sm-1 d-flex justify-content-end align-items-center">
                     <input
                       className="form-check-input"
                       type="checkbox"
@@ -171,55 +167,63 @@ function Home({ searchResults, searchTerm }) {
                       }
                     />
                   </div>
-                  <div className="col-sm-5">
+                  <div className="col-10 col-sm-5 d-flex align-items-center">
                     <label className="form-check-label" htmlFor="orderByAsc">
-                      Ordenar de menor a mayor
+                      Menor a mayor
                     </label>
                   </div>
                 </div>
               </div>
+              <div className="col-12 col-md-2 mb-3 mb-md-0">
+                <span className="btn btn-info disabled w-100">
+                  <MdFilterAlt size={20} /> Filtrar
+                </span>
+              </div>
             </div>
           </div>
         ) : (
-          <h2>Recomendados </h2>
+          <h2>Recomendados</h2>
         )}
 
-        <hr className="hr-primary" />
+        <hr className="hr-primary my-4" />
 
-        <div className="catalog">
-          {filteredAndSortedProducts().length > 0 ? (
-            filteredAndSortedProducts()
-              .slice(
-                (currentPage - 1) * productsPerPage,
-                currentPage * productsPerPage
-              )
-              .map((product) => (
-                <Link
-                  to={`/product/${product.productoId}`}
-                  key={product.productoId}
-                >
-                  <div className="card mt-4" style={{ width: "18rem" }}>
-                    <div className="cont-img">
-                      <img
-                        src={product.imagen}
-                        className="card-img-top img-catalog"
-                        alt={product.nombre}
-                      />
-                    </div>
-                    <div className="card-body mt-3">
-                      <div className="cont-description">
-                        <h5>{product.nombre}</h5>
+        <div className="section">
+          <div className="row catalogo">
+            {filteredAndSortedProducts().length > 0 ? (
+              filteredAndSortedProducts()
+                .slice(
+                  (currentPage - 1) * productsPerPage,
+                  currentPage * productsPerPage
+                )
+                .map((product) => (
+                  <div
+                    className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+                    key={product.productoId}
+                  >
+                    <Link
+                      to={`/product/${product.productoId}`}
+                      className="text-decoration-none"
+                    >
+                      <div className="card shadow-sm">
+                        <div className="cont-img item-center">
+                          <img
+                            src={product.imagen}
+                            className="card-img-top img-catalog"
+                            alt={product.nombre}
+                          />
+                        </div>
+                        <div className="card-body">
+                          <h5 className="card-title">{product.nombre}</h5>
+                          <p className="card-text fw-bold mt-3">{`$ ${product.precioFinal}`}</p>
+                        </div>
                       </div>
-                      <div className="cont-price mt-4">
-                        <h3 className="fw-bold">{`$ ${product.precioFinal}`}</h3>
-                      </div>
-                    </div>
+                    </Link>
                   </div>
-                </Link>
-              ))
-          ) : (
-            <p>No se encontraron productos.</p>
-          )}
+                ))
+            ) : (
+              <p>No se encontraron productos.</p>
+            )}
+          </div>
         </div>
 
         {/* Agregar paginación */}
@@ -230,14 +234,21 @@ function Home({ searchResults, searchTerm }) {
             </button>
           </li>
 
-          {Array.from({ length: Math.min(pagesToShow, totalPages - startPage + 1) }).map((_, index) => {
+          {Array.from({
+            length: Math.min(pagesToShow, totalPages - startPage + 1),
+          }).map((_, index) => {
             const pageIndex = startPage + index;
             return (
               <li
                 key={pageIndex}
-                className={`page-item ${currentPage === pageIndex ? "active" : ""}`}
+                className={`page-item ${
+                  currentPage === pageIndex ? "active" : ""
+                }`}
               >
-                <button onClick={() => paginate(pageIndex)} className="page-link">
+                <button
+                  onClick={() => paginate(pageIndex)}
+                  className="page-link"
+                >
                   {pageIndex}
                 </button>
               </li>
@@ -245,7 +256,9 @@ function Home({ searchResults, searchTerm }) {
           })}
 
           <li
-            className={`page-item ${startPage + pagesToShow > totalPages ? "disabled" : ""}`}
+            className={`page-item ${
+              startPage + pagesToShow > totalPages ? "disabled" : ""
+            }`}
           >
             <button onClick={goToNextSet} className="page-link">
               &raquo;

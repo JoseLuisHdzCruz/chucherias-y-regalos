@@ -79,90 +79,91 @@ function CategoriaProductos() {
         <PageTitle title="Chucherias & Regalos | Inicio" />
 
         {products && products.length > 0 && (
-          <div className="advanced-search">
+           <div className="advanced-search">
 
-          <div className="row mt-4 ml-4">
-            <div className="col-md-1">
-              <span className="btn btn-info disabled">
-                <MdFilterAlt size={20} /> Filtros
-              </span>
-            </div>
-            <div className="col-md-6">
-              <div className="row col-md-12">
-                <div className="col-sm-3">
-                  <label
-                    htmlFor="min-price"
-                    className="col-form-label col-form-label-sm mr-2 d-flex justify-content-end"
-                  >
-                    Precio mínimo:
-                  </label>
-                </div>
-                <div className="col-sm-3">
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="min-price"
-                    value={minPrice}
-                    onChange={(e) => setMinPrice(e.target.value)}
-                  />
-                </div>
-                <div className="col-sm-3">
-                  <label
-                    htmlFor="max-price"
-                    className="col-form-label col-form-label-sm mr-2 d-flex justify-content-end"
-                  >
-                    Precio máximo:
-                  </label>
-                </div>
-                <div className="col-sm-3">
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="max-price"
-                    value={maxPrice}
-                    onChange={(e) => setMaxPrice(e.target.value)}
-                  />
+            <div className="row mt-4 ml-4">
+              <div className="col-12 col-md-5 mb-3 mb-md-0">
+                <div className="row">
+                  <div className="col-6 col-sm-3 d-flex justify-content-end align-items-center">
+                    <label
+                      htmlFor="min-price"
+                      className="col-form-label col-form-label-sm"
+                    >
+                      Precio mínimo:
+                    </label>
+                  </div>
+                  <div className="col-6 col-sm-3">
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="min-price"
+                      value={minPrice}
+                      onChange={(e) => setMinPrice(e.target.value)}
+                    />
+                  </div>
+                  <div className="col-6 col-sm-3 d-flex justify-content-end align-items-center">
+                    <label
+                      htmlFor="max-price"
+                      className="col-form-label col-form-label-sm"
+                    >
+                      Precio máximo:
+                    </label>
+                  </div>
+                  <div className="col-6 col-sm-3">
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="max-price"
+                      value={maxPrice}
+                      onChange={(e) => setMaxPrice(e.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-md-5">
-              <div className="row col-md-12">
-                <div className="col-sm-1 d-flex justify-content-end">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="orderByDesc"
-                    checked={orderBy === "desc"}
-                    onChange={() =>
-                      setOrderBy(orderBy === "desc" ? "" : "desc")
-                    }
-                  />
+
+              <div className="col-12 col-md-5">
+                <div className="row">
+                  <div className="col-2 col-sm-1 d-flex justify-content-end align-items-center">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="orderByDesc"
+                      checked={orderBy === "desc"}
+                      onChange={() =>
+                        setOrderBy(orderBy === "desc" ? "" : "desc")
+                      }
+                    />
+                  </div>
+                  <div className="col-10 col-sm-5 d-flex align-items-center">
+                    <label className="form-check-label" htmlFor="orderByDesc">
+                      Mayor a menor
+                    </label>
+                  </div>
+                  <div className="col-2 col-sm-1 d-flex justify-content-end align-items-center">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="orderByAsc"
+                      checked={orderBy === "asc"}
+                      onChange={() =>
+                        setOrderBy(orderBy === "asc" ? "" : "asc")
+                      }
+                    />
+                  </div>
+                  <div className="col-10 col-sm-5 d-flex align-items-center">
+                    <label className="form-check-label" htmlFor="orderByAsc">
+                      Menor a mayor
+                    </label>
+                  </div>
                 </div>
-                <div className="col-sm-5">
-                  <label className="form-check-label" htmlFor="orderByDesc">
-                    Ordenar de mayor a menor
-                  </label>
-                </div>
-                <div className="col-sm-1 d-flex justify-content-end">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="orderByAsc"
-                    checked={orderBy === "asc"}
-                    onChange={() =>
-                      setOrderBy(orderBy === "asc" ? "" : "asc")
-                    }
-                  />
-                </div>
-                <div className="col-sm-5">
-                  <label className="form-check-label" htmlFor="orderByAsc">
-                    Ordenar de menor a mayor
-                  </label>
-                </div>
+              </div>
+              <div className="col-12 col-md-2 mb-3 mb-md-0">
+                <span className="btn btn-info disabled w-100">
+                  <MdFilterAlt size={20} /> Filtrar
+                </span>
               </div>
             </div>
           </div>
-        </div>
         )}
 
         <hr className="hr-primary" />
