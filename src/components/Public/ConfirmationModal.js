@@ -6,20 +6,20 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, title, message }) => {
   return (
     <Modal show={isOpen} onHide={onClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
+        <Modal.Title className="fw-bold">{title}</Modal.Title>
       </Modal.Header>
       <hr className="hr-primary" />
       <Modal.Body>
         <div className="row">
-          <div className="col-md-5">
+          <div className="col-md-5 item-center">
             <img
               src="/images/PreguntaConfirmacion.png"
               alt="Chucherias & Regalos"
-              className="img-fluid rounded-start mt-4"
+              className="img-fluid confirmation-delete rounded-start mt-4"
             />
           </div>
           <div className="col-md-7">
-            <h3 className=" text-center fw-bold text-uppercase">
+            <h3 className=" text-center fw-bold text-uppercase item-no-responsive">
               Vaciar carrito
             </h3>
 

@@ -67,7 +67,7 @@ const CartModal = ({ isOpen, onClose }) => {
     >
       <div className="carrito">
         <div className="header-carrito">
-          <h2>Tu Carrito</h2>
+          <h5 className="text-uppercase fw-bold">Tu carrito</h5>
           <button className="close-button" onClick={onClose}>
             <MdClose size={25} />
           </button>
@@ -123,7 +123,7 @@ const CartModal = ({ isOpen, onClose }) => {
         </div>
         <div className="carrito-total">
           <div className="fila">
-            <strong>Tu Total</strong>
+            <strong className="text-uppercase">Total</strong>
             <span className="carrito-precio-total">${total}</span>
           </div>
           <Link to="/checkup" className="btn-pagar">

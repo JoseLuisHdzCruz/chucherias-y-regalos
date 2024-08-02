@@ -8,7 +8,7 @@ import {
 import { Link } from "react-router-dom";
 import PageTitle from "../../components/Public/PageTitle";
 import { CartContext } from "../../context/CartContext";
-import ConfirmationModal from "../../components/Public/ConfirmationModal ";
+import ConfirmationModal from "../../components/Public/ConfirmationModal";
 
 const Carrito = () => {
   const { cart, removeFromCart, addToCart, clearCart } =
@@ -65,9 +65,9 @@ const Carrito = () => {
         {totalItemsEnCarrito > 0 ? (
           <>
             <div className="d-flex mr-4 ml-4 justify-content-between">
-              <h3>
+              <h4 className="mr-4">
                 Actualmente tiene: {totalItemsEnCarrito} productos en su carrito
-              </h3>
+              </h4>
               <button
                 className="btn btn-danger fw-bold"
                 onClick={vaciarCarrito}
@@ -75,15 +75,13 @@ const Carrito = () => {
                 Vaciar carrito <MdRemoveShoppingCart size={25} />
               </button>
             </div>
-
             <hr className="hr-primary" />
           </>
         ) : (
           <>
             <div className="d-flex ml-4 text-center">
-              <h2 className="text-center">El carrito actualmente esta vacio</h2>
+              <h4 className="text-center">El carrito actualmente está vacío</h4>
             </div>
-
             <hr className="hr-primary" />
             <div className="text-center">
               <MdRemoveShoppingCart size={150} color="gray" />
@@ -92,56 +90,70 @@ const Carrito = () => {
         )}
       </div>
 
-      <div className="detail-product">
-        <div className="colum-detail">
+      <div className="row">
+        <div className="col-lg-8">
           {Object.values(cart).map((item, index) => (
-            <div key={index} className="card mb-3 mt-4">
+            <div key={index} className="card column-detail mb-3 mt-4">
               <div className="card-body">
                 <div className="row">
-                  <div className="col-md-2">
-                    <img
-                      src={item.imagen}
-                      className="img-fluid rounded-start"
-                      alt={item.nombre}
-                    />
-                  </div>
-                  <div className="col-md-5 row ml-1">
+                <div className="col-md-5 row ml-4 item-carrito-responsive">
                     <h5
-                      className="card-title fw-bold"
+                      className="card-title fw-bold mr-2"
                       style={{ fontSize: "20px" }}
                     >
                       {item.nombre}
                     </h5>
-                    <div className="cont-options btn-delete ml-4">
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => removeFromCart(item.productoId)}
+                    >
+                      Quitar del carrito <MdDelete size={25} />
+                    </button>
+                  </div>
+                  <div className="col-md-2 item-center">
+                    <img
+                      src={item.imagen}
+                      className="card-img-top img-catalog img-carrito-row"
+                      alt={item.nombre}
+                    />
+                  </div>
+                  <div className="col-md-5 row ml-1 item-no-responsive">
+                    <h5
+                      className="card-title fw-bold product-carrito"
+                      style={{ fontSize: "20px" }}
+                    >
+                      {item.nombre}
+                    </h5>
+                    <div className="cont-options ml-4">
                       <button
-                        className="btn-option"
+                        className="btn btn-danger"
                         onClick={() => removeFromCart(item.productoId)}
                       >
-                        <MdDelete size={25} color="white" />
+                        Quitar de carrito <MdDelete size={25} color="white" />
                       </button>
                     </div>
                   </div>
                   <div className="col-md-5 aling-center-cont">
-                    <div className="cont-cant d-flex align-items-center justify-content-center">
-                      <div className="d-flex text-center row">
-                        <span className="mb-3">Cantidad</span>
-                        <div className="counter">
-                          <button
-                            className="decrement"
-                            onClick={() => handleDecrement(item)}
-                          >
-                            <MdRemove size={25} className="fw-bold" />
-                          </button>
-                          <span className="value">{item.cantidad}</span>
-                          <button
-                            className="increment"
-                            onClick={() => handleIncrement(item)}
-                          >
-                            <MdAdd size={25} />
-                          </button>
-                        </div>
+                    <div className="d-flex flex-column align-items-center col-md-6">
+                      <h5>Cantidad</h5>
+                      <div className="d-flex align-items-center">
+                        <button
+                          className="btn btn-outline-secondary me-2"
+                          onClick={() => handleDecrement(item)}
+                        >
+                          <MdRemove size={25} />
+                        </button>
+                        <span className="value">{item.cantidad}</span>
+                        <button
+                          className="btn btn-outline-secondary ms-2"
+                          onClick={() => handleIncrement(item)}
+                        >
+                          <MdAdd size={25} />
+                        </button>
                       </div>
+                    </div>
 
+                    <div className="d-flex text-center col-md-6">
                       <div className="d-flex text-center row">
                         <span>Precio por pieza:</span>
                         <h2>$ {item.precioFinal}</h2>
@@ -155,12 +167,14 @@ const Carrito = () => {
           ))}
         </div>
         {totalItemsEnCarrito > 0 && (
-          <div className="colum-add">
+          <div className="col-lg-4">
             <div className="card mt-4">
               <div className="card-body">
-                <h5 className="text-center">Informacion de compra</h5>
+                <h5 className="text-center text-uppercase fw-bold">
+                  Información de compra
+                </h5>
                 <hr className="hr-primary-cont" />
-                <table>
+                <table className="table table-borderless">
                   <tbody>
                     {Object.values(cart).map((item, index) => (
                       <tr key={index}>
@@ -172,34 +186,31 @@ const Carrito = () => {
                         </td>
                       </tr>
                     ))}
+                    <tr>
+                      <td>IVA incluido</td>
+                      <td className="text-right">${totalIVA.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Total productos ({totalItemsEnCarrito})</strong>
+                      </td>
+                      <td className="text-right">
+                        <strong>
+                          ${" "}
+                          {Object.values(cart)
+                            .reduce(
+                              (total, item) =>
+                                total + item.precioFinal * item.cantidad,
+                              0
+                            )
+                            .toFixed(2)}
+                        </strong>
+                      </td>
+                    </tr>
                   </tbody>
-                  <tr>
-                    <td>IVA incluido</td>
-                    <td className="text-right">${totalIVA.toFixed(2)}</td>
-                  </tr>
-                  <hr />
-
-                  <tr>
-                    <td>
-                      <strong>Total productos ({totalItemsEnCarrito})</strong>
-                    </td>
-                    <td className="text-right">
-                      <strong>
-                        ${" "}
-                        {Object.values(cart)
-                          .reduce(
-                            (total, item) =>
-                              total + item.precioFinal * item.cantidad,
-                            0
-                          )
-                          .toFixed(2)}
-                      </strong>
-                    </td>
-                  </tr>
                 </table>
-
-                <div className="cont-buttons text-center mt-4">
-                  <Link to="/select-address" className="btn-primary">
+                <div className="text-center mt-4">
+                  <Link to="/select-address" className="btn btn-success">
                     Continuar con la compra
                   </Link>
                 </div>
@@ -213,7 +224,7 @@ const Carrito = () => {
         isOpen={isConfirmationModalOpen}
         onClose={cancelVaciarCarrito}
         onConfirm={confirmVaciarCarrito}
-        title="¿Vaciar Carrito?"
+        title="¿VACIAR CARRITO?"
         message="¿Estás seguro de que deseas vaciar tu carrito? Esta acción no se puede deshacer."
       />
     </main>
