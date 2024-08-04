@@ -3,17 +3,17 @@ import PageTitle from "../../components/Public/PageTitle";
 
 const FAQs = () => {
   return (
-    <div className="wrapper row3 m-5">
+    <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Preguntas Frecuentes" />
 
-      <div className="container mt-3">
+      <div className="section m-5">
         <div className="row">
           <div className="col-md-12">
             <h2 className="title-pag fw-bold text-center">
               Preguntas Frecuentes
             </h2>
             <hr className="hr-primary" />
-            <div className="content">
+            <div className="content faqs">
               <h3>¿Cuánto tarda en llegar mi pedido?</h3>
               <p>
                 El tiempo de entrega varía según tu ubicación y el método de

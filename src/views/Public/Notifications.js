@@ -78,7 +78,7 @@ const Notifications = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-12">
-            <div className="mt-4">
+            <div className="mt-1">
               {notifications.map((notification) => (
                 <div
                   key={notification.notificationId}
@@ -114,7 +114,7 @@ const Notifications = () => {
                           <div className="row">
                             <div className="d-flex justify-content-end cont-not">
                               <button
-                                className="btn-info fw-bold"
+                                className="btn-info fw-bold card-notification"
                                 onClick={() =>
                                   markNotificationAsRead(
                                     notification.notificationId

@@ -81,13 +81,13 @@ const Profile = () => {
   };
 
   return (
-    <main>
+    <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Perfil de usuario" />
 
       <h3 className="title-pag fw-bold text-uppercase">Información Personal</h3>
       <hr className="hr-primary" />
       {decodedToken ? (
-        <div className="container">
+        <div className="hoc section clear m-5">
           <div className="row">
             <div className="profile-usr col-md-5">
               <h4 className="fw-bold">
@@ -241,7 +241,7 @@ const Profile = () => {
       ) : (
         <p>No hay token disponible</p>
       )}
-    </main>
+    </div>
   );
 };
 

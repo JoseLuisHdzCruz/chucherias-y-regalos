@@ -3,14 +3,14 @@ import PageTitle from '../../components/Public/PageTitle'
 
 const Cookies = () => {
   return (
-    <div className="wrapper row3 m-5">
+    <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Cookies" />
 
       <h2 className="title-pag fw-bold text-center">
         Política de Cookies
       </h2>
       <hr className="hr-primary" />
-      <main className="hoc container clear mt-3">
+      <main className="hoc section clear m-3">
         {/* main body */}
         <div className="content">
           <div id="comments">

@@ -158,159 +158,155 @@ const KeyVerifly = () => {
       );
       toast.success("Token enviado por WhatsApp exitosamente");
       setTimeout(() => {
-        navigate(`/key-verification-whatsapp/${correo}`)
+        navigate(`/key-verification-whatsapp/${correo}`);
       }, 2000);
-      
     } catch (error) {
       toast.error("Error al enviar el token por WhatsApp");
     }
   };
   return (
-    <div className="wrapper row3 m-5">
+    <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Recuperar contraseña" />
-      <div
-        className="login-page"
-        style={{ minHeight: "600px", background: "none" }}
-      >
-        <div className="login-box">
-          <div className="card card-outline card-primary">
-            <div className="card-header text-center">
-              <Link to="/" className="h1">
-                Chucherias <b>&</b> Regalos
-              </Link>
-            </div>
-            <div className="card-body">
-              <div className="row">
-                <div className="col-md-5">
-                  <img
-                    src="/images/change-password.jpg"
-                    alt=""
-                    className="img-fluid rounded-start mt-4"
-                  />
-                </div>
-                <div className="col-md-7">
-                  <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={handleSubmit}
-                    validateOnChange={true}
-                  >
-                    <Form>
-                      <p className="login-box-msg mb-1">
-                        Se le hizo llegar un codigo de verificacion a su correo
-                        electronico asociado a su cuenta, por favor introduzca
-                        su clave.
-                      </p>
+      <div className="hoc section clear m-3">
+        <div className="col-lg-12 cont-forgot">
+          <div className="col-lg-8">
+            <div className="card card-outline card-primary">
+              <div className="card-header text-center">
+                <Link to="/" className="h1">
+                  Chucherias <b>&</b> Regalos
+                </Link>
+              </div>
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-md-5 item-center">
+                    <img
+                      src="/images/change-password.jpg"
+                      alt=""
+                      className="img-fluid rounded-start mt-4 img-forgot"
+                    />
+                  </div>
+                  <div className="col-md-7">
+                    <Formik
+                      initialValues={initialValues}
+                      validationSchema={validationSchema}
+                      onSubmit={handleSubmit}
+                      validateOnChange={true}
+                    >
+                      <Form>
+                        <p className="login-box-msg mb-1">
+                          Se le hizo llegar un codigo de verificacion a su
+                          correo electronico asociado a su cuenta, por favor
+                          introduzca su clave.
+                        </p>
 
-                      <div className="form-group mb-4">
-                        <label htmlFor="correo" className="fw-bold">
-                          Su correo electronico
-                        </label>
-                        <div className="input-group mb-3">
-                          <Field
-                            type="text"
-                            className="form-control"
-                            id="correo"
-                            name="correo"
-                            value={correo}
-                            disabled
-                          />
-                          <div className="input-group-append">
-                            <div className="input-group-text">
-                              <span className="fas fa-envelope"></span>
+                        <div className="form-group mb-4">
+                          <label htmlFor="correo" className="fw-bold">
+                            Su correo electronico
+                          </label>
+                          <div className="input-group mb-3">
+                            <Field
+                              type="text"
+                              className="form-control"
+                              id="correo"
+                              name="correo"
+                              value={correo}
+                              disabled
+                            />
+                            <div className="input-group-append">
+                              <div className="input-group-text">
+                                <span className="fas fa-envelope"></span>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="form-group mb-4">
-                        <label htmlFor="clave" className="fw-bold">
-                          Ingrese su clave de verificacion
-                        </label>
-                        <div className="row">
-                          <div className="col-md-3">
-                            <Field
-                              name="digit1"
-                              type="text"
-                              maxLength={1}
-                              className="form-control text-center"
-                            />
-                            <ErrorMessage
-                              name="digit1"
-                              component="div"
-                              className="text-danger"
-                            />
-                          </div>
-                          <div className="col-md-3">
-                            <Field
-                              name="digit2"
-                              type="text"
-                              maxLength={1}
-                              className="form-control text-center"
-                            />
-                            <ErrorMessage
-                              name="digit2"
-                              component="div"
-                              className="text-danger"
-                            />
-                          </div>
-                          <div className="col-md-3">
-                            <Field
-                              name="digit3"
-                              type="text"
-                              maxLength={1}
-                              className="form-control text-center"
-                            />
-                            <ErrorMessage
-                              name="digit3"
-                              component="div"
-                              className="text-danger"
-                            />
-                          </div>
-                          <div className="col-md-3">
-                            <Field
-                              name="digit4"
-                              type="text"
-                              maxLength={1}
-                              className="form-control text-center"
-                            />
-                            <ErrorMessage
-                              name="digit4"
-                              component="div"
-                              className="text-danger"
-                            />
+                        <div className="form-group mb-4">
+                          <label htmlFor="clave" className="fw-bold">
+                            Ingrese su clave de verificacion
+                          </label>
+                          <div className="row">
+                            <div className="col-md-3">
+                              <Field
+                                name="digit1"
+                                type="text"
+                                maxLength={1}
+                                className="form-control text-center"
+                              />
+                              <ErrorMessage
+                                name="digit1"
+                                component="div"
+                                className="text-danger"
+                              />
+                            </div>
+                            <div className="col-md-3">
+                              <Field
+                                name="digit2"
+                                type="text"
+                                maxLength={1}
+                                className="form-control text-center"
+                              />
+                              <ErrorMessage
+                                name="digit2"
+                                component="div"
+                                className="text-danger"
+                              />
+                            </div>
+                            <div className="col-md-3">
+                              <Field
+                                name="digit3"
+                                type="text"
+                                maxLength={1}
+                                className="form-control text-center"
+                              />
+                              <ErrorMessage
+                                name="digit3"
+                                component="div"
+                                className="text-danger"
+                              />
+                            </div>
+                            <div className="col-md-3">
+                              <Field
+                                name="digit4"
+                                type="text"
+                                maxLength={1}
+                                className="form-control text-center"
+                              />
+                              <ErrorMessage
+                                name="digit4"
+                                component="div"
+                                className="text-danger"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="text-login">
-                        <p>¿No recibio su codigo?</p>
-                        <Link
-                          className="fw-bold"
-                          onClick={reenviarClave}
-                          disabled={isResending}
-                        >
-                          {isResending ? "Reenviando..." : "Reenviar ahora"}
-                        </Link>
-                      </div>
+                        <div className="text-login">
+                          <p>¿No recibio su codigo?</p>
+                          <Link
+                            className="fw-bold"
+                            onClick={reenviarClave}
+                            disabled={isResending}
+                          >
+                            {isResending ? "Reenviando..." : "Reenviar ahora"}
+                          </Link>
+                        </div>
 
-                      <div className="text-login">
-                        <Link
-                          className="text-primary fw-bold"
-                        >
-                          <p onClick={handleClick}>
-                            Probar por pregunta secreta
-                          </p>
-                        </Link>
-                      </div>
+                        <div className="text-login">
+                          <Link className="text-primary fw-bold">
+                            <p onClick={handleClick}>
+                              Probar por pregunta secreta
+                            </p>
+                          </Link>
+                        </div>
 
-                      <div className="cont-btn-2 mt-4 mb-4">
-                        <button type="submit" className="btn-primary">
-                          Enviar
-                        </button>
-                      </div>
-                    </Form>
-                  </Formik>
+                        <div className="cont-btn-2 mt-4 mb-4">
+                          <button type="submit" className="btn-primary">
+                            Enviar
+                          </button>
+                        </div>
+                      </Form>
+                    </Formik>
+                  </div>
                 </div>
               </div>
             </div>

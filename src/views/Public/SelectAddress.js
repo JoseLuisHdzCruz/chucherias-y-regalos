@@ -5,10 +5,7 @@ import { CartContext } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
-import {
-  MdHome,
-  MdStore
-} from "react-icons/md";
+import { MdHome, MdStore } from "react-icons/md";
 
 const SelectAddress = () => {
   const [sucursales, setSucursales] = useState([]);
@@ -127,7 +124,7 @@ const SelectAddress = () => {
     cantidad: item.cantidad, // Cantidad del producto en el carrito
     totalDV: (parseFloat(item.precioFinal) * item.cantidad).toFixed(2), // Total del detalle de venta para este producto
     IVA: item.IVA,
-    imagen: item.imagen
+    imagen: item.imagen,
   }));
 
   const Venta = {
@@ -167,79 +164,84 @@ const SelectAddress = () => {
         <hr className="hr-primary" />
       </div>
 
-      <div className="detail-product">
-        <div className="colum-detail">
+      <div className="row">
+        <div className="col-lg-8 select-address">
           <div className="card mb-3 mt-4">
             <div className="card-body">
               <div className="row">
-                <div className="col-md-1">
-                  <input
-                    type="radio"
-                    name="envio"
-                    value="domicilio"
-                    className="form-check-input ml-4"
-                    onChange={handleChangeEnvio}
-                  />
-                </div>
-                <div className="col-md-11 row ml-1">
-                  <h5
-                    className="card-title fw-bold"
-                    style={{ fontSize: "20px" }}
-                  >
-                    <MdHome size={35} color="#9087b1" className="mr-2"/> Enviar a domicilio
-                  </h5>
+                <div className="col-12">
+                  <div className="d-flex align-items-center">
+                    <input
+                      type="radio"
+                      name="envio"
+                      value="domicilio"
+                      className="form-check-input"
+                      onChange={handleChangeEnvio}
+                    />
+                    <h5
+                      className="card-title fw-bold"
+                      style={{ fontSize: "20px" }}
+                    >
+                      <MdHome size={35} color="#9087b1" className="me-2" />{" "}
+                      Enviar a domicilio
+                    </h5>
+                  </div>
                 </div>
               </div>
 
-              {mostrarDomicilios &&
-                (domicilioS.length > 0 ? (
-                  <div className="row mt-2">
-                    {domicilioS.map((domicilio, index) => (
-                      <div className="col-md-4 mb-4" key={index}>
+              {mostrarDomicilios && (
+                <div className="row mt-2">
+                  {domicilioS.length > 0 ? (
+                    domicilioS.map((domicilio, index) => (
+                      <div
+                        className="col-12 col-md-6 col-lg-4 mb-4"
+                        key={index}
+                      >
                         <div className="card h-100">
                           <div className="card-body d-flex flex-column">
                             <div className="row">
-                              <div className="col-md-1 d-flex align-items-center justify-content-center">
+                              <div className="col-1 d-flex align-items-center justify-content-center">
                                 <input
                                   type="radio"
-                                  name={`domicilio`}
+                                  name="domicilio"
                                   value={domicilio.DomicilioId}
                                   className="form-check-input"
-                                  data-cp={domicilio.CP} // Añadir el CP como un data attribute
-                                  onChange={handleSelectDomicilio} // Manejar el evento de selección
+                                  data-cp={domicilio.CP}
+                                  onChange={handleSelectDomicilio}
                                 />
                               </div>
-                              <div className="col-md-11">
+                              <div className="col-11">
                                 <h5 className="card-title fw-bold">
                                   {domicilio.Nombre}
                                 </h5>
                               </div>
                             </div>
-                            <div className="row ml-2 mr-2 flex-grow-1">
-                              <span>{domicilio.Calle}</span>
-                              <span>{domicilio.Telefono}</span>
-                              <span>{domicilio.Referencias}</span>
+                            <div className="row mt-2">
+                              <div className="col-12">
+                                <span>{domicilio.Calle}</span><br/>
+                                <span>{domicilio.Telefono}</span><br/>
+                                <span>{domicilio.Referencias}</span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="row mt-4 text-center">
-                    <p className="text-muted mt-2">
-                      Aún no tiene domicilios registrados, por favor añada uno.
-                    </p>
-                  </div>
-                ))}
-
-              <div className="row"></div>
-              <div className="row">
-                <div className="text-login">
-                  <Link to="/new-address" className="text-primary fw-bold">
-                    <p>Agregar nueva direccion</p>
-                  </Link>
+                    ))
+                  ) : (
+                    <div className="row mt-4 text-center">
+                      <p className="text-muted mt-2">
+                        Aún no tiene domicilios registrados, por favor añada
+                        uno.
+                      </p>
+                    </div>
+                  )}
                 </div>
+              )}
+
+              <div className="  mt-3">
+                <Link to="/new-address" className="text-primary fw-bold">
+                  Agregar nueva dirección
+                </Link>
               </div>
             </div>
           </div>
@@ -247,55 +249,69 @@ const SelectAddress = () => {
           <div className="card mb-3 mt-4">
             <div className="card-body">
               <div className="row">
-                <div className="col-md-1">
-                  <input
-                    type="radio"
-                    name="envio"
-                    value="sucursal"
-                    className="form-check-input ml-4"
-                    onChange={handleChangeEnvio}
-                  />
-                </div>
-                <div className="col-md-11 row ml-1">
-                  <h5
-                    className="card-title fw-bold"
-                    style={{ fontSize: "20px" }}
-                  >
-                    <MdStore size={35} color="#9087b1" className="mr-2"/> Recoger en alguna de nuestras sucursales
-                  </h5>
+                <div className="col-12">
+                  <div className="d-flex align-items-center">
+                    <input
+                      type="radio"
+                      name="envio"
+                      value="sucursal"
+                      className="form-check-input"
+                      onChange={handleChangeEnvio}
+                    />
+                    <h5
+                      className="card-title fw-bold ms-2"
+                      style={{ fontSize: "20px" }}
+                    >
+                      <MdStore size={35} color="#9087b1" className="me-2" />
+                      Recoger en alguna de nuestras sucursales
+                    </h5>
+                  </div>
                 </div>
               </div>
               {mostrarSucursales && (
                 <div className="row mt-2">
-                  {sucursales.map((sucursal, index) => (
-                    <div className="col-md-4 mb-4" key={index}>
-                      <div className="card h-100">
-                        <div className="card-body d-flex flex-column">
-                          <div className="row">
-                            <div className="col-md-1 d-flex align-items-center justify-content-center">
-                              <input
-                                type="radio"
-                                name={`sucursal`}
-                                value={sucursal.SucursalId}
-                                className="form-check-input"
-                                onChange={handleSelectSucursal}
-                              />
+                  {sucursales.length > 0 ? (
+                    sucursales.map((sucursal, index) => (
+                      <div
+                        className="col-12 col-md-6 col-lg-4 mb-4"
+                        key={index}
+                      >
+                        <div className="card h-100">
+                          <div className="card-body d-flex flex-column">
+                            <div className="row">
+                              <div className="col-1 d-flex align-items-center justify-content-center">
+                                <input
+                                  type="radio"
+                                  name="sucursal"
+                                  value={sucursal.SucursalId}
+                                  className="form-check-input"
+                                  onChange={handleSelectSucursal}
+                                />
+                              </div>
+                              <div className="col-11">
+                                <h5 className="card-title fw-bold">
+                                  {sucursal.Nombre}
+                                </h5>
+                              </div>
                             </div>
-                            <div className="col-md-11">
-                              <h5 className="card-title fw-bold">
-                                {sucursal.Nombre}
-                              </h5>
+                            <div className="row mt-2">
+                              <div className="col-12">
+                                <span>{sucursal.Calle}</span><br/>
+                                <span>{sucursal.Telefono}</span><br/>
+                                <span>{sucursal.Horario}</span>
+                              </div>
                             </div>
-                          </div>
-                          <div className="row ml-2 mr-2 mt-2 flex-grow-1">
-                            <span>{sucursal.Calle}</span>
-                            <span>{sucursal.Telefono}</span>
-                            <span>{sucursal.Horario}</span>
                           </div>
                         </div>
                       </div>
+                    ))
+                  ) : (
+                    <div className="row mt-4 text-center">
+                      <p className="text-muted mt-2">
+                        No hay sucursales disponibles.
+                      </p>
                     </div>
-                  ))}
+                  )}
                 </div>
               )}
             </div>
@@ -303,12 +319,14 @@ const SelectAddress = () => {
         </div>
 
         {totalItemsEnCarrito > 0 && (
-          <div className="colum-add">
+          <div className="col-lg-4">
             <div className="card mt-4">
               <div className="card-body">
-                <h5 className="text-center">Informacion de compra</h5>
+                <h5 className="text-center text-uppercase fw-bold">
+                  Información de compra
+                </h5>
                 <hr className="hr-primary-cont" />
-                <table>
+                <table className="table table-borderless">
                   <tbody>
                     {Object.values(cart).map((item, index) => (
                       <tr key={index}>
@@ -320,74 +338,73 @@ const SelectAddress = () => {
                         </td>
                       </tr>
                     ))}
+                    <tr>
+                      <td>IVA incluido</td>
+                      <td className="text-right">${totalIVA.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Total productos ({totalItemsEnCarrito})</strong>
+                      </td>
+                      <td className="text-right">
+                        <strong>
+                          ${" "}
+                          {Object.values(cart)
+                            .reduce(
+                              (total, item) =>
+                                total + item.precioFinal * item.cantidad,
+                              0
+                            )
+                            .toFixed(2)}
+                        </strong>
+                      </td>
+                    </tr>
                   </tbody>
-                  <tr>
-                    <td>IVA incluido</td>
-                    <td className="text-right">${totalIVA.toFixed(2)}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Total productos ({totalItemsEnCarrito})</strong>
-                    </td>
-                    <td className="text-right">
-                      <strong>
-                        ${" "}
-                        {Object.values(cart)
-                          .reduce(
-                            (total, item) =>
-                              total + item.precioFinal * item.cantidad,
-                            0
+                  <tbody>
+                    <tr>
+                      <td>
+                        <strong>Envio</strong>
+                      </td>
+                      <td className="text-right">
+                        {mostrarDomicilios ? (
+                          envio !== 0 ? (
+                            <strong>${envio}</strong>
+                          ) : (
+                            <strong>$ 0.00</strong>
                           )
-                          .toFixed(2)}
-                      </strong>
-                    </td>
-                  </tr>
-                  <hr />
-
-                  <tr>
-                    <td>
-                      <strong>Envio</strong>
-                    </td>
-                    <td className="text-right">
-                      {mostrarDomicilios ? (
-                        envio !== 0 ? (
-                          <strong>${envio}</strong>
+                        ) : mostrarSucursales ? (
+                          <strong>No aplica</strong>
                         ) : (
-                          <strong>$ 0.00</strong>
-                        )
-                      ) : mostrarSucursales ? (
-                        <strong>No aplica</strong>
-                      ) : (
-                        <span className="text-muted">
-                          Elija la forma de entrega
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Total a pagar</strong>
-                    </td>
-                    <td className="text-right">
-                      <strong>
-                        ${" "}
-                        {(
-                          Object.values(cart).reduce(
-                            (total, item) =>
-                              total + item.precioFinal * item.cantidad,
-                            0
-                          ) + parseFloat(envio)
-                        ).toFixed(2)}
-                      </strong>
-                    </td>
-                  </tr>
+                          <span className="text-muted">
+                            Elija la forma de entrega
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Total a pagar</strong>
+                      </td>
+                      <td className="text-right">
+                        <strong>
+                          ${" "}
+                          {(
+                            Object.values(cart).reduce(
+                              (total, item) =>
+                                total + item.precioFinal * item.cantidad,
+                              0
+                            ) + parseFloat(envio)
+                          ).toFixed(2)}
+                        </strong>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
-
-                <div className="cont-buttons text-center mt-4">
+                <div className="text-center mt-4">
                   <button
-                    className="btn-primary"
-                    onClick={handleProceedToPayment} // Cambiar el enlace por un botón con la función handleProceedToPayment
-                    disabled={!direccionSeleccionada && !sucursalSeleccionada} // Deshabilitar el botón si no se ha seleccionado una dirección
+                    className="btn btn-success"
+                    onClick={handleProceedToPayment}
+                    disabled={!direccionSeleccionada && !sucursalSeleccionada}
                   >
                     Proceder a pago
                   </button>

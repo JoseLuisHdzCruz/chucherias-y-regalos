@@ -4,14 +4,14 @@ import { MdChevronRight } from "react-icons/md";
 
 const Terms = () => {
   return (
-    <div className="wrapper row3 m-5">
+    <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Terminos y condiciones" />
 
       <h2 className="title-pag fw-bold text-center">
         Terminos y condiciones
       </h2>
       <hr className="hr-primary" />
-      <main className="hoc container clear mt-3">
+      <main className="hoc section clear m-3">
         {/* main body */}
         <div className="content">
           <div id="comments">

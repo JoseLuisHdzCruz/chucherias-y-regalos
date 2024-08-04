@@ -69,7 +69,9 @@ const ModalComponent = ({ show, onClose }) => {
       const user = jwtDecode(response.data.token);
       console.log(user);
 
-      const mensaje = `Inicio de sesión exitoso. Bienvenid${user.sexo === "masculino" ? 'o' : 'a'}, ${user.nombre}!`;
+      const mensaje = `Inicio de sesión exitoso. Bienvenid${
+        user.sexo === "masculino" ? "o" : "a"
+      }, ${user.nombre}!`;
       toast.success(mensaje);
       onClose();
     } catch (error) {
@@ -88,8 +90,7 @@ const ModalComponent = ({ show, onClose }) => {
           toast.error("Contraseña incorrecta.");
           setErrors({ contraseña: "La contraseña es incorrecta" });
         } else if (
-          responseData.error ===
-          "Se ha excedido el límite de intentos"
+          responseData.error === "Se ha excedido el límite de intentos"
         ) {
           toast.error(
             "Se ha excedido el límite de intentos de inicio de sesión. Por favor espere 30s para intentarlo de nuevo."
@@ -123,18 +124,25 @@ const ModalComponent = ({ show, onClose }) => {
         >
           <Form>
             <div className="row">
-              <div className="col-md-5">
-                <img
-                  src="/images/Imagen1-3n4j4J1C4-transformed (1).jpg"
-                  alt="Chucherias & Regalos"
-                  className="img-fluid rounded-start mt-4"
-                />
-              </div>
-              <div className="col-md-7">
+              <div className="item center item-responsive">
                 <h3 className="title-pag fw-bold text-uppercase">
                   INICIAR SESIÓN
                 </h3>
-                <hr className="hr-primary" />
+                <hr className="hr-primary item-responsive" />
+              </div>
+
+              <div className="col-md-5 item-center">
+                <img
+                  src="/images/Imagen1-3n4j4J1C4-transformed (1).jpg"
+                  alt="Chucherias & Regalos"
+                  className="img-fluid rounded-start mt-4 img-login"
+                />
+              </div>
+              <div className="col-md-7">
+                <h3 className="title-pag fw-bold text-uppercase item-no-responsive">
+                  INICIAR SESIÓN
+                </h3>
+                <hr className="hr-primary item-no-responsive" />
 
                 <div className="text-login">
                   <p>

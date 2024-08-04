@@ -148,12 +148,12 @@ const NewAddress = () => {
         </h3>
       )}
       <hr className="hr-primary" />
-      <div className="container">
+      <div className="section">
         <div className="row">
-          <div className="col-md-5">
+          <div className="col-md-5 item-center">
             <img
               src="/images/paqueteria-transformed.jpg"
-              className="img-fluid rounded-start mt-4"
+              className="img-fluid rounded-start mt-4 img-address"
               alt="Chucherias & Regalos"
             />
           </div>

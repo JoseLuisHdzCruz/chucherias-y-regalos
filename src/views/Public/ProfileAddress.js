@@ -47,20 +47,20 @@ const ProfileAddress = () => {
   }
 
   return (
-    <main>
+    <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Perfil de usuario" />
 
       <h3 className="title-pag fw-bold text-uppercase">
         Domicilios registrados
       </h3>
       <hr className="hr-primary" />
-      <div className="container">
+      <div className="hoc section clear m-5">
         <div className="row">
           <div className="col-md-12">
             <div className="mt-4">
               <div className="mb-4">
-                <div className="col-md-11 d-flex justify-content-end">
-                  <Link to="/new-address" className="btn-primary">
+                <div className="col-md-11 d-flex justify-content-end admin-address">
+                  <Link to="/new-address" className="btn btn-primary">
                     Agregar <MdAdd size={25} />
                   </Link>
                 </div>
@@ -99,7 +99,7 @@ const ProfileAddress = () => {
                             <Link
                               to={`/update-address/${domicilio.DomicilioId}`}
                             >
-                              <button className="btn-warning fw-bold">
+                              <button className="btn-warning fw-bold btn-update-address">
                                 Actualizar <MdUpdate size={25} />
                               </button>
                             </Link>
@@ -114,7 +114,7 @@ const ProfileAddress = () => {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

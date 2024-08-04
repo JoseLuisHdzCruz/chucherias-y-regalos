@@ -6,7 +6,7 @@ import {
   MdRemove,
   MdFilterAltOff,
   MdLocalMall,
-  MdProductionQuantityLimits
+  MdProductionQuantityLimits,
 } from "react-icons/md";
 import PageTitle from "../../components/Public/PageTitle";
 import axios from "axios";
@@ -170,13 +170,15 @@ const PurchaseHistory = () => {
     return (
       <main>
         <div className="d-flex ml-4 text-center">
-              <h2 className="text-center">No se han realizado compras por el momento</h2>
-            </div>
+          <h2 className="text-center">
+            No se han realizado compras por el momento
+          </h2>
+        </div>
 
-            <hr className="hr-primary" />
-            <div className="text-center">
-              <MdProductionQuantityLimits size={250} color="gray" />
-            </div>
+        <hr className="hr-primary" />
+        <div className="text-center">
+          <MdProductionQuantityLimits size={250} color="gray" />
+        </div>
       </main>
     );
   }
@@ -188,39 +190,28 @@ const PurchaseHistory = () => {
       <h3 className="title-pag fw-bold text-uppercase">Historial de compras</h3>
       <hr className="hr-primary" />
 
-      <div className="cont-filter mt-4">
+
+
+<div className="row item-filter">
+<div className="col-lg-10 mt-4">
         <Formik
           initialValues={filterValues}
           onSubmit={async (values, { setSubmitting }) => {
             try {
-              const response = await axios.post(
-                "https://backend-c-r-production.up.railway.app/ventas/filtroVentas",
-                {
-                  fechaInicial: values.fechaInicial,
-                  fechaFinal: values.fechaFinal,
-                  customerId: user,
-                }
-              );
+              const response = await axios.post("https://backend-c-r-production.up.railway.app/ventas/filtroVentas", {
+                fechaInicial: values.fechaInicial,
+                fechaFinal: values.fechaFinal,
+                customerId: user,
+              });
 
               const filterHistory = response.data;
 
-              // Obtener los detalles de cada compra
-              const purchaseDetailsPromises = filterHistory.map(
-                async (purchase) => {
-                  const detailResponse = await axios.get(
-                    `https://backend-c-r-production.up.railway.app/ventas/detalle/${purchase.ventaId}`
-                  );
-                  return {
-                    ...purchase,
-                    detalleVenta: detailResponse.data,
-                  };
-                }
-              );
+              const purchaseDetailsPromises = filterHistory.map(async (purchase) => {
+                const detailResponse = await axios.get(`https://backend-c-r-production.up.railway.app/ventas/detalle/${purchase.ventaId}`);
+                return { ...purchase, detalleVenta: detailResponse.data };
+              });
 
-              // Esperar a que todas las promesas se resuelvan
-              const purchaseDetails = await Promise.all(
-                purchaseDetailsPromises
-              );
+              const purchaseDetails = await Promise.all(purchaseDetailsPromises);
 
               setPurchaseHistory(purchaseDetails);
               toast.success("Se aplico el filtro de historial de compra.");
@@ -229,33 +220,24 @@ const PurchaseHistory = () => {
             }
             setSubmitting(false);
           }}
-          // Dentro del bloque validate de Formik
           validate={(values) => {
             const errors = {};
-
             const currentDate = new Date();
             const minDate = new Date("2000-01-01");
 
             if (values.fechaInicial < minDate) {
-              errors.fechaInicial =
-                "La fecha inicial no puede ser menor a 2000";
+              errors.fechaInicial = "La fecha inicial no puede ser menor a 2000";
               toast.error("La fecha inicial no puede ser menor a 2000");
             }
 
             if (values.fechaFinal > currentDate.toISOString().split("T")[0]) {
-              errors.fechaFinal =
-                "La fecha final no puede ser mayor a la fecha actual";
-              toast.error(
-                "La fecha final no puede ser mayor a la fecha actual"
-              );
+              errors.fechaFinal = "La fecha final no puede ser mayor a la fecha actual";
+              toast.error("La fecha final no puede ser mayor a la fecha actual");
             }
 
             if (values.fechaFinal < values.fechaInicial) {
-              errors.fechaFinal =
-                "La fecha final no puede ser menor a la fecha inicial";
-              toast.error(
-                "La fecha final no puede ser menor a la fecha inicial"
-              );
+              errors.fechaFinal = "La fecha final no puede ser menor a la fecha inicial";
+              toast.error("La fecha final no puede ser menor a la fecha inicial");
             }
 
             return errors;
@@ -263,35 +245,45 @@ const PurchaseHistory = () => {
         >
           {({ isSubmitting }) => (
             <Form>
-              <div className="filters mr-4">
-                <h5>Filtrar por fecha:</h5>
-                <Field type="date" name="fechaInicial" />
-                <h5>
-                  <MdRemove size={20} />
-                </h5>
-                <Field type="date" name="fechaFinal" />
-                <button
+              <div className="d-flex flex-column flex-sm-row align-items-center">
+                <h5 className="me-3">Filtrar por fecha:</h5>
+                <div className="d-flex flex-grow-1 mb-2 mb-sm-0">
+                  <Field type="date" name="fechaInicial" className="form-control me-2" />
+                  <span className="d-flex align-items-center me-2">
+                    <MdRemove size={20} />
+                  </span>
+                  <Field type="date" name="fechaFinal" className="form-control me-2" />
+                </div>
+
+              <div className="cont-btn-filter item-center">
+              <button
                   type="submit"
-                  className="btn-filter btn-info"
+                  className="btn btn-info me-2"
                   disabled={isSubmitting}
                 >
-                  <MdFilterAlt size={20} />
+                  <MdFilterAlt size={25} />
                 </button>
                 <button
                   type="button"
-                  className="btn-filter btn-danger"
+                  className="btn btn-danger"
                   onClick={handleClearFilter}
                 >
                   <MdFilterAltOff size={25} />
                 </button>
               </div>
+                
+              </div>
             </Form>
           )}
         </Formik>
       </div>
+</div>
+      
 
-      <div className="detail-product">
-        <div className="colum-detail-history">
+
+
+      <div className="row">
+        <div className="col-lg-12">
           {purchaseHistory && purchaseHistory.length > 0 ? (
             loading ? (
               <p>Cargando historial de compras...</p>
@@ -305,7 +297,35 @@ const PurchaseHistory = () => {
                   <div key={purchase.ventaId} className="card mb-3 mt-4">
                     <div className="card-body">
                       <div className="row">
-                        <div className="col-md-2">
+                        <div className="text-center item-responsive">
+                          {purchase.statusVentaId === 1 && (
+                            <span className="fw-bold">
+                              <strong>Estado de la venta: </strong>En proceso
+                            </span>
+                          )}
+                          {purchase.statusVentaId === 2 && (
+                            <span className="fw-bold">
+                              <strong>Estado de la venta: </strong>En camino
+                            </span>
+                          )}
+                          {purchase.statusVentaId === 3 && (
+                            <span className="fw-bold">
+                              <strong>Estado de la venta: </strong>Entregado
+                            </span>
+                          )}
+                          {purchase.statusVentaId === 4 && (
+                            <span className="fw-bold">
+                              <strong>Estado de la venta: </strong>En espera de
+                              recolección en sucursal
+                            </span>
+                          )}
+                          {purchase.statusVentaId === 5 && (
+                            <span className="text-danger fw-bold">
+                              <strong>Estado de la venta: </strong>Cancelada
+                            </span>
+                          )}
+                        </div>
+                        <div className="col-md-2 item-center">
                           <img
                             src={
                               purchase.detalleVenta &&
@@ -313,18 +333,17 @@ const PurchaseHistory = () => {
                                 ? purchase.detalleVenta[0].imagen
                                 : ""
                             }
-                            className="img-fluid"
+                            className="img-fluid img-purchase"
                             alt={
                               purchase.detalleVenta &&
                               purchase.detalleVenta.length > 0
                                 ? purchase.detalleVenta[0].producto
                                 : ""
                             }
-                            style={{ borderRadius: "100px" }}
                           />
                         </div>
-                        <div className="col-md-7 row ml-1">
-                          <h4 className="text-primary mt-2">
+                        <div className="col-md-7 row ml-1 purchase-products">
+                          <h4 className="text-info mt-2 item-no-responsive">
                             <strong>Productos: </strong>
                             {purchase.detalleVenta
                               .map((detalle) => detalle.producto)
@@ -340,11 +359,39 @@ const PurchaseHistory = () => {
                           <span>Total: ${purchase.total}</span>
                           <div className="cont-options">
                             <span className="text-muted">
-                              Comprado el <strong>{new Date(purchase.fecha).toLocaleDateString()}</strong>
+                              Comprado el{" "}
+                              <strong>
+                                {new Date(purchase.fecha).toLocaleDateString()}
+                              </strong>
                             </span>
                           </div>
+                          <div className="row item-responsive"> 
+                            <div className="cont-cant d-flex align-items-center justify-content-center">
+                              <button
+                                className="btn-primary my-4"
+                                onClick={() =>
+                                  openModal(purchase, purchase.ventaId)
+                                }
+                              >
+                                Ver detalle
+                              </button>
+                            </div>
+                            {(purchase.statusVentaId === 1 ||
+                              purchase.statusVentaId === 4) && (
+                              <div className="cont-cant d-flex align-items-center justify-content-center">
+                                <button
+                                  className="btn-danger"
+                                  onClick={() =>
+                                    openCancelModal(purchase.folio)
+                                  }
+                                >
+                                  Cancelar compra
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        <div className="col-md-3 aling-center-cont">
+                        <div className="col-md-3 aling-center-cont item-no-responsive">
                           <div className="row">
                             <div className="text-center">
                               {purchase.statusVentaId === 1 && (
@@ -436,7 +483,7 @@ const PurchaseHistory = () => {
                   Fecha de compra: {venta.fecha.split("T")[0]}
                 </p>
               </div>
-              <div className="col-sm-4 text-center">
+              <div className="col-sm-4 item-center item-no-responsive">
                 <MdLocalMall size={80} color="#c9c9c9" />
               </div>
             </div>

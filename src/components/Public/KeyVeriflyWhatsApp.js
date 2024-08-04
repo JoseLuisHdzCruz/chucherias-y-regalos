@@ -42,13 +42,17 @@ const KeyVeriflyWhatsApp = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://backend-c-r-production.up.railway.app/users/findPhone/${correo}`)
+    fetch(
+      `https://backend-c-r-production.up.railway.app/users/findPhone/${correo}`
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.telefono) {
           setTelefono(data.telefono); // Guarda el valor del teléfono en el estado
         } else {
-          console.log('No se encontró el número de teléfono para el correo dado');
+          console.log(
+            "No se encontró el número de teléfono para el correo dado"
+          );
         }
       })
       .catch((error) => console.error("Error fetching phone number:", error));
@@ -129,9 +133,12 @@ const KeyVeriflyWhatsApp = () => {
 
       setIsResending(true);
 
-      await axios.post("https://backend-c-r-production.up.railway.app/users/sedKeyWhatsApp", {
-        correo,
-      });
+      await axios.post(
+        "https://backend-c-r-production.up.railway.app/users/sedKeyWhatsApp",
+        {
+          correo,
+        }
+      );
 
       toast.success(`Se ha enviado a su WhatsApp el código de verificación!`);
 
@@ -159,125 +166,125 @@ const KeyVeriflyWhatsApp = () => {
   };
 
   return (
-    <div className="wrapper row3 m-5">
+    <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Recuperar contraseña" />
-      <div
-        className="login-page"
-        style={{ minHeight: "600px", background: "none" }}
-      >
-        <div className="login-box">
-          <div className="card card-outline card-primary">
-            <div className="card-header text-center">
-              <Link to="/" className="h1">
-                Chucherias <b>&</b> Regalos
-              </Link>
-            </div>
-            <div className="card-body">
-              <div className="row">
-                <div className="col-md-5">
-                  <img
-                    src="/images/sendPhone.jpg"
-                    alt=""
-                    className="img-fluid rounded-start mt-4"
-                  />
-                </div>
-                <div className="col-md-7">
-                  <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={handleSubmit}
-                    validateOnChange={true}
-                  >
-                    <Form>
-                      <p className="login-box-msg mb-1">
-                        Se le hizo llegar un codigo de verificacion por medio de WhatsApp a su número de telefono asociado a su cuenta, por favor introduzca
-                        su clave.
-                      </p>
-
-                      <div className="form-group mb-4 text-center">
-                        <p className="fw-bold">
-                          Su numero de telefono: {telefono}
+      <div className="hoc section clear m-3">
+        <div className="col-lg-12 cont-forgot">
+          <div className="col-lg-8">
+            <div className="card card-outline card-primary">
+              <div className="card-header text-center">
+                <Link to="/" className="h1">
+                  Chucherias <b>&</b> Regalos
+                </Link>
+              </div>
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-md-5 item-center">
+                    <img
+                      src="/images/sendPhone.jpg"
+                      alt=""
+                      className="img-fluid rounded-start mt-4 img-forgot"
+                    />
+                  </div>
+                  <div className="col-md-7">
+                    <Formik
+                      initialValues={initialValues}
+                      validationSchema={validationSchema}
+                      onSubmit={handleSubmit}
+                      validateOnChange={true}
+                    >
+                      <Form>
+                        <p className="login-box-msg mb-1">
+                          Se le hizo llegar un codigo de verificacion por medio
+                          de WhatsApp a su número de telefono asociado a su
+                          cuenta, por favor introduzca su clave.
                         </p>
-                      </div>
 
-                      <div className="form-group mb-4">
-                        <label htmlFor="clave" className="fw-bold">
-                          Ingrese su clave de verificacion
-                        </label>
-                        <div className="row">
-                          <div className="col-md-3">
-                            <Field
-                              name="digit1"
-                              type="text"
-                              maxLength={1}
-                              className="form-control text-center"
-                            />
-                            <ErrorMessage
-                              name="digit1"
-                              component="div"
-                              className="text-danger"
-                            />
-                          </div>
-                          <div className="col-md-3">
-                            <Field
-                              name="digit2"
-                              type="text"
-                              maxLength={1}
-                              className="form-control text-center"
-                            />
-                            <ErrorMessage
-                              name="digit2"
-                              component="div"
-                              className="text-danger"
-                            />
-                          </div>
-                          <div className="col-md-3">
-                            <Field
-                              name="digit3"
-                              type="text"
-                              maxLength={1}
-                              className="form-control text-center"
-                            />
-                            <ErrorMessage
-                              name="digit3"
-                              component="div"
-                              className="text-danger"
-                            />
-                          </div>
-                          <div className="col-md-3">
-                            <Field
-                              name="digit4"
-                              type="text"
-                              maxLength={1}
-                              className="form-control text-center"
-                            />
-                            <ErrorMessage
-                              name="digit4"
-                              component="div"
-                              className="text-danger"
-                            />
+                        <div className="form-group mb-4 text-center">
+                          <p className="fw-bold">
+                            Su numero de telefono: {telefono}
+                          </p>
+                        </div>
+
+                        <div className="form-group mb-4">
+                          <label htmlFor="clave" className="fw-bold">
+                            Ingrese su clave de verificacion
+                          </label>
+                          <div className="row">
+                            <div className="col-md-3">
+                              <Field
+                                name="digit1"
+                                type="text"
+                                maxLength={1}
+                                className="form-control text-center"
+                              />
+                              <ErrorMessage
+                                name="digit1"
+                                component="div"
+                                className="text-danger"
+                              />
+                            </div>
+                            <div className="col-md-3">
+                              <Field
+                                name="digit2"
+                                type="text"
+                                maxLength={1}
+                                className="form-control text-center"
+                              />
+                              <ErrorMessage
+                                name="digit2"
+                                component="div"
+                                className="text-danger"
+                              />
+                            </div>
+                            <div className="col-md-3">
+                              <Field
+                                name="digit3"
+                                type="text"
+                                maxLength={1}
+                                className="form-control text-center"
+                              />
+                              <ErrorMessage
+                                name="digit3"
+                                component="div"
+                                className="text-danger"
+                              />
+                            </div>
+                            <div className="col-md-3">
+                              <Field
+                                name="digit4"
+                                type="text"
+                                maxLength={1}
+                                className="form-control text-center"
+                              />
+                              <ErrorMessage
+                                name="digit4"
+                                component="div"
+                                className="text-danger"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="text-login">
-                        <p>¿No recibio su codigo?</p>
-                        <Link
-                          className="fw-bold"
-                          onClick={reenviarClave}
-                          disabled={isResending}
-                        >
-                          {isResending ? "Reenviando..." : "Reenviar ahora"}
-                        </Link>
-                      </div>
+                        <div className="text-login">
+                          <p>¿No recibio su codigo?</p>
+                          <Link
+                            className="fw-bold"
+                            onClick={reenviarClave}
+                            disabled={isResending}
+                          >
+                            {isResending ? "Reenviando..." : "Reenviar ahora"}
+                          </Link>
+                        </div>
 
-                      <div className="cont-btn-2 mt-4 mb-4">
-                        <button type="submit" className="btn-primary">
-                          Enviar
-                        </button>
-                      </div>
-                    </Form>
-                  </Formik>
+                        <div className="cont-btn-2 mt-4 mb-4">
+                          <button type="submit" className="btn-primary">
+                            Enviar
+                          </button>
+                        </div>
+                      </Form>
+                    </Formik>
+                  </div>
                 </div>
               </div>
             </div>

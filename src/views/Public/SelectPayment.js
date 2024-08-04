@@ -5,6 +5,7 @@ import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
+import { MdCreditCard, MdStorefront } from "react-icons/md";
 
 const SelectPayment = () => {
   const [venta, setVenta] = useState(null);
@@ -12,7 +13,15 @@ const SelectPayment = () => {
   const { token } = useAuth();
   const [decodedToken, setDecodedToken] = useState(null);
   const [preferenceId, setPreferenceId] = useState(null);
-  const [checkoutSessionId, setCheckoutSessionId] = useState(null);
+  const [isMercadoPagoButtonCreated, setIsMercadoPagoButtonCreated] = useState(false);
+
+  const handleMetodoPagoChange = (event) => {
+    setSelectedPayment(event.target.value);
+    if (event.target.value === "mercadoPago" && !isMercadoPagoButtonCreated) {
+      handleBuy();
+      setIsMercadoPagoButtonCreated(true);
+    }
+  };
 
   useEffect(() => {
     initMercadoPago("TEST-13eb1554-c4f9-44b9-832b-e455aabb8502", {
@@ -34,15 +43,6 @@ const SelectPayment = () => {
       setVenta(item);
     }
   }, []);
-  console.log(venta)
-
-  
-  const handleMetodoPagoChange = (event) => {
-    setSelectedPayment(event.target.value);
-    if (event.target.value === "mercadoPago") {
-      handleBuy();
-    }
-  };
 
   const handlePagarEnSucursalClick = async () => {
     try {
@@ -65,27 +65,6 @@ const SelectPayment = () => {
     } catch (error) {
       toast.error("Error al crear la venta");
       console.error("Error al crear la venta:", error);
-    }
-  };
-
-  const renderPaymentButton = () => {
-    if (selectedPayment === "mercadoPago") {
-      return (
-        preferenceId && (
-          <Wallet
-            initialization={{ preferenceId }}
-            customization={{ texts: { valueProp: "smart_option" } }}
-          />
-        )
-      );
-    } else if (selectedPayment === "pagarEnSucursal") {
-      return (
-        <button className="btn-primary" onClick={handlePagarEnSucursalClick}>
-          Pagar en la sucursal
-        </button>
-      );
-    } else {
-      return null;
     }
   };
 
@@ -143,31 +122,58 @@ const SelectPayment = () => {
         imagen: item.imagen,
       }));
 
-      console.log(items)
-  
       let shipping = null;
       if (venta.domicilioId) {
         shipping = {
           price: Math.round(venta.totalEnvio * 100),
         };
       }
-  
-      const response = await axios.post('http://localhost:5000/ventas/create-checkout-session', {
-        items,
-        shipping,
-        venta, 
-        customerId,
-        metodoPagoId: 4
-      });
 
-      console.log(venta)
-  
+      const response = await axios.post(
+        "http://localhost:5000/ventas/create-checkout-session",
+        {
+          items,
+          shipping,
+          venta,
+          customerId,
+          metodoPagoId: 4,
+        }
+      );
+
       const { id } = response.data;
-      const stripe = window.Stripe('pk_test_51Pf8IA2NI1ZNadeOLivsZnTK9wtGno4CEo8viraLEc0NBdl9CFbhubTvVVuo7gpznAfJt6mqR10IhaeVQQNutEQ500WkPoYuht');
+      const stripe = window.Stripe(
+        "pk_test_51Pf8IA2NI1ZNadeOLivsZnTK9wtGno4CEo8viraLEc0NBdl9CFbhubTvVVuo7gpznAfJt6mqR10IhaeVQQNutEQ500WkPoYuht"
+      );
       await stripe.redirectToCheckout({ sessionId: id });
     } catch (error) {
-      console.error('Error al redirigir a Stripe Checkout:', error);
-      toast.error('Error al iniciar el pago con Stripe');
+      console.error("Error al redirigir a Stripe Checkout:", error);
+      toast.error("Error al iniciar el pago con Stripe");
+    }
+  };
+
+  const renderPaymentButton = () => {
+    switch (selectedPayment) {
+      case "mercadoPago":
+        return preferenceId ? (
+          <Wallet
+            initialization={{ preferenceId }}
+            customization={{ texts: { valueProp: "smart_option" } }}
+          />
+        ) : null;
+      case "pagarEnSucursal":
+        return (
+          <button className="btn btn-success" onClick={handlePagarEnSucursalClick}>
+            <MdStorefront size={25} className="mr-2" /> Pagar en la sucursal
+          </button>
+        );
+      case "stripe":
+        return (
+          <button onClick={handleStripeCheckout} className="btn btn-success">
+            <MdCreditCard size={25} className="mr-2" /> Pagar con Tarjeta
+          </button>
+        );
+      default:
+        return null;
     }
   };
 
@@ -176,83 +182,77 @@ const SelectPayment = () => {
       <PageTitle title="Chucherías & Regalos | Carrito" />
       <h3 className="title-pag fw-bold text-uppercase">Forma de Pago</h3>
       <hr className="hr-primary" />
-      <div className="ml-4 mr-4">
-        <div className="d-flex mr-4 ml-4">
-          <h3>Elija su forma de pago</h3>
-        </div>
-        <hr className="hr-primary" />
-      </div>
 
-      <div className="detail-product">
-        <div className="colum-detail">
+      <div className="row">
+        <div className="col-lg-8">
           <div className="card mb-3 mt-4">
             <div className="card-body">
+              <h5 className="text-uppercase fw-bold">Seleccione su forma de pago</h5>
+              <hr className="hr-primary-cont" />
               <div className="row">
-                <div className="col-md-1">
-                  <input
-                    type="radio"
-                    name="metodoPago"
-                    value="mercadoPago"
-                    className="form-check-input ml-4"
-                    onChange={handleMetodoPagoChange}
-                  />
+                <div className="col-12">
+                  <div className="d-flex align-items-center">
+                    <input
+                      type="radio"
+                      name="metodoPago"
+                      value="mercadoPago"
+                      className="form-check-input"
+                      onChange={handleMetodoPagoChange}
+                    />
+                    <h5 className="card-title ms-2" style={{ fontSize: "20px" }}>
+                      <MdCreditCard size={35} color="#9087b1" className="ml-4 mr-2" /> Pagar con Mercado Pago
+                    </h5>
+                  </div>
                 </div>
-                <div className="col-md-11">
-                  <h5 className="card-title fw-bold" style={{ fontSize: "20px" }}>
-                    Pagar con Mercado Pago
-                  </h5>
+                <div className="col-12 mt-3">
+                  <div className="d-flex align-items-center">
+                    <input
+                      type="radio"
+                      name="metodoPago"
+                      value="pagarEnSucursal"
+                      className="form-check-input"
+                      onChange={handleMetodoPagoChange}
+                    />
+                    <h5 className="card-title ms-2" style={{ fontSize: "20px" }}>
+                      <MdStorefront size={35} color="#9087b1" className="ml-4 mr-2" /> Pago en la sucursal elegida
+                    </h5>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div className="card mb-3 mt-4">
-            <div className="card-body">
-              <div className="row">
-                <div className="col-md-1">
-                  <input
-                    type="radio"
-                    name="metodoPago"
-                    value="pagarEnSucursal"
-                    className="form-check-input ml-4"
-                    onChange={handleMetodoPagoChange}
-                  />
-                </div>
-                <div className="col-md-11 row ml-1">
-                  <h5 className="card-title fw-bold" style={{ fontSize: "20px" }}>
-                    Pago en efectivo en la sucursal elegida
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card mb-3 mt-4" style={{ backgroundColor: "white", borderColor: "white" }}>
-            <div className="card-body">
-              <div className="row">
-                <div className="col-md-12 row ml-1">
-                  <button onClick={handleStripeCheckout} className="btn btn-primary">
-                    Pagar con Tarjeta
-                  </button>
+                <div className="col-12 mt-3">
+                  <div className="d-flex align-items-center">
+                    <input
+                      type="radio"
+                      name="metodoPago"
+                      value="stripe"
+                      className="form-check-input"
+                      onChange={handleMetodoPagoChange}
+                    />
+                    <h5 className="card-title ms-2" style={{ fontSize: "20px" }}>
+                      <MdCreditCard size={35} color="#9087b1" className="ml-4 mr-2" /> Pagar con Tarjeta (Stripe)
+                    </h5>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
         {venta && venta.cantidad > 0 && (
-          <div className="colum-add">
+          <div className="col-lg-4">
             <div className="card mt-4">
               <div className="card-body">
-                <h5 className="text-center">Información de compra</h5>
+                <h5 className="text-center text-uppercase fw-bold">Información de compra</h5>
                 <hr className="hr-primary-cont" />
-                <table>
+                <table className="table table-borderless">
                   <tbody>
                     <tr>
                       <td><strong>Productos ({venta.cantidad})</strong></td>
                       <td className="text-right"><strong>${venta.totalProductos}</strong></td>
                     </tr>
                     <tr>
-                      <td><strong>Envío</strong></td>
+                      <td>Envío</td>
                       <td className="text-right">
-                        {venta.domicilioId ? <strong>${venta.totalEnvio}</strong> : <strong>No aplica</strong>}
+                        {venta.domicilioId ? <strong>${venta.totalEnvio}</strong> : <span>No aplica</span>}
                       </td>
                     </tr>
                     <hr />
@@ -263,7 +263,7 @@ const SelectPayment = () => {
                   </tbody>
                 </table>
                 <div className="cont-buttons text-center mt-4">
-                  <div>{renderPaymentButton()}</div>
+                  {renderPaymentButton()}
                 </div>
               </div>
             </div>

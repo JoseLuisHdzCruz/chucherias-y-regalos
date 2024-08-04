@@ -197,7 +197,7 @@ function Home({ searchResults, searchTerm }) {
                 )
                 .map((product) => (
                   <div
-                    className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+                    className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 catalog"
                     key={product.productoId}
                   >
                     <Link

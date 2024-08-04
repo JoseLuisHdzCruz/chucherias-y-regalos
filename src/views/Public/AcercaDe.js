@@ -23,8 +23,8 @@ function AcercaDe() {
   }, []);
 
   return (
-    <div className="container mt-3 mb-4">
-      <PageTitle title="Chucherias & Regalos | Acerca De" />
+    <div className="section mt-3 mb-4">
+      <div className="section m-5">
       <h3 className="title-pag fw-bold text-uppercase">Acerca de nosotros</h3>
       <hr className="hr-primary" />
 
@@ -82,6 +82,9 @@ function AcercaDe() {
           />
         </div>
       </div>
+      </div>
+      <PageTitle title="Chucherias & Regalos | Acerca De" />
+      
     </div>
   );
 }

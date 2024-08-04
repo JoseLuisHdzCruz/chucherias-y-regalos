@@ -3,14 +3,14 @@ import PageTitle from '../../components/Public/PageTitle'
 
 const PrivacyPolicy = () => {
   return (
-    <div className="wrapper row3 m-5">
+    <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Politicas de privacidad" />
 
       <h2 className="title-pag fw-bold text-center">
         Aviso de Privacidad
       </h2>
       <hr className="hr-primary" />
-      <main className="hoc container clear mt-3">
+      <main className="hoc section clear m-3">
         {/* main body */}
         <div className="content">
           <div id="comments">

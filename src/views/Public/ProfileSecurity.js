@@ -90,25 +90,25 @@ const ProfileSecurity = () => {
   };
 
   return (
-    <main>
+    <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Perfil de usuario" />
 
       <h3 className="title-pag fw-bold text-uppercase">
         Seguridad de la cuenta
       </h3>
       <hr className="hr-primary" />
-      <div className="container">
+      <div className="hoc section clear m-5">
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-4 item-center img-profile-usr">
             <img
               src="/images/forgot-password.jpg"
               alt="Recuperar contraseña"
-              className="img-fluid mt-4"
+              className="img-fluid mt-4 img-profile-usr"
             />
           </div>
           <div className="col-md-8">
             <h3 className="fw-bold">Cambiar pregunta secreta</h3>
-            <div className="container">
+            <div className="section">
               <div className="row">
                 <Formik
                   initialValues={initialValues}
@@ -196,10 +196,12 @@ const ProfileSecurity = () => {
                           className="text-danger"
                         />
                       </div>
+                      <Link to="/forgot-password" className="text-primary fw-bold mb-4 item-responsive" >Cambiar contraseña</Link>
+
                     </div>
 
-                    <div className="cont-btn">
-                      <Link to="/forgot-password" className="btn-primary" >Cambiar contraseña</Link>
+                    <div className="cont-btn btn-profile-responsive">
+                      <Link to="/forgot-password" className="btn-primary item-no-responsive" >Cambiar contraseña</Link>
                       <button type="submit" className="btn-warning" disabled={
                         !capchaValue ||
                         captchaExpired ||
@@ -217,7 +219,7 @@ const ProfileSecurity = () => {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

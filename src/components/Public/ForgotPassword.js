@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 import ReCAPTCHA from "react-google-recaptcha";
 
-
 //validaciones correspondientes al formulario de registro
 const validationEmail = Yup.object().shape({
   correo: Yup.string()
@@ -45,7 +44,10 @@ const LoginPage = () => {
       }
 
       // Enviar datos al backend para la autenticación
-      await axios.post("https://backend-c-r-production.up.railway.app/users/forgotPassword", values);
+      await axios.post(
+        "https://backend-c-r-production.up.railway.app/users/forgotPassword",
+        values
+      );
 
       // Mostrar un toast con el nombre del usuario
       toast.success(`Se a enviado a su correo el codigo de verificacion!`);
@@ -86,83 +88,88 @@ const LoginPage = () => {
     background: "none", // Agrega esta línea para quitar el fondo
   };
   return (
-    <div className="wrapper row3 m-5">
+    <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Recuperar contraseña" />
-      <div className="login-page login-style" style={loginPageStyle}>
-        <div className="login-box">
-          <div className="card card-outline card-primary">
-            <div className="card-header text-center">
-              <Link to="/" className="h1">
-                Chucherias <b>&</b> Regalos
-              </Link>
-            </div>
-            <div className="card-body">
-              <div className="row">
-                <div className="col-md-5">
-                  <img
-                    src="/images/forgot-password.jpg"
-                    alt=""
-                    className="img-fluid rounded-start mt-4"
-                  />
-                </div>
-                <div className="col-md-7">
-                  <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationEmail}
-                    onSubmit={handleSubmit}
-                    validateOnChange={true}
-                  >
-                    <Form>
-                      <p className="login-box-msg">
-                        ¿Olvidaste tu contraseña? Aquí puede recuperar
-                        fácilmente una nueva contraseña.
-                      </p>
-                      <div className="form-group mb-4">
-                        <label htmlFor="correo" className="fw-bold">
-                          Ingrese su correo electronico
-                        </label>
-                        <div className="input-group mb-3">
-                          <Field
-                            type="text"
-                            className="form-control"
-                            id="correo"
-                            name="correo"
-                            placeholder="Ingrese su correo electronico"
-                          />
-                          <div className="input-group-append">
-                            <div className="input-group-text">
-                              <span className="fas fa-envelope"></span>
+      <div className="hoc section clear m-3">
+        <div className="col-lg-12 cont-forgot">
+          <div className="col-lg-8">
+            <div className="card card-outline card-primary">
+              <div className="card-header text-center">
+                <Link to="/" className="h1">
+                  Chucherias <b>&</b> Regalos
+                </Link>
+              </div>
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-md-5 item-center">
+                    <img
+                      src="/images/forgot-password.jpg"
+                      alt=""
+                      className="img-fluid rounded-start mt-4 img-forgot"
+                    />
+                  </div>
+                  <div className="col-md-7">
+                    <Formik
+                      initialValues={initialValues}
+                      validationSchema={validationEmail}
+                      onSubmit={handleSubmit}
+                      validateOnChange={true}
+                    >
+                      <Form>
+                        <p className="login-box-msg">
+                          ¿Olvidaste tu contraseña? Aquí puede recuperar
+                          fácilmente una nueva contraseña.
+                        </p>
+                        <div className="form-group mb-4">
+                          <label htmlFor="correo" className="fw-bold">
+                            Ingrese su correo electronico
+                          </label>
+                          <div className="input-group mb-3">
+                            <Field
+                              type="text"
+                              className="form-control"
+                              id="correo"
+                              name="correo"
+                              placeholder="Ingrese su correo electronico"
+                            />
+                            <div className="input-group-append">
+                              <div className="input-group-text">
+                                <span className="fas fa-envelope"></span>
+                              </div>
                             </div>
                           </div>
+                          <ErrorMessage
+                            name="correo"
+                            component="div"
+                            className="text-danger"
+                          />
                         </div>
-                        <ErrorMessage
-                          name="correo"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
-                      <div className="form-group mt-4">
-                        <ReCAPTCHA
-                          sitekey="6LcbDGApAAAAANIKHKiUNtO-2ae77SgnoFzKXlO-"
-                          onChange={handleChange}
-                        />
-                        <ErrorMessage
-                          name="captcha"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
+                        <div className="form-group mt-4">
+                          <ReCAPTCHA
+                            sitekey="6LcbDGApAAAAANIKHKiUNtO-2ae77SgnoFzKXlO-"
+                            onChange={handleChange}
+                          />
+                          <ErrorMessage
+                            name="captcha"
+                            component="div"
+                            className="text-danger"
+                          />
+                        </div>
 
-                      <div className="cont-btn mt-4">
-                        <button onClick={handleBack} className="btn-secondary">
-                          Cancelar
-                        </button>
-                        <button type="submit" className="btn-primary">
-                          Enviar solicitud
-                        </button>
-                      </div>
-                    </Form>
-                  </Formik>
+                        <div className="cont-btn mt-4">
+                          <button
+                            onClick={handleBack}
+                            className="btn-secondary"
+                          >
+                            Cancelar
+                          </button>
+                          <button type="submit" className="btn-primary">
+                            Enviar solicitud
+                          </button>
+                        </div>
+                      </Form>
+                    </Formik>
+                  </div>
                 </div>
               </div>
             </div>

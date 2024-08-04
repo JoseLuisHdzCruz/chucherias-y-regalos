@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaBars } from "react-icons/fa";
 import Profile from "./Profile";
 import ProfileAddress from "./ProfileAddress";
 import ProfileSecurity from "./ProfileSecurity";
@@ -6,18 +7,19 @@ import { MdAccountCircle, MdAdminPanelSettings, MdHome } from "react-icons/md";
 
 const UserProfile = () => {
   const [selectedItem, setSelectedItem] = useState("Información Personal");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
+    setSidebarOpen(false); // Cierra el menú al seleccionar un elemento
   };
 
   const getItemStyle = (item) => {
     return selectedItem === item
-      ? { color: "#332e40", backgroundColor: "rgb(219 211 248)"}
+      ? { color: "#332e40", backgroundColor: "rgb(219 211 248)" }
       : { color: "black", backgroundColor: "transparent" };
   };
 
-  // Renderizar el componente seleccionado
   const renderComponent = () => {
     switch (selectedItem) {
       case "Información Personal":
@@ -31,11 +33,52 @@ const UserProfile = () => {
     }
   };
 
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
     <>
       <div className="row">
-        <div className="col-md-3">
-          <div className="sidebar bg-light">
+        <div className="col-12 d-md-none">
+          <div className="toggle-user" onClick={toggleSidebar}>
+            <span className="menu-profile-user">
+              <FaBars className="mr-4" /> Perfil de usuario
+            </span>
+          </div>
+          {sidebarOpen && (
+            <div className="dropdown-menu-user">
+              <ul className="list-unstyled mt-4">
+                <li
+                  className="dropdown-item"
+                  onClick={() => handleItemClick("Información Personal")}
+                  style={getItemStyle("Información Personal")}
+                >
+                    <MdAccountCircle size={35} className="mr-3" />
+                     Información Personal
+                </li>
+                <li
+                  className="dropdown-item"
+                  onClick={() => handleItemClick("Direcciones de envio")}
+                  style={getItemStyle("Direcciones de envio")}
+                >
+                    <MdHome size={35} className="mr-3" />
+                    Direcciones de envio
+                </li>
+                <li
+                  className="dropdown-item"
+                  onClick={() => handleItemClick("Seguridad")}
+                  style={getItemStyle("Seguridad")}
+                >
+                    <MdAdminPanelSettings size={35} className="mr-3" />
+                    Seguridad
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+        <div className="col-md-3 d-none d-md-block">
+          <div className="sidebar item-no-responsive bg-light">
             <h3 className="mt-4 mb-3 ml-4 fw-bold">PERFIL DE USUARIO</h3>
             <ul className="list-unstyled mt-4">
               <li>
@@ -83,9 +126,7 @@ const UserProfile = () => {
             </ul>
           </div>
         </div>
-        <div className="col-md-9">
-        {renderComponent()}
-        </div>
+        <div className="col-md-9">{renderComponent()}</div>
       </div>
     </>
   );
