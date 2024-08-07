@@ -123,11 +123,11 @@ function PublicHeader({ onSearch }) {
           const data = await response.json();
           setVerificacionRealizada(true);
           if (!data.sessionId) {
-            logout();
-            toast.error("La sesión ha expirado", {
-              autoClose: 2000,
-              closeOnClick: true,
-            });
+            // logout();
+            // toast.error("La sesión ha expirado", {
+            //   autoClose: 2000,
+            //   closeOnClick: true,
+            // });
           }
         } catch (error) {
           console.error("Error fetching session data:", error);
