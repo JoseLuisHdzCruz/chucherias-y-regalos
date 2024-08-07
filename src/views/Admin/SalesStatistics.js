@@ -164,7 +164,7 @@ const SalesStatistics = ({ title }) => {
       const end = formatDate(endDate);
   
       const response = await axios.get(
-        "http://localhost:5000/ventas/getAll/por-fecha",
+        "https://backend-c-r-production.up.railway.app/ventas/getAll/por-fecha",
         {
           params: {
             startDate: start,
