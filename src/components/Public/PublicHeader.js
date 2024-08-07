@@ -7,34 +7,55 @@ import SidebarMenu from "./SidebarMenu";
 import "../../styles/styles.css";
 import "../../styles/stylesResponsive.css";
 import { toast } from "react-toastify";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
 import ButtonCart from "./ButtonCart";
 import ButtonCartResponsive from "./ButtonCartResponsive";
 import axios from "axios";
+import Breadcrumbs from "./Breadcrumbs";
+import debounce from "lodash.debounce"; // Necesitas instalar lodash.debounce
 
 function PublicHeader({ onSearch }) {
   const [usuario, setUsuario] = useState(null);
   const [selectedSexo, setSelectedSexo] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [scrolled, setScrolled] = useState(false);
-  const [verificacionRealizada, setVerificacionRealizada] = useState(false);
   const { token, logout } = useAuth();
-  const [menuVisible, setMenuVisible] = useState(false);
-  const overlayRef = useRef(null);
+  const [verificacionRealizada, setVerificacionRealizada] = useState(false);
 
   const navigate = useNavigate();
+  const overlayRef = useRef(null);
+
+  const [state, setState] = useState({
+    menuVisible: false,
+    mostrarModal: false,
+    scrolled: false,
+  });
+
+  const toggleMenu = () => {
+    setState((prevState) => ({
+      ...prevState,
+      menuVisible: !prevState.menuVisible,
+    }));
+  };
+
+  const activarModal = () => {
+    setState((prevState) => ({
+      ...prevState,
+      mostrarModal: true,
+    }));
+  };
+
+  const cerrarModal = () => {
+    setState((prevState) => ({
+      ...prevState,
+      mostrarModal: false,
+    }));
+  };
 
   const handleSearch = (event) => {
     const searchTerm = event.target.value;
     setSearchTerm(searchTerm);
-    if (searchTerm !== null && searchTerm !== "") {
-      onSearch(searchTerm);
-      navigate("/");
-    } else {
-      onSearch(null);
-      event.target.value = "";
-    }
+    debounceSearch(searchTerm);
   };
 
   const limpiarBusqueda = () => {
@@ -42,15 +63,21 @@ function PublicHeader({ onSearch }) {
     onSearch(null);
   };
 
-  const toggleMenu = () => {
-    setMenuVisible(!menuVisible);
-  };
-
   const handleClickOutside = (event) => {
     if (overlayRef.current && !overlayRef.current.contains(event.target)) {
-      setMenuVisible(false);
+      setState((prevState) => ({
+        ...prevState,
+        menuVisible: false,
+      }));
     }
   };
+
+  const debounceSearch = useRef(
+    debounce((searchTerm) => {
+      onSearch(searchTerm);
+      navigate("/");
+    }, 300)
+  ).current;
 
   useEffect(() => {
     if (token) {
@@ -65,46 +92,51 @@ function PublicHeader({ onSearch }) {
 
     const handleScroll = () => {
       const currentScrollTop = window.scrollY;
-
-      if (currentScrollTop > lastScrollTop) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-
+      setState((prevState) => ({
+        ...prevState,
+        scrolled: currentScrollTop > lastScrollTop,
+      }));
       lastScrollTop = currentScrollTop;
     };
 
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener("click", handleClickOutside);
+
+    if (state.menuVisible) {
+      window.addEventListener("click", handleClickOutside);
+    } else {
+      window.removeEventListener("click", handleClickOutside);
+    }
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("click", handleClickOutside);
     };
-  }, [token, menuVisible]);
+  }, [token, state.menuVisible]);
 
   useEffect(() => {
     if (usuario && usuario.sesion && !verificacionRealizada) {
-      fetch(
-        `https://backend-c-r-production.up.railway.app/users/getSession/${usuario.sesion}`
-      )
-        .then((response) => response.json())
-        .then((data) => {
+      const fetchSessionData = async () => {
+        try {
+          const response = await fetch(
+            `https://backend-c-r-production.up.railway.app/users/getSession/${usuario.sesion}`
+          );
+          const data = await response.json();
           setVerificacionRealizada(true);
-          if (data.sessionId === 0 || data.sessionId === null) {
+          if (!data.sessionId) {
             logout();
             toast.error("La sesión ha expirado", {
               autoClose: 2000,
               closeOnClick: true,
             });
           }
-        })
-        .catch((error) =>
-          console.error("Error fetching domicilios data:", error)
-        );
+        } catch (error) {
+          console.error("Error fetching session data:", error);
+        }
+      };
+
+      fetchSessionData();
     }
-  }, [usuario, verificacionRealizada]);
+  }, [usuario]);
 
   const cerrarSesion = async () => {
     try {
@@ -125,17 +157,12 @@ function PublicHeader({ onSearch }) {
     }
   };
 
-  const [mostrarModal, setMostrarModal] = useState(false);
-
-  const activarModal = () => setMostrarModal(true);
-  const cerrarModal = () => setMostrarModal(false);
-
   return (
     <>
       <header
-        className={`header-public d-flex ${scrolled ? "hidden" : "sticky"} ${
-          menuVisible ? "show-menu" : ""
-        }`}
+        className={`header-public d-flex ${
+          state.scrolled ? "hidden" : "sticky"
+        } ${state.menuVisible ? "show-menu" : ""}`}
       >
         <div className="columna-1">
           <Link to="/">
@@ -153,6 +180,7 @@ function PublicHeader({ onSearch }) {
               id="busquedaTermino"
               placeholder="¿Qué productos buscas el día de hoy?"
               onChange={handleSearch}
+              value={searchTerm}
             />
             {searchTerm && searchTerm.length > 0 ? (
               <button onClick={limpiarBusqueda}>
@@ -164,7 +192,7 @@ function PublicHeader({ onSearch }) {
               </button>
             )}
           </div>
-          <nav className="opciones-cinta mt-3">
+          <nav className="opciones-cinta mt-2">
             <ul>
               <li className="cinta-opciones">
                 <DropdownMenu />
@@ -178,8 +206,8 @@ function PublicHeader({ onSearch }) {
               {!usuario ? (
                 <li className="cinta-opciones">
                   <a onClick={activarModal}>Iniciar sesión</a>
-                  {mostrarModal && (
-                    <ModalComponent show={mostrarModal} onClose={cerrarModal} />
+                  {state.mostrarModal && (
+                    <ModalComponent show={state.mostrarModal} onClose={cerrarModal} />
                   )}
                 </li>
               ) : (
@@ -250,23 +278,26 @@ function PublicHeader({ onSearch }) {
           onClick={toggleMenu}
           aria-label="Toggle Menu"
         >
-          {menuVisible ? <MdClose size={25} /> : <MdMenu size={25} />}
+          {state.menuVisible ? <MdClose size={25} /> : <MdMenu size={25} />}
         </button>
       </header>
 
       {/* Overlay */}
-      {menuVisible && <div className="overlay" onClick={toggleMenu}></div>}
+      {state.menuVisible && <div className="overlay" onClick={toggleMenu}></div>}
 
       {/* Sidebar Component */}
       <SidebarMenu
         activarModal={activarModal}
-        mostrarModal={mostrarModal}
+        mostrarModal={state.mostrarModal}
         cerrarModal={cerrarModal}
         cerrarSesion={cerrarSesion}
-        menuVisible={menuVisible}
+        menuVisible={state.menuVisible}
         toggleMenu={toggleMenu}
-        setMenuVisible={setMenuVisible}
+        setMenuVisible={(visible) =>
+          setState((prevState) => ({ ...prevState, menuVisible: visible }))
+        }
       />
+      <Breadcrumbs />
     </>
   );
 }

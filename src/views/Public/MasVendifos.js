@@ -187,7 +187,7 @@ function MasVendidos() {
                         <h5>{product.nombre}</h5>
                       </div>
                       <div className="cont-price mt-4">
-                        <h3 className="fw-bold">{`$ ${product.precio}`}</h3>
+                        <h3 className="fw-bold">{`$ ${product.precioFinal}`}</h3>
                       </div>
                     </div>
                   </div>

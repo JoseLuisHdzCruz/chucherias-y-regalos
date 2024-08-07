@@ -130,7 +130,7 @@ const SelectPayment = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5000/ventas/create-checkout-session",
+        "https://backend-c-r-production.up.railway.app/ventas/create-checkout-session",
         {
           items,
           shipping,

@@ -6,6 +6,19 @@
 Sidebar
 */
 
+.header-public {
+  transition: top 0.3s;
+}
+
+.header-public.hidden {
+  top: -100px; /* O el valor necesario para ocultar el header */
+}
+
+.header-public.sticky {
+  top: 0;
+}
+
+
 .page-item button{
   height: 50px;
   width: 50px;
@@ -276,15 +289,15 @@ body {
 
 header {
   background-color: #f8c6f9;
-  padding: 5px;
+  padding: 2px;
   text-align: center;
   display: flex;
   height: auto;
 }
 
 header.scrolled {
-  background-color: #f8c6f9; /* Cambia el color de fondo cuando se desplaza hacia abajo */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega sombra cuando se desplaza hacia abajo */
+  background-color: #f8c6f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {

@@ -40,7 +40,7 @@ const PublicLayout = ({ children }) => {
   return (
     <>
       <PublicHeader onSearch={handleSearch} />
-      <Breadcrumbs />
+      {/* <Breadcrumbs /> */}
 
       {React.Children.map(
         children,
