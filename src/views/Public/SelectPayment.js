@@ -6,6 +6,8 @@ import { useAuth } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import { MdCreditCard, MdStorefront } from "react-icons/md";
+import { Card } from 'primereact/card';
+        
 
 const SelectPayment = () => {
   const [venta, setVenta] = useState(null);
@@ -48,7 +50,7 @@ const SelectPayment = () => {
     try {
       const customerId = decodedToken.customerId;
       const response = await axios.post(
-        "https://backend-c-r-production.up.railway.app/ventas/",
+        "https://backend-c-r.onrender.com//ventas/",
         {
           metodoPagoId: 1,
           customerId,
@@ -87,7 +89,7 @@ const SelectPayment = () => {
       const customerId = decodedToken.customerId;
 
       const response = await axios.post(
-        "https://backend-c-r-production.up.railway.app/order/create-order",
+        "https://backend-c-r.onrender.com//order/create-order",
         {
           items,
           customerId,
@@ -130,7 +132,7 @@ const SelectPayment = () => {
       }
 
       const response = await axios.post(
-        "https://backend-c-r-production.up.railway.app/ventas/create-checkout-session",
+        "https://backend-c-r.onrender.com//ventas/create-checkout-session",
         {
           items,
           shipping,
@@ -185,7 +187,7 @@ const SelectPayment = () => {
 
       <div className="row">
         <div className="col-lg-8">
-          <div className="card mb-3 mt-4">
+          <Card className="card mb-3 mt-4">
             <div className="card-body">
               <h5 className="text-uppercase fw-bold">Seleccione su forma de pago</h5>
               <hr className="hr-primary-cont" />
@@ -234,12 +236,12 @@ const SelectPayment = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </Card>
         </div>
 
         {venta && venta.cantidad > 0 && (
           <div className="col-lg-4">
-            <div className="card mt-4">
+            <Card className="card mt-4">
               <div className="card-body">
                 <h5 className="text-center text-uppercase fw-bold">Información de compra</h5>
                 <hr className="hr-primary-cont" />
@@ -266,7 +268,7 @@ const SelectPayment = () => {
                   {renderPaymentButton()}
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         )}
       </div>

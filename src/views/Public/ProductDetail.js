@@ -6,11 +6,18 @@ import { useAuth } from "../../context/AuthContext";
 import CarruselProductos from "../../components/Public/CarruselProductos";
 import { CartContext } from "../../context/CartContext";
 import CartModal from "../../components/Public/CartModal";
-import { toast } from "react-toastify";
+import { Chip } from "primereact/chip";
+import { Card } from "primereact/card";
+import { Tag } from "primereact/tag";
+import { useAlert } from "../../context/AlertContext";
+import { Message } from "primereact/message";
+
 import LoadingSpinner from "../../components/Admin/LoadingSpinner";
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
+  const showAlert = useAlert()
+  const [categories, setCategories] = useState([]);
   const { token } = useAuth();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -19,13 +26,21 @@ const ProductDetail = () => {
 
   useEffect(() => {
     // Hacer la solicitud a la API para obtener los detalles del producto
-    fetch(`https://backend-c-r-production.up.railway.app/products/${id}`)
+    fetch(`https://backend-c-r.onrender.com//products/${id}`)
       .then((response) => response.json())
       .then((data) => setProduct(data))
       .catch((error) =>
         console.error("Error fetching product details:", error)
       );
   }, [id]);
+
+  useEffect(() => {
+    // Obtener categorías
+    fetch("https://backend-c-r.onrender.com//products/categories/getAll")
+      .then((response) => response.json())
+      .then((data) => setCategories(data))
+      .catch((error) => console.error("Error fetching categories:", error));
+  }, []);
 
   if (!product) {
     // Puedes mostrar un mensaje de carga mientras se obtienen los datos
@@ -47,7 +62,7 @@ const ProductDetail = () => {
       addToCart(product, quantity);
       setIsCartModalOpen(true); // Abrir el modal del carrito después de agregar al carrito
     } else {
-      toast.error("Para la siguiente acción debe iniciar sesión.");
+      showAlert("info", "Para la siguiente acción debe iniciar sesión.");
     }
   };
 
@@ -55,30 +70,39 @@ const ProductDetail = () => {
     setIsCartModalOpen(false); // Cerrar el modal del carrito
   };
 
+  const getCategoryName = (categoriaId) => {
+    const category = categories.find((cat) => cat.categoriaId === categoriaId);
+    return category ? category.categoria : "Sin categoría";
+  };
+
   return (
     <main>
       <PageTitle title="Chucherías & Regalos | Detalle del producto" />
-
       <h3 className="title-pag fw-bold text-uppercase">Detalle del producto</h3>
       <hr className="hr-primary my-3" /> {/* Ajustado el margen vertical */}
-
       <div className="section">
         <div className="row">
-          <div className="col-lg-6 col-md-12 mb-4 product-detail-img">
+          <div className="col-lg-5 col-md-12 mb-4 product-detail-img">
             <img
               src={product.imagen}
               className="img-fluid rounded"
               alt="Producto"
             />
           </div>
-          <div className="col-lg-6 col-md-12 mb-4">
-            <div className="card">
-              <div className="card-body">
+          <div className="col-lg-7 col-md-12 mb-4">
+            <Card className="card">
+              <div className="card-body product-detail">
+                <Tag
+                  className="mr-2 mb-2"
+                  icon="pi pi-tag"
+                  severity="secondary"
+                  value={getCategoryName(product.categoriaId)}
+                  style={{ fontSize: 15 }}></Tag>
                 <h2 className="title-product fw-bold">{product.nombre}</h2>
                 <h2 className="text-price mt-2 fw-bold">
                   $ {product.precioFinal}
                 </h2>
-                <span>IVA Incluido</span>
+                <Chip label="IVA Incluido" icon="pi pi-tag" />
                 <p className="card-text mt-4">{product.descripcion}</p>
                 <div className="d-flex flex-column align-items-center mt-4">
                   <h5 className="text-center">
@@ -119,9 +143,7 @@ const ProductDetail = () => {
                         </button>
                       </div>
                       {quantity && quantity > product.existencia && (
-                        <span className="text-danger text-center d-block mt-2">
-                          Productos en existencia insuficientes
-                        </span>
+                        <Message severity="info" text="Productos en existencia insuficientes" className="mt-4" />
                       )}
                     </>
                   ) : (
@@ -131,10 +153,11 @@ const ProductDetail = () => {
                   )}
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
-        <CarruselProductos className="mb-4" /> {/* Ajustado el margen inferior */}
+        <CarruselProductos className="mb-4" />{" "}
+        {/* Ajustado el margen inferior */}
       </div>
       <CartModal isOpen={isCartModalOpen} onClose={handleCloseCartModal} />
     </main>

@@ -17,15 +17,14 @@ function Ofertas() {
     // Obtener la fecha actual
     const fechaActual = new Date().toISOString().split("T")[0];
     fetch(
-      `https://backend-c-r-production.up.railway.app/products/promos/${fechaActual}`
+      `https://backend-c-r.onrender.com//products/promos/${fechaActual}`
     )
       .then((response) => response.json())
       .then((data) => {
         setPromos(data);
-        console.log(data); // Asegúrate de que promos tenga datos aquí
         if (data.length > 0) {
           fetch(
-            `https://backend-c-r-production.up.railway.app/products/categoria/${data[0].categoriaId}`
+            `https://backend-c-r.onrender.com//products/categoria/${data[0].categoriaId}`
           ) // Aquí asumo que solo estás usando la categoría del primer producto de promos, ajusta según tus necesidades
             .then((response) => response.json())
             .then((data) => {

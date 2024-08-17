@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/Public/PageTitle";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
-import { toast } from "react-toastify";
 import axios from "axios";
+import { FileUpload } from "primereact/fileupload";
+import { useAlert } from "../../context/AlertContext";
 
 const Profile = () => {
-  const { token } = useAuth();
-  const [decodedToken, setDecodedToken] = useState(null);
+  const { token } = useAuth();  
+  const fileUploadRef = useRef(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const showAlert = useAlert();
+  const [customer, setCustomer] = useState(null);
   const [selectedSexo, setSelectedSexo] = useState("");
   const [edad, setEdad] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
 
   const navigate = useNavigate();
 
@@ -20,18 +23,35 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    if (token) {
-      const decoded = jwtDecode(token);
-      setDecodedToken(decoded);
+    const fetchCustomerData = async () => {
+      try {
+        if (token) {
+          const decoded = jwtDecode(token);
 
-      // Establece el sexo seleccionado igual al sexo del token decodificado
-      setSelectedSexo(decoded.sexo);
+          // Establece el sexo seleccionado igual al sexo del token decodificado
+          setSelectedSexo(decoded.sexo);
 
-      // Calcula la edad actual del usuario a partir de la fecha de nacimiento en el token
-      const fechaNacimiento = new Date(decoded.edad);
-      const edadActual = calcularEdad(fechaNacimiento);
-      setEdad(edadActual);
-    }
+          // Calcula la edad actual del usuario a partir de la fecha de nacimiento en el token
+          const fechaNacimiento = new Date(decoded.edad);
+          const edadActual = calcularEdad(fechaNacimiento);
+
+          // Llamada a la API para obtener los datos del usuario
+          const response = await axios.get(
+            `https://backend-c-r.onrender.com//users/${decoded.customerId}`
+          );
+
+          // Actualiza el estado con los datos del usuario
+          setCustomer(response.data);
+
+          // Actualiza el estado de la edad
+          setEdad(edadActual);
+        }
+      } catch (error) {
+        console.error("Error al obtener el usuario", error);
+      }
+    };
+
+    fetchCustomerData();
   }, [token]);
 
   // Función para calcular la edad a partir de la fecha de nacimiento
@@ -49,31 +69,29 @@ const Profile = () => {
     return edad;
   };
 
-  // Función para manejar la carga de la imagen
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedImage(file);
-  };
+  // Función personalizada para manejar la carga de la imagen
+  const customBase64Uploader = async (event) => {
+    const file = event.files[0];
+    const formData = new FormData();
+    formData.append("imagen", file); // Cambiado de "image" a "imagen" para que coincida con la clave esperada en el servidor
 
-  // Función para enviar la imagen a la API
-  const uploadImage = async () => {
     try {
-      const formData = new FormData();
-      formData.append("imagen", selectedImage); // Cambiado de "image" a "imagen" para que coincida con la clave esperada en el servidor
-
-      const response = await axios.post(
-        `https://backend-c-r-production.up.railway.app/users/usuario/${decodedToken.customerId}/imagen`,
+      const response = await axios.put(
+        `https://backend-c-r.onrender.com//users/banner/${customer.customerId}`,
         formData
       );
 
       if (response.status === 200) {
-        // Manejar la respuesta de la API, por ejemplo, actualizar la imagen en el estado
-        toast.success("Imagen subida exitosamente");
-        console.log("Imagen subida exitosamente", response.data);
+        // Limpia el componente FileUpload
+        if (fileUploadRef.current) {
+          fileUploadRef.current.clear();
+        }
+        showAlert("success", "Imagen subida exitosamente");
+        setUploadedImage(response.data.imagen);
       } else {
         // Manejar errores de la API
         console.error("Error al subir la imagen");
-        toast.error("Error al subir la imagen");
+        showAlert("error", "Error al subir la imagen");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -86,61 +104,45 @@ const Profile = () => {
 
       <h3 className="title-pag fw-bold text-uppercase">Información Personal</h3>
       <hr className="hr-primary" />
-      {decodedToken ? (
+      {customer ? (
         <div className="hoc section clear m-5">
           <div className="row">
             <div className="profile-usr col-md-5">
               <h4 className="fw-bold">
-                {decodedToken.nombre} {decodedToken.aPaterno}{" "}
-                {decodedToken.aMaterno}
+                {customer.nombre} {customer.aPaterno} {customer.aMaterno}
               </h4>
 
-              {decodedToken.imagen !== null ? (
+              {uploadedImage ? (
                 <img
-                  src={decodedToken.imagen}
-                  className="img-fluid mt-2"
-                  alt="Chucherias & Regalos"
-                />
-              ) : selectedSexo === "masculino" ? (
-                <img
-                  src="/images/user-masculino.png"
+                  src={uploadedImage}
                   className="img-fluid mt-2"
                   alt="Chucherias & Regalos"
                 />
               ) : (
+                // Mostrar la imagen predeterminada o la imagen del usuario si no hay una imagen cargada
                 <img
-                  src="/images/OIP (1).jpg"
+                  src={
+                    customer.imagen !== null
+                      ? customer.imagen
+                      : selectedSexo === "masculino"
+                      ? "/images/user-masculino.png"
+                      : "/images/OIP (1).jpg"
+                  }
                   className="img-fluid mt-2"
                   alt="Chucherias & Regalos"
                 />
               )}
-
-              {/* <div className="row text-center">
-                <span
-                  className="fw-bold mb-2"
-                  style={{
-                    color: "blue",
-                    fontSize: "20px",
-                  }}
-                >
-                  Actualizar foto de perfil
-                </span>
-                <div className="row col-md-12">
-                  <div className="row col-md-9">
-                    <input
-                      type="file"
-                      accept="imagen/*"
-                      className="form-control"
-                      onChange={handleImageChange}
-                    />
-                  </div>
-                  <div className="row col-md-3">
-                    <button onClick={uploadImage} className="btn btn-primary">
-                      Subir
-                    </button>
-                  </div>
-                </div>
-              </div> */}
+              <FileUpload
+                ref={fileUploadRef}
+                mode="basic"
+                name="imagen"
+                url={`https://backend-c-r.onrender.com//users/usuario/${customer.customerId}/imagen`}
+                accept="image/*"
+                customUpload
+                uploadHandler={customBase64Uploader}
+                chooseLabel="Selecciona una imagen"
+                className="mt-4"
+              />
             </div>
 
             <div className="col-md-7 mt-2">
@@ -155,7 +157,7 @@ const Profile = () => {
                   className="form-control"
                   id="Name"
                   placeholder="Nombre y apellidos"
-                  value={`${decodedToken.nombre} ${decodedToken.aPaterno} ${decodedToken.aMaterno}`}
+                  value={`${customer.nombre} ${customer.aPaterno} ${customer.aMaterno}`}
                   readOnly
                 />
               </div>
@@ -169,7 +171,7 @@ const Profile = () => {
                   className="form-control"
                   id="Email"
                   placeholder="Email"
-                  value={`${decodedToken.correo}`}
+                  value={`${customer.correo}`}
                   readOnly
                 />
               </div>
@@ -184,7 +186,7 @@ const Profile = () => {
                     className="form-control"
                     id="Telefono"
                     placeholder="Telefono"
-                    value={`${decodedToken.telefono}`}
+                    value={`${customer.telefono}`}
                     readOnly
                   />
                 </div>
@@ -223,17 +225,10 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* <div className="text-login mb-4">
-                    <Link to="/forgot -password" className="fw-bold">
-                      Cambiar contraseña
-                    </Link>
-                  </div> */}
-
               <div className="cont-btn mt-4">
                 <button className="btn-secondary" onClick={handleBack}>
                   Regresar
                 </button>
-                {/* <button className="btn-warning">Actualizar <MdUpdate size={25}/></button> */}
               </div>
             </div>
           </div>

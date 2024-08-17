@@ -47,7 +47,7 @@ const ProfileSecurity = () => {
   const fetchData = async (customerId) => {
     try {
       const response = await axios.get(
-        `https://backend-c-r-production.up.railway.app/users/${customerId}`
+        `https://backend-c-r.onrender.com//users/${customerId}`
       );
 
       setPreguntaSecreta(response.data.preguntaSecreta);
@@ -71,7 +71,7 @@ const ProfileSecurity = () => {
         return;
       }
 
-      const response = await axios.put(`https://backend-c-r-production.up.railway.app/users/updateUser/${decodedToken.customerId}`, {
+      const response = await axios.put(`https://backend-c-r.onrender.com//users/updateUser/${decodedToken.customerId}`, {
         respuestaPSecreta: values.respuesta,
         preguntaSecreta,
       });
@@ -101,9 +101,10 @@ const ProfileSecurity = () => {
         <div className="row">
           <div className="col-md-4 item-center img-profile-usr">
             <img
-              src="/images/forgot-password.jpg"
+              src="/images/ChangePassword.jpg"
               alt="Recuperar contraseña"
               className="img-fluid mt-4 img-profile-usr"
+              style={{borderRadius:10}}
             />
           </div>
           <div className="col-md-8">

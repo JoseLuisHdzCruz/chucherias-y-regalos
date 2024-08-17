@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import { MdHome, MdStore } from "react-icons/md";
+import { Card } from "react-bootstrap";
 
 const SelectAddress = () => {
   const [sucursales, setSucursales] = useState([]);
@@ -35,7 +36,7 @@ const SelectAddress = () => {
 
       // Obtener sucursales
       fetch(
-        "https://backend-c-r-production.up.railway.app/address/get-sucursal"
+        "https://backend-c-r.onrender.com//address/get-sucursal"
       )
         .then((response) => response.json())
         .then((data) => setSucursales(data))
@@ -45,7 +46,7 @@ const SelectAddress = () => {
 
       // Obtener domicilios
       fetch(
-        `https://backend-c-r-production.up.railway.app/address/get-domicilio/${UserId}`
+        `https://backend-c-r.onrender.com//address/get-domicilio/${UserId}`
       )
         .then((response) => response.json())
         .then((data) => setDomicilios(data))
@@ -72,7 +73,7 @@ const SelectAddress = () => {
       const selectedCPValue = event.target.dataset.cp;
       console.log(selectedCPValue);
       const response = await fetch(
-        `https://backend-c-r-production.up.railway.app/address/get-colonias/${selectedCPValue}`
+        `https://backend-c-r.onrender.com//address/get-colonias/${selectedCPValue}`
       );
       if (!response.ok) {
         throw new Error(
@@ -166,7 +167,7 @@ const SelectAddress = () => {
 
       <div className="row">
         <div className="col-lg-8 select-address">
-          <div className="card mb-3 mt-4">
+          <Card className="card mb-3 mt-4">
             <div className="card-body">
               <div className="row">
                 <div className="col-12">
@@ -197,7 +198,7 @@ const SelectAddress = () => {
                         className="col-12 col-md-6 col-lg-4 mb-4"
                         key={index}
                       >
-                        <div className="card h-100">
+                        <Card className="card h-100">
                           <div className="card-body d-flex flex-column">
                             <div className="row">
                               <div className="col-1 d-flex align-items-center justify-content-center">
@@ -224,7 +225,7 @@ const SelectAddress = () => {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </Card>
                       </div>
                     ))
                   ) : (
@@ -244,9 +245,9 @@ const SelectAddress = () => {
                 </Link>
               </div>
             </div>
-          </div>
+          </Card>
 
-          <div className="card mb-3 mt-4">
+          <Card className="card mb-3 mt-4">
             <div className="card-body">
               <div className="row">
                 <div className="col-12">
@@ -276,7 +277,7 @@ const SelectAddress = () => {
                         className="col-12 col-md-6 col-lg-4 mb-4"
                         key={index}
                       >
-                        <div className="card h-100">
+                        <Card className="card h-100">
                           <div className="card-body d-flex flex-column">
                             <div className="row">
                               <div className="col-1 d-flex align-items-center justify-content-center">
@@ -302,7 +303,7 @@ const SelectAddress = () => {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </Card>
                       </div>
                     ))
                   ) : (
@@ -315,12 +316,12 @@ const SelectAddress = () => {
                 </div>
               )}
             </div>
-          </div>
+          </Card>
         </div>
 
         {totalItemsEnCarrito > 0 && (
           <div className="col-lg-4">
-            <div className="card mt-4">
+            <Card className="card mt-4">
               <div className="card-body">
                 <h5 className="text-center text-uppercase fw-bold">
                   Información de compra
@@ -410,7 +411,7 @@ const SelectAddress = () => {
                   </button>
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         )}
       </div>

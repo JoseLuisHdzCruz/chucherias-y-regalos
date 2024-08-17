@@ -23,7 +23,7 @@ const SalesStatistics = ({ title }) => {
   const fetchMonthlySales = async () => {
     try {
       const response = await axios.get(
-        "https://backend-c-r-production.up.railway.app/ventas/",
+        "https://backend-c-r.onrender.com//ventas/",
         {
           params: {
             startDate,
@@ -57,7 +57,7 @@ const SalesStatistics = ({ title }) => {
   const fetchProductDetails = async () => {
     try {
       const response = await axios.get(
-        "https://backend-c-r-production.up.railway.app/ventas/getAllDetailSale"
+        "https://backend-c-r.onrender.com//ventas/getAllDetailSale"
       );
       const productDetails = response.data;
 
@@ -164,7 +164,7 @@ const SalesStatistics = ({ title }) => {
       const end = formatDate(endDate);
   
       const response = await axios.get(
-        "https://backend-c-r-production.up.railway.app/ventas/getAll/por-fecha",
+        "https://backend-c-r.onrender.com//ventas/getAll/por-fecha",
         {
           params: {
             startDate: start,

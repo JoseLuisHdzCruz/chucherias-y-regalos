@@ -6,17 +6,21 @@ import ModalComponent from "./Modal";
 import SidebarMenu from "./SidebarMenu";
 import "../../styles/styles.css";
 import "../../styles/stylesResponsive.css";
-import { toast } from "react-toastify";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
 import ButtonCart from "./ButtonCart";
 import ButtonCartResponsive from "./ButtonCartResponsive";
-import axios from "axios";
+// import axios from "axios";
 import Breadcrumbs from "./Breadcrumbs";
-import debounce from "lodash.debounce"; // Necesitas instalar lodash.debounce
+import axios from "axios";
+import debounce from "lodash.debounce"; // Necesitas instalar uslodash.debounce
+import { Avatar } from "primereact/avatar";
+import { Chip } from "primereact/chip";
+import { useAlert } from "../../context/AlertContext";
 
 function PublicHeader({ onSearch }) {
-  const [usuario, setUsuario] = useState(null);
+  const [customer, setCustomer] = useState(null);
+  const showAlert = useAlert()
   const [selectedSexo, setSelectedSexo] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const { token, logout } = useAuth();
@@ -80,13 +84,28 @@ function PublicHeader({ onSearch }) {
   ).current;
 
   useEffect(() => {
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUsuario(decoded);
-      setSelectedSexo(decoded.sexo);
-    } else {
-      setUsuario(null);
+    const fetchCustomerData = async () => {
+    try{
+      if (token) {
+        const decoded = jwtDecode(token);
+        setSelectedSexo(decoded.sexo);
+  
+        // Llamada a la API para obtener los datos del usuario
+        const response = await axios.get(
+          `https://backend-c-r.onrender.com//users/${decoded.customerId}`
+        );
+  
+        // Actualiza el estado con los datos del usuario
+        setCustomer(response.data);
+      } else {
+        setCustomer(null);
+      }
     }
+    catch (error) {
+      console.error("Error al obtener el usuario", error);
+
+    }}
+    
 
     let lastScrollTop = 0;
 
@@ -106,6 +125,7 @@ function PublicHeader({ onSearch }) {
     } else {
       window.removeEventListener("click", handleClickOutside);
     }
+    fetchCustomerData();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -114,11 +134,11 @@ function PublicHeader({ onSearch }) {
   }, [token, state.menuVisible]);
 
   useEffect(() => {
-    if (usuario && usuario.sesion && !verificacionRealizada) {
+    if (customer && customer.sesion && !verificacionRealizada) {
       const fetchSessionData = async () => {
         try {
           const response = await fetch(
-            `https://backend-c-r-production.up.railway.app/users/getSession/${usuario.sesion}`
+            `https://backend-c-r.onrender.com//users/getSession/${customer.sesion}`
           );
           const data = await response.json();
           setVerificacionRealizada(true);
@@ -136,24 +156,23 @@ function PublicHeader({ onSearch }) {
 
       fetchSessionData();
     }
-  }, [usuario]);
+  }, [customer]);
 
   const cerrarSesion = async () => {
     try {
-      await axios.post(
-        "https://backend-c-r-production.up.railway.app/users/logout",
-        { sessionId: usuario.sesion }
-      );
+      // await axios.post("https://backend-c-r.onrender.com//users/logout", {
+      //   sessionId: usuario.sesion,
+      // });
 
       logout();
 
-      toast.error("Cierre de sesión exitoso. ¡Hasta pronto!");
+      showAlert('success', 'Cierre de sesión exitoso. ¡Hasta pronto!');
       setTimeout(() => {
         window.location.href = "/";
       }, 3000);
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
-      toast.error("Error al cerrar sesión.");
+      showAlert('error', 'Error al cerrar sesión.');
     }
   };
 
@@ -203,11 +222,14 @@ function PublicHeader({ onSearch }) {
               <li className="cinta-opciones">
                 <Link to="/mas-vendidos">Más vendidos</Link>
               </li>
-              {!usuario ? (
+              {!customer ? (
                 <li className="cinta-opciones">
                   <a onClick={activarModal}>Iniciar sesión</a>
                   {state.mostrarModal && (
-                    <ModalComponent show={state.mostrarModal} onClose={cerrarModal} />
+                    <ModalComponent
+                      show={state.mostrarModal}
+                      onClose={cerrarModal}
+                    />
                   )}
                 </li>
               ) : (
@@ -224,49 +246,53 @@ function PublicHeader({ onSearch }) {
           </nav>
         </div>
         <div className="columna" style={{ width: "25%" }}>
-          <div className="profile">
-            {!usuario ? (
-              <img
-                className="logo-user rounded-image"
-                src="/images/user.png"
-                alt="Banner de Usuario"
+          <div className="profile mb-2">
+            {!customer ? (
+              <Avatar
+                image="/images/user.png"
+                className="mr-1"
+                size="large"
+                shape="circle"
               />
-            ) : usuario && usuario.imagen !== null ? (
-              <img
-                src={usuario.imagen}
-                className="img-fluid mt-2 rounded-image"
-                alt="Chucherias & Regalos"
+            ) : customer && customer.imagen !== null ? (
+              <Avatar
+                image={customer.imagen}
+                className="mr-1"
+                size="large"
+                shape="circle"
               />
             ) : selectedSexo === "masculino" ? (
-              <img
-                src="/images/user-masculino.png"
-                className="logo-user rounded-image"
-                alt="Chucherias & Regalos"
+              <Avatar
+                image="/images/user-masculino.png"
+                className="mr-1"
+                size="large"
+                shape="circle"
               />
             ) : (
-              <img
-                src="/images/OIP (1).jpg"
-                className="logo-user rounded-image"
-                alt="Chucherias & Regalos"
+              <Avatar
+                image="/images/OIP (1).jpg"
+                className="mr-1"
+                size="large"
+                shape="circle"
               />
             )}
 
-            {usuario ? (
+            {customer ? (
               <>
                 <div className="perfil">
-                  <div className="row">
-                    <span className="text-idUser">ID: {usuario.sesion}</span>
-                  </div>
+                  {/* <div className="row">
+                    <span className="text-idUser">ID: {customer.sesion}</span>
+                  </div> */}
                   <div className="row">
                     <Link className="text-user" to="/user-profile" pointer>
-                      {usuario.nombre}
+                      <Chip label={`${customer.nombre} ${customer.aPaterno}`} className="fw-bold" />
                     </Link>
                   </div>
                 </div>
               </>
             ) : (
-              <Link className="text-user" to="/user-profile" pointer>
-                Usuario
+              <Link className="text-user" onClick={activarModal} pointer>
+                <Chip label={"Iniciar sesión"} className="fw-bold"/>
               </Link>
             )}
           </div>
@@ -283,7 +309,9 @@ function PublicHeader({ onSearch }) {
       </header>
 
       {/* Overlay */}
-      {state.menuVisible && <div className="overlay" onClick={toggleMenu}></div>}
+      {state.menuVisible && (
+        <div className="overlay" onClick={toggleMenu}></div>
+      )}
 
       {/* Sidebar Component */}
       <SidebarMenu

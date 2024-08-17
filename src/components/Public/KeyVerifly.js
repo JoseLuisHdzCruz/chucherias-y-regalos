@@ -1,104 +1,74 @@
 import React, { useState } from "react";
 import PageTitle from "./PageTitle";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Link, useNavigate } from "react-router-dom"; // Importar Link desde react-router-dom
-import * as Yup from "yup";
+import { Formik, Form, Field, useField } from "formik";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { Card } from "primereact/card";
+import { InputOtp } from 'primereact/inputotp'; // Importar InputOtp de PrimeReact
 
-const validationSchema = Yup.object().shape({
-  digit1: Yup.string()
-    .matches(/^\d+$/, "Solo se permiten números")
-    .length(1, "Debe tener exactamente un dígito")
-    .required("Este campo es obligatorio"),
-  digit2: Yup.string()
-    .matches(/^\d+$/, "Solo se permiten números")
-    .length(1, "Debe tener exactamente un dígito")
-    .required("Este campo es obligatorio"),
-  digit3: Yup.string()
-    .matches(/^\d+$/, "Solo se permiten números")
-    .length(1, "Debe tener exactamente un dígito")
-    .required("Este campo es obligatorio"),
-  digit2: Yup.string()
-    .matches(/^\d+$/, "Solo se permiten números")
-    .length(1, "Debe tener exactamente un dígito")
-    .required("Este campo es obligatorio"),
-  digit3: Yup.string()
-    .matches(/^\d+$/, "Solo se permiten números")
-    .length(1, "Debe tener exactamente un dígito")
-    .required("Este campo es obligatorio"),
-  digit4: Yup.string()
-    .matches(/^\d+$/, "Solo se permiten números")
-    .length(1, "Debe tener exactamente un dígito")
-    .required("Este campo es obligatorio"),
-});
+// Componente de InputOtp con integración con Formik
+const FormikInputOtp = ({ name, ...props }) => {
+  const [field, meta, helpers] = useField(name);
+  
+  const handleChange = (e) => {
+    helpers.setValue(e.value); // Actualizar el valor en Formik
+  };
+
+  return (
+    <>
+      <InputOtp
+        value={field.value}
+        onChange={handleChange}
+        {...props}
+      />
+      {meta.touched && meta.error ? (
+        <div className="text-danger">{meta.error}</div>
+      ) : null}
+    </>
+  );
+};
 
 const KeyVerifly = () => {
   const [isResending, setIsResending] = useState(false);
   const [isCooldown, setIsCooldown] = useState(false);
-
   const { correo } = useParams();
   const navigate = useNavigate();
 
-  // Valores por defecto de los campos de contraseña
   const initialValues = {
-    digit1: "",
-    digit2: "",
-    digit3: "",
-    digit4: "",
+    otp: "",
   };
 
-  // Función para manejar el envío del formulario
   const handleSubmit = async (values, { setSubmitting }) => {
-    // Concatenar los valores de los campos digit1 a digit4 para formar la clave
-    const clave = values.digit1 + values.digit2 + values.digit3 + values.digit4;
-
+    console.log(values.otp);
     try {
-      // Enviar la solicitud POST a la API
       const response = await axios.post(
-        "https://backend-c-r-production.up.railway.app/users/keyCompare",
+        "https://backend-c-r.onrender.com//users/keyCompare",
         {
           correo: correo,
-          clave: clave,
+          clave: values.otp,
         }
       );
 
-      // Manejar la respuesta de la API
-      console.log("Respuesta de la API:", response.data);
-
-      // Verificar si la clave se verificó con éxito
       if (response.data.success) {
-        // Mostrar un mensaje de éxito al usuario
         toast.success(response.data.message);
         setTimeout(() => {
           navigate(`/change-password/${correo}`);
         }, 3000);
       } else {
-        // Mostrar un mensaje de error al usuario
         toast.error(response.data.message);
       }
     } catch (error) {
-      // Manejar los errores
       console.error("Error al consumir la API:", error);
-      // Mostrar un mensaje de error al usuario
       if (error.response) {
-        // Error de respuesta del servidor
         const responseData = error.response.data;
         if (responseData.message) {
-          // Mostrar mensaje del servidor si está disponible
           toast.error(responseData.message);
         } else {
-          // Mostrar mensaje de error genérico
-          toast.error(
-            "Error al verificar la clave. Por favor, inténtalo de nuevo."
-          );
+          toast.error("Error al verificar la clave. Por favor, inténtalo de nuevo.");
         }
       } else {
-        // Error de red u otro error
-        toast.error(
-          "Error al conectar con el servidor. Por favor, inténtalo de nuevo más tarde."
-        );
+        toast.error("Error al conectar con el servidor. Por favor, inténtalo de nuevo más tarde.");
       }
     } finally {
       setSubmitting(false);
@@ -108,25 +78,22 @@ const KeyVerifly = () => {
   const reenviarClave = async () => {
     try {
       if (isCooldown) {
-        toast.warning(
-          "Por favor, espere 5 minutos antes de volver a intentarlo."
-        );
+        toast.warning("Por favor, espere 5 minutos antes de volver a intentarlo.");
         return;
       }
 
       setIsResending(true);
 
       await axios.post(
-        "https://backend-c-r-production.up.railway.app/users/forgotPassword",
+        "https://backend-c-r.onrender.com//users/forgotPassword",
         {
           correo,
         }
       );
 
       toast.success(`Se ha enviado a su correo el código de verificación!`);
-
       setIsCooldown(true);
-      setTimeout(() => setIsCooldown(false), 5 * 60 * 1000); // Establece un tiempo de espera de 5 minutos antes de que se pueda reenviar nuevamente
+      setTimeout(() => setIsCooldown(false), 5 * 60 * 1000);
     } catch (error) {
       console.error(error);
       if (error.response) {
@@ -134,14 +101,10 @@ const KeyVerifly = () => {
         if (responseData.error) {
           toast.error(responseData.error);
         } else {
-          toast.error(
-            "Error al reenviar la clave. Por favor, inténtalo de nuevo."
-          );
+          toast.error("Error al reenviar la clave. Por favor, inténtalo de nuevo.");
         }
       } else {
-        toast.error(
-          "Error de conexión. Por favor, verifica tu conexión a Internet e inténtalo de nuevo."
-        );
+        toast.error("Error de conexión. Por favor, verifica tu conexión a Internet e inténtalo de nuevo.");
       }
     } finally {
       setIsResending(false);
@@ -151,7 +114,7 @@ const KeyVerifly = () => {
   const handleClick = async () => {
     try {
       await axios.post(
-        "https://backend-c-r-production.up.railway.app/users/sedKeyWhatsApp",
+        "https://backend-c-r.onrender.com//users/sedKeyWhatsApp",
         {
           correo: correo,
         }
@@ -164,13 +127,14 @@ const KeyVerifly = () => {
       toast.error("Error al enviar el token por WhatsApp");
     }
   };
+
   return (
     <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Recuperar contraseña" />
       <div className="hoc section clear m-3">
         <div className="col-lg-12 cont-forgot">
           <div className="col-lg-8">
-            <div className="card card-outline card-primary">
+            <Card className="card card-outline card-primary">
               <div className="card-header text-center">
                 <Link to="/" className="h1">
                   Chucherias <b>&</b> Regalos
@@ -180,7 +144,7 @@ const KeyVerifly = () => {
                 <div className="row">
                   <div className="col-md-5 item-center">
                     <img
-                      src="/images/change-password.jpg"
+                      src="/images/CodeAccess.jpg"
                       alt=""
                       className="img-fluid rounded-start mt-4 img-forgot"
                     />
@@ -188,20 +152,17 @@ const KeyVerifly = () => {
                   <div className="col-md-7">
                     <Formik
                       initialValues={initialValues}
-                      validationSchema={validationSchema}
                       onSubmit={handleSubmit}
                       validateOnChange={true}
                     >
                       <Form>
                         <p className="login-box-msg mb-1">
-                          Se le hizo llegar un codigo de verificacion a su
-                          correo electronico asociado a su cuenta, por favor
-                          introduzca su clave.
+                          Se le hizo llegar un código de verificación a su correo electrónico asociado a su cuenta, por favor introduzca su clave.
                         </p>
 
                         <div className="form-group mb-4">
                           <label htmlFor="correo" className="fw-bold">
-                            Su correo electronico
+                            Su correo electrónico
                           </label>
                           <div className="input-group mb-3">
                             <Field
@@ -221,67 +182,23 @@ const KeyVerifly = () => {
                         </div>
 
                         <div className="form-group mb-4">
-                          <label htmlFor="clave" className="fw-bold">
-                            Ingrese su clave de verificacion
+                          <label htmlFor="otp" className="fw-bold">
+                            Ingrese su clave de verificación
                           </label>
-                          <div className="row">
-                            <div className="col-md-3">
-                              <Field
-                                name="digit1"
-                                type="text"
-                                maxLength={1}
-                                className="form-control text-center"
-                              />
-                              <ErrorMessage
-                                name="digit1"
-                                component="div"
-                                className="text-danger"
-                              />
-                            </div>
-                            <div className="col-md-3">
-                              <Field
-                                name="digit2"
-                                type="text"
-                                maxLength={1}
-                                className="form-control text-center"
-                              />
-                              <ErrorMessage
-                                name="digit2"
-                                component="div"
-                                className="text-danger"
-                              />
-                            </div>
-                            <div className="col-md-3">
-                              <Field
-                                name="digit3"
-                                type="text"
-                                maxLength={1}
-                                className="form-control text-center"
-                              />
-                              <ErrorMessage
-                                name="digit3"
-                                component="div"
-                                className="text-danger"
-                              />
-                            </div>
-                            <div className="col-md-3">
-                              <Field
-                                name="digit4"
-                                type="text"
-                                maxLength={1}
-                                className="form-control text-center"
-                              />
-                              <ErrorMessage
-                                name="digit4"
-                                component="div"
-                                className="text-danger"
-                              />
-                            </div>
+                          <div className="d-flex justify-content-center">
+                            <FormikInputOtp
+                              name="otp"
+                              id="otp"
+                              length={4}
+                              placeholder="____"
+                              autoFocus
+                              integerOnly
+                            />
                           </div>
                         </div>
 
                         <div className="text-login">
-                          <p>¿No recibio su codigo?</p>
+                          <p>¿No recibió su código?</p>
                           <Link
                             className="fw-bold"
                             onClick={reenviarClave}
@@ -309,7 +226,7 @@ const KeyVerifly = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       </div>

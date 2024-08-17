@@ -22,7 +22,7 @@ const Login = () => {
       role
     };
     axios
-      .post("https://backend-c-r-production.up.railway.app/admin/login", loginData)
+      .post("https://backend-c-r.onrender.com//admin/login", loginData)
       .then((response) => {
         const { token } = response.data;
         setAdminAuthToken(token);

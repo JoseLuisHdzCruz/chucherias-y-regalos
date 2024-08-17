@@ -39,7 +39,7 @@ const EditProduct = ({ title }) => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `https://backend-c-r-production.up.railway.app/products/${productId}`
+          `https://backend-c-r.onrender.com//products/${productId}`
         );
         const {
           nombre,
@@ -89,7 +89,7 @@ const EditProduct = ({ title }) => {
 
       console.log("FormData:", formData);
 
-      await axios.put(`https://backend-c-r-production.up.railway.app/products/${productId}`, formData, {
+      await axios.put(`https://backend-c-r.onrender.com//products/${productId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

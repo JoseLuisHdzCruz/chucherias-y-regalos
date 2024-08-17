@@ -165,7 +165,7 @@ const Register = () => {
       console.log(values)
   
       const response = await axios.post(
-        "https://backend-c-r-production.up.railway.app/users",
+        "https://backend-c-r.onrender.com//users",
         values
       );
       console.log(response.data);

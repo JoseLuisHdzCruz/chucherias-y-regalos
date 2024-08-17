@@ -35,7 +35,7 @@ const AdminChangePassword = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await axios.post(
-        "https://backend-c-r-production.up.railway.app/admin/changePassword",
+        "https://backend-c-r.onrender.com//admin/changePassword",
         {
           correo: correo,
           nuevaContraseña: values.contraseña,

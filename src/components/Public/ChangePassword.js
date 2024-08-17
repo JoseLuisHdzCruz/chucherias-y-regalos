@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import PasswordField from "./PasswordField";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { Card } from "primereact/card";
 
 //validaciones correspondientes al formulario de registro
 const validationEmail = Yup.object().shape({
@@ -41,7 +42,7 @@ const ChangePassword = () => {
     try {
       // Enviar la solicitud POST a la API
       const response = await axios.post(
-        "https://backend-c-r-production.up.railway.app/users/changePassword",
+        "https://backend-c-r.onrender.com//users/changePassword",
         {
           correo: correo,
           nuevaContraseña: values.contraseña,
@@ -63,19 +64,15 @@ const ChangePassword = () => {
       // Establecer setSubmitting a false para permitir que el formulario sea enviado nuevamente
       setSubmitting(false);
     }
-  };
-
-  const loginPageStyle = {
-    minHeight: "450px",
-    background: "none", // Agrega esta línea para quitar el fondo
-  };
+  }; 
+  
   return (
     <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Recuperar contraseña" />
       <div className="hoc section clear m-3">
         <div className="col-lg-12 cont-forgot">
           <div className="col-lg-8">
-            <div className="card card-outline card-primary">
+            <Card className="card card-outline card-primary">
               <div className="card-header text-center">
                 <Link to="/" className="h1">
                   Chucherias <b>&</b> Regalos
@@ -163,7 +160,7 @@ const ChangePassword = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       </div>

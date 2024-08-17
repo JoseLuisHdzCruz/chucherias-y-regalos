@@ -34,10 +34,9 @@ function SidebarMenu({ activarModal, mostrarModal, cerrarModal, cerrarSesion, me
   };
 
   useEffect(() => {
-    fetch('https://backend-c-r-production.up.railway.app/products/categories/getAll')
+    fetch('https://backend-c-r.onrender.com//products/categories/getAll')
       .then(response => response.json())
       .then(data => {
-        console.log("Categorías obtenidas:", data); // Verificar que las categorías se obtienen correctamente
         setCategories(data);
       })
       .catch(error => console.error('Error fetching categories:', error));

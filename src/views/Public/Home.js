@@ -3,28 +3,41 @@ import PageTitle from "../../components/Public/PageTitle";
 import { Link } from "react-router-dom";
 import BootstrapCarousel from "../../components/Public/BootstrapCarousel";
 import { MdFilterAlt } from "react-icons/md";
+import { Card } from "primereact/card";
+import { Paginator } from "primereact/paginator";
+import { Tag } from "primereact/tag";
+import { Rating } from "primereact/rating";
 
 function Home({ searchResults, searchTerm }) {
   const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 20;
+  const [categories, setCategories] = useState([]);
+  const [first, setFirst] = useState(0); // Para PrimeReact Paginator
+  const productsPerPage = 10;
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [orderBy, setOrderBy] = useState("");
-  const [startPage, setStartPage] = useState(1);
-  const pagesToShow = 5;
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     if (searchResults && searchResults.length > 0) {
       setProducts(searchResults);
-      setCurrentPage(1); // Resetear a la primera página cuando hay resultados de búsqueda
+      setFirst(0); // Resetear el índice de paginación
     } else {
-      fetch("https://backend-c-r-production.up.railway.app/products/")
+      fetch("https://backend-c-r.onrender.com//products/")
         .then((response) => response.json())
         .then((data) => setProducts(data))
         .catch((error) => console.error("Error fetching products:", error));
     }
   }, [searchResults]);
+
+  useEffect(() => {
+    // Obtener categorías
+    fetch("https://backend-c-r.onrender.com//products/categories/getAll")
+      .then((response) => response.json())
+      .then((data) => setCategories(data))
+      .catch((error) => console.error("Error fetching categories:", error));
+  }, []);
 
   useEffect(() => {
     // Limpiar los filtros cuando no hay término de búsqueda
@@ -34,6 +47,17 @@ function Home({ searchResults, searchTerm }) {
       setOrderBy("");
     }
   }, [searchResults]);
+
+  const getCategoryName = (categoriaId) => {
+    const category = categories.find(cat => cat.categoriaId === categoriaId);
+    return category ? category.categoria : "Sin categoría";
+  };
+
+  useEffect(() => {
+    const totalRecords = products.length;
+    const pages = Math.ceil(totalRecords / productsPerPage);
+    setTotalPages(pages);
+  }, [products]);
 
   // Filtrar y ordenar productos según criterios
   const filteredAndSortedProducts = () => {
@@ -64,28 +88,20 @@ function Home({ searchResults, searchTerm }) {
     return filteredProducts;
   };
 
-  // Cambiar de página
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setCurrentPage(event.page);
   };
 
-  // Calcular el número total de páginas
-  const totalPages = Math.ceil(
-    filteredAndSortedProducts().length / productsPerPage
-  );
+  const getPageNumbers = () => {
+    let startPage = Math.max(0, currentPage - 1);
+    let endPage = Math.min(startPage + 2, totalPages - 1);
 
-  const goToPreviousSet = () => {
-    if (startPage > 1) {
-      setStartPage(startPage - pagesToShow);
-      paginate(startPage - pagesToShow);
+    if (endPage - startPage < 2 && startPage > 0) {
+      startPage = Math.max(0, endPage - 2);
     }
-  };
 
-  const goToNextSet = () => {
-    if (startPage + pagesToShow <= totalPages) {
-      setStartPage(startPage + pagesToShow);
-      paginate(startPage + pagesToShow);
-    }
+    return [...Array(endPage - startPage + 1).keys()].map(i => startPage + i);
   };
 
   return (
@@ -188,23 +204,20 @@ function Home({ searchResults, searchTerm }) {
         <hr className="hr-primary my-4" />
 
         <div className="section">
-          <div className="row catalogo">
+          <div className="row">
             {filteredAndSortedProducts().length > 0 ? (
               filteredAndSortedProducts()
-                .slice(
-                  (currentPage - 1) * productsPerPage,
-                  currentPage * productsPerPage
-                )
+                .slice(first, first + productsPerPage)
                 .map((product) => (
                   <div
-                    className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 catalog"
+                    className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
                     key={product.productoId}
                   >
                     <Link
                       to={`/product/${product.productoId}`}
-                      className="text-decoration-none"
+                      className="text-decoration-none catalogo"
                     >
-                      <div className="card shadow-sm">
+                      <Card className="card shadow-sm">
                         <div className="cont-img item-center">
                           <img
                             src={product.imagen}
@@ -213,10 +226,25 @@ function Home({ searchResults, searchTerm }) {
                           />
                         </div>
                         <div className="card-body">
-                          <h5 className="card-title">{product.nombre}</h5>
-                          <p className="card-text fw-bold mt-3">{`$ ${product.precioFinal}`}</p>
+                          <Tag
+                            className="mr-2 mb-2"
+                            icon="pi pi-tag"
+                            severity="secondary"
+                            value={getCategoryName(product.categoriaId)}
+                            style={{fontSize:15}}
+                          ></Tag>
+                          <div className="row">
+                            <h5 className="card-title">{product.nombre}</h5>
+                            <Rating
+                              value={product.ranking}
+                              className="mt-2"
+                              readOnly
+                              cancel={false}
+                            />
+                            <p className="card-text fw-bold mt-3">{`$ ${product.precioFinal}`}</p>
+                          </div>
                         </div>
-                      </div>
+                      </Card>
                     </Link>
                   </div>
                 ))
@@ -226,45 +254,49 @@ function Home({ searchResults, searchTerm }) {
           </div>
         </div>
 
-        {/* Agregar paginación */}
-        <ul className="pagination text-center mt-4">
-          <li className={`page-item ${startPage === 1 ? "disabled" : ""}`}>
-            <button onClick={goToPreviousSet} className="page-link">
-              &laquo;
-            </button>
-          </li>
+        {/* Paginación con PrimeReact */}
+        <Paginator
+          first={first}
+          rows={productsPerPage}
+          totalRecords={filteredAndSortedProducts().length}
+          onPageChange={onPageChange}
+          template={`FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink`}
+          pageLinkSize={3}
+          currentPageReportTemplate={`Mostrando {first} a {last} de {totalRecords} productos`}
+          className="my-custom-paginator"
+        >
+          <div className="p-d-flex p-jc-center">
+            {currentPage > 0 && (
+              <button
+                onClick={() => setCurrentPage(currentPage - 1)}
+                className="p-paginator-prev p-paginator-element p-link"
+              >
+                <span className="pi pi-angle-left"></span>
+              </button>
+            )}
 
-          {Array.from({
-            length: Math.min(pagesToShow, totalPages - startPage + 1),
-          }).map((_, index) => {
-            const pageIndex = startPage + index;
-            return (
-              <li
-                key={pageIndex}
-                className={`page-item ${
-                  currentPage === pageIndex ? "active" : ""
+            {getPageNumbers().map(page => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`p-paginator-page p-paginator-element p-link ${
+                  page === currentPage ? "p-highlight" : ""
                 }`}
               >
-                <button
-                  onClick={() => paginate(pageIndex)}
-                  className="page-link"
-                >
-                  {pageIndex}
-                </button>
-              </li>
-            );
-          })}
+                {page + 1}
+              </button>
+            ))}
 
-          <li
-            className={`page-item ${
-              startPage + pagesToShow > totalPages ? "disabled" : ""
-            }`}
-          >
-            <button onClick={goToNextSet} className="page-link">
-              &raquo;
-            </button>
-          </li>
-        </ul>
+            {currentPage < totalPages - 1 && (
+              <button
+                onClick={() => setCurrentPage(currentPage + 1)}
+                className="p-paginator-next p-paginator-element p-link"
+              >
+                <span className="pi pi-angle-right"></span>
+              </button>
+            )}
+          </div>
+        </Paginator>
       </main>
     </>
   );

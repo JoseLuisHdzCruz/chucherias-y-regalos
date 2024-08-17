@@ -1,6 +1,9 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { MdChevronRight, MdHome } from "react-icons/md";
+import { useLocation } from "react-router-dom";
+
+import { BreadCrumb } from 'primereact/breadcrumb';
+        
+import { MdHome } from "react-icons/md";
 
 const aliasMapping = {
   "product": "Detalle del Producto",
@@ -19,7 +22,7 @@ const aliasMapping = {
   "change-password": "Cambiar contraseña",
   "forgot-passworg-secret-question": "Recuperar cuenta por pregunta secreta",
   "mas-vendidos": "Productos más vendidos",
-  "category" : "Categoria",
+  "category": "Categoria",
   "update-address": "Actualizar dirección",
   "ofertas": "Productos en oferta",
   "notifications": "Notificaciones",
@@ -32,19 +35,18 @@ const Breadcrumbs = () => {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
 
+  // Configuración de los elementos del breadcrumb
+  const breadcrumbItems = pathnames.map((pathname, index) => ({
+    label: aliasMapping[pathname] || pathname,
+    url: `/${pathnames.slice(0, index + 1).join("/")}`
+  }));
+
+  // Elemento inicial (home)
+  const home = { icon: <MdHome />, url: '/' };
+
   return (
     <div className="cont-breadcrumbs">
-      <span className="fw-semibold text-muted">
-        <Link to="/" color="gray"><MdHome size={30} className="ml-4"/></Link>
-        {pathnames.map((pathname, index) => (
-          <React.Fragment key={index}>
-            <MdChevronRight size={25} className="icon-aling" />
-            <Link to={`/${pathnames.slice(0, index + 1).join("/")}`}>
-              {aliasMapping[pathnames[index]] || pathname}
-            </Link>
-          </React.Fragment>
-        ))}
-      </span>
+      <BreadCrumb model={breadcrumbItems} home={home} />
     </div>
   );
 };

@@ -12,10 +12,13 @@ import PageTitle from "../../components/Public/PageTitle";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
-import { toast } from "react-toastify";
+import { useAlert } from "../../context/AlertContext";
+import { Card } from "primereact/card";
+import { Calendar } from "primereact/calendar";
 
 const PurchaseHistory = () => {
   const { token } = useAuth();
+  const showAlert = useAlert();
   const [user, setUser] = useState(0);
   const [purchaseHistory, setPurchaseHistory] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,14 +49,14 @@ const PurchaseHistory = () => {
       const fetchPurchaseHistory = async () => {
         try {
           const response = await axios.get(
-            `https://backend-c-r-production.up.railway.app/ventas/cliente/${user}`
+            `https://backend-c-r.onrender.com//ventas/cliente/${user}`
           );
           const historyData = response.data;
 
           // Obtener los detalles de cada compra
           const purchaseDetailsPromises = historyData.map(async (purchase) => {
             const detailResponse = await axios.get(
-              `https://backend-c-r-production.up.railway.app/ventas/detalle/${purchase.ventaId}`
+              `https://backend-c-r.onrender.com//ventas/detalle/${purchase.ventaId}`
             );
             return {
               ...purchase,
@@ -81,7 +84,7 @@ const PurchaseHistory = () => {
   const openModal = async (purchase, ventaId) => {
     try {
       const response = await axios.get(
-        `https://backend-c-r-production.up.railway.app/ventas/${ventaId}`
+        `https://backend-c-r.onrender.com//ventas/${ventaId}`
       );
       setSelectedPurchase(purchase);
       setVenta(response.data);
@@ -94,7 +97,7 @@ const PurchaseHistory = () => {
   // Función para limpiar los filtros y restaurar los datos originales
   const handleClearFilter = () => {
     setPurchaseHistory(dataHistory);
-    toast.success("Se limpio el filtro de busqueda.");
+    showAlert("info", "Se limpio el filtro de busqueda.");
     setFilterValues({
       fechaInicial: "",
       fechaFinal: "",
@@ -130,16 +133,13 @@ const PurchaseHistory = () => {
     try {
       console.log(folioVenta, cancelReason);
       // Aquí consumes la API para cambiar el estado de la venta al cancelarla
-      await axios.post(
-        `https://backend-c-r-production.up.railway.app/ventas/cancelar-venta`,
-        {
-          folio: folioVenta, // Folio de la venta
-          reason: cancelReason, // Razón de la cancelación
-        }
-      );
+      await axios.post(`https://backend-c-r.onrender.com//ventas/cancelar-venta`, {
+        folio: folioVenta, // Folio de la venta
+        reason: cancelReason, // Razón de la cancelación
+      });
 
       // Aquí puedes manejar la respuesta de la API, como mostrar un mensaje de éxito
-      toast.success("La compra ha sido cancelada correctamente.");
+      showAlert("success", "La compra ha sido cancelada correctamente.");
 
       // Actualizar el estado de purchaseHistory para reflejar el cambio de estado de la venta cancelada
       setPurchaseHistory((prevPurchaseHistory) =>
@@ -162,7 +162,7 @@ const PurchaseHistory = () => {
     } catch (error) {
       // Aquí puedes manejar los errores, como mostrar un mensaje de error
       console.error("Error canceling purchase:", error);
-      toast.error("Ha ocurrido un error al cancelar la compra.");
+      showAlert("error", "Ha ocurrido un error al cancelar la compra.");
     }
   };
 
@@ -183,6 +183,20 @@ const PurchaseHistory = () => {
     );
   }
 
+  const CalendarField = ({ field, form, ...props }) => {
+    return (
+      <Calendar
+        {...field}
+        {...props}
+        value={field.value || null}
+        onChange={(e) => form.setFieldValue(field.name, e.value)}
+        dateFormat="yy-mm-dd" // Formato de fecha
+        placeholder="yyyy-mm-dd"
+        className="w-100"
+      />
+    );
+  };
+
   return (
     <main>
       <PageTitle title="Chucherias & Regalos | Historial de compra" />
@@ -190,97 +204,126 @@ const PurchaseHistory = () => {
       <h3 className="title-pag fw-bold text-uppercase">Historial de compras</h3>
       <hr className="hr-primary" />
 
+      <div className="row item-filter">
+        <div className="col-lg-10 mt-4">
+          <Formik
+            initialValues={filterValues}
+            onSubmit={async (values, { setSubmitting }) => {
+              try {
+                const response = await axios.post(
+                  "https://backend-c-r.onrender.com//ventas/filtroVentas",
+                  {
+                    fechaInicial: values.fechaInicial,
+                    fechaFinal: values.fechaFinal,
+                    customerId: user,
+                  }
+                );
 
+                const filterHistory = response.data;
 
-<div className="row item-filter">
-<div className="col-lg-10 mt-4">
-        <Formik
-          initialValues={filterValues}
-          onSubmit={async (values, { setSubmitting }) => {
-            try {
-              const response = await axios.post("https://backend-c-r-production.up.railway.app/ventas/filtroVentas", {
-                fechaInicial: values.fechaInicial,
-                fechaFinal: values.fechaFinal,
-                customerId: user,
-              });
+                const purchaseDetailsPromises = filterHistory.map(
+                  async (purchase) => {
+                    const detailResponse = await axios.get(
+                      `https://backend-c-r.onrender.com//ventas/detalle/${purchase.ventaId}`
+                    );
+                    return { ...purchase, detalleVenta: detailResponse.data };
+                  }
+                );
 
-              const filterHistory = response.data;
+                const purchaseDetails = await Promise.all(
+                  purchaseDetailsPromises
+                );
 
-              const purchaseDetailsPromises = filterHistory.map(async (purchase) => {
-                const detailResponse = await axios.get(`https://backend-c-r-production.up.railway.app/ventas/detalle/${purchase.ventaId}`);
-                return { ...purchase, detalleVenta: detailResponse.data };
-              });
+                setPurchaseHistory(purchaseDetails);
+                showAlert(
+                  "success",
+                  "Se aplico el filtro de historial de compra."
+                );
+              } catch (error) {
+                console.error(
+                  "Error fetching filtered purchase history:",
+                  error
+                );
+              }
+              setSubmitting(false);
+            }}
+            validate={(values) => {
+              const errors = {};
+              const currentDate = new Date();
+              const minDate = new Date("2000-01-01");
 
-              const purchaseDetails = await Promise.all(purchaseDetailsPromises);
+              if (values.fechaInicial < minDate) {
+                errors.fechaInicial =
+                  "La fecha inicial no puede ser menor a 2000";
+                showAlert(
+                  "error",
+                  "La fecha inicial no puede ser menor a 2000"
+                );
+              }
 
-              setPurchaseHistory(purchaseDetails);
-              toast.success("Se aplico el filtro de historial de compra.");
-            } catch (error) {
-              console.error("Error fetching filtered purchase history:", error);
-            }
-            setSubmitting(false);
-          }}
-          validate={(values) => {
-            const errors = {};
-            const currentDate = new Date();
-            const minDate = new Date("2000-01-01");
+              if (values.fechaFinal > currentDate.toISOString().split("T")[0]) {
+                errors.fechaFinal =
+                  "La fecha final no puede ser mayor a la fecha actual";
+                showAlert(
+                  "error",
+                  "La fecha final no puede ser mayor a la fecha actual"
+                );
+              }
 
-            if (values.fechaInicial < minDate) {
-              errors.fechaInicial = "La fecha inicial no puede ser menor a 2000";
-              toast.error("La fecha inicial no puede ser menor a 2000");
-            }
+              if (values.fechaFinal < values.fechaInicial) {
+                errors.fechaFinal =
+                  "La fecha final no puede ser menor a la fecha inicial";
+                showAlert(
+                  "error",
+                  "La fecha final no puede ser menor a la fecha inicial"
+                );
+              }
 
-            if (values.fechaFinal > currentDate.toISOString().split("T")[0]) {
-              errors.fechaFinal = "La fecha final no puede ser mayor a la fecha actual";
-              toast.error("La fecha final no puede ser mayor a la fecha actual");
-            }
+              return errors;
+            }}
+          >
+            {({ isSubmitting }) => (
+              <Form>
+                <div className="d-flex flex-column flex-sm-row align-items-center">
+                  <h5 className="me-3">Filtrar por fecha:</h5>
+                  <div className="d-flex flex-grow-1 mb-2 mb-sm-0">
+                    <Field
+                      name="fechaInicial"
+                      component={CalendarField}
+                      className="form-control m-2"
+                    />
+                    <span className=" item-cente m-2">
+                      <MdRemove size={20} />
+                    </span>
+                    <Field
+                      name="fechaFinal"
+                      component={CalendarField}
+                      className="form-control m-2"
+                    />
+                  </div>
 
-            if (values.fechaFinal < values.fechaInicial) {
-              errors.fechaFinal = "La fecha final no puede ser menor a la fecha inicial";
-              toast.error("La fecha final no puede ser menor a la fecha inicial");
-            }
-
-            return errors;
-          }}
-        >
-          {({ isSubmitting }) => (
-            <Form>
-              <div className="d-flex flex-column flex-sm-row align-items-center">
-                <h5 className="me-3">Filtrar por fecha:</h5>
-                <div className="d-flex flex-grow-1 mb-2 mb-sm-0">
-                  <Field type="date" name="fechaInicial" className="form-control me-2" />
-                  <span className="d-flex align-items-center me-2">
-                    <MdRemove size={20} />
-                  </span>
-                  <Field type="date" name="fechaFinal" className="form-control me-2" />
+                  <div className="cont-btn-filter item-center">
+                    <button
+                      type="submit"
+                      className="btn btn-info m-2"
+                      disabled={isSubmitting}
+                    >
+                      <MdFilterAlt size={25} />
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={handleClearFilter}
+                    >
+                      <MdFilterAltOff size={25} />
+                    </button>
+                  </div>
                 </div>
-
-              <div className="cont-btn-filter item-center">
-              <button
-                  type="submit"
-                  className="btn btn-info me-2"
-                  disabled={isSubmitting}
-                >
-                  <MdFilterAlt size={25} />
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  onClick={handleClearFilter}
-                >
-                  <MdFilterAltOff size={25} />
-                </button>
-              </div>
-                
-              </div>
-            </Form>
-          )}
-        </Formik>
+              </Form>
+            )}
+          </Formik>
+        </div>
       </div>
-</div>
-      
-
-
 
       <div className="row">
         <div className="col-lg-12">
@@ -294,7 +337,7 @@ const PurchaseHistory = () => {
                   currentPage * pruchasesPerPage
                 )
                 .map((purchase) => (
-                  <div key={purchase.ventaId} className="card mb-3 mt-4">
+                  <Card key={purchase.ventaId} className="card mb-3 mt-4">
                     <div className="card-body">
                       <div className="row">
                         <div className="text-center item-responsive">
@@ -365,10 +408,10 @@ const PurchaseHistory = () => {
                               </strong>
                             </span>
                           </div>
-                          <div className="row item-responsive"> 
+                          <div className="row item-responsive">
                             <div className="cont-cant d-flex align-items-center justify-content-center">
                               <button
-                                className="btn-primary my-4"
+                                className="btn btn-primary my-4"
                                 onClick={() =>
                                   openModal(purchase, purchase.ventaId)
                                 }
@@ -380,7 +423,7 @@ const PurchaseHistory = () => {
                               purchase.statusVentaId === 4) && (
                               <div className="cont-cant d-flex align-items-center justify-content-center">
                                 <button
-                                  className="btn-danger"
+                                  className="btn btn-danger"
                                   onClick={() =>
                                     openCancelModal(purchase.folio)
                                   }
@@ -449,7 +492,7 @@ const PurchaseHistory = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </Card>
                 ))
             )
           ) : (
@@ -546,7 +589,7 @@ const PurchaseHistory = () => {
             >
               <Form>
                 <div className="form-group">
-                  <span className="text-muted">Folio: {folioVenta}</span>
+                  <span className="text-muted">Folio: {folioVenta}</span><br/>
                   <label htmlFor="reason">Motivo de la cancelación:</label>
                   <Field
                     as="textarea" // Utiliza la etiqueta textarea

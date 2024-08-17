@@ -11,7 +11,7 @@ const NotificationAdmin = ({ title }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://backend-c-r-production.up.railway.app/admin/notification/1"
+          "https://backend-c-r.onrender.com//admin/notification/1"
         );
         setData(response.data); // Guardar los datos en el estado
       } catch (error) {
@@ -25,7 +25,7 @@ const NotificationAdmin = ({ title }) => {
   const markNotificationAsRead = (notificationId) => {
     axios
       .put(
-        `https://backend-c-r-production.up.railway.app/users/notificaciones/${notificationId}`
+        `https://backend-c-r.onrender.com//users/notificaciones/${notificationId}`
       )
       .then((response) => {})
       .catch((error) => console.error(error));

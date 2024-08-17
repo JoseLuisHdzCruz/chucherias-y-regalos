@@ -59,7 +59,7 @@ const NewAddress = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://backend-c-r-production.up.railway.app/address/get-colonias/${codigo}`
+          `https://backend-c-r.onrender.com//address/get-colonias/${codigo}`
         );
         if (!response.ok) {
           throw new Error(
@@ -90,7 +90,7 @@ const NewAddress = () => {
 
       // Si hay un ID en los parámetros de la URL, obtén los detalles de la dirección existente
       fetch(
-        `https://backend-c-r-production.up.railway.app/address/get-domicilioById/${id}`
+        `https://backend-c-r.onrender.com//address/get-domicilioById/${id}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -107,7 +107,7 @@ const NewAddress = () => {
       if (id) {
         // Si hay un ID en los parámetros de la URL, actualiza la dirección existente
         await axios.put(
-          `https://backend-c-r-production.up.railway.app/address/update-domicilio/${id}`,
+          `https://backend-c-r.onrender.com//address/update-domicilio/${id}`,
           values
         );
         toast.success("La dirección se actualizó correctamente");
@@ -119,7 +119,7 @@ const NewAddress = () => {
           customerId: decodedToken.customerId,
         };
         await axios.post(
-          "https://backend-c-r-production.up.railway.app/address/add-domicilio",
+          "https://backend-c-r.onrender.com//address/add-domicilio",
           data
         );
         toast.success("La dirección se agregó correctamente");

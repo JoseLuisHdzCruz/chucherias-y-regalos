@@ -1,11 +1,18 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import PublicRoutes from './routes/PublicRoutes';
-import AdminRoutes from './routes/AdminRoutes';
-import EmployRoutes from './routes/EmployRoutes';
-import { AuthProvider } from './context/AuthContext';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PublicRoutes from "./routes/PublicRoutes";
+import AdminRoutes from "./routes/AdminRoutes";
+import EmployRoutes from "./routes/EmployRoutes";
+import { AuthProvider } from "./context/AuthContext";
+import { PrimeReactProvider } from "primereact/api";
+import { AlertProvider } from "./context/AlertContext";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+import "primereact/resources/primereact.min.css";
+
+import "primeicons/primeicons.css";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   useEffect(() => {
@@ -29,19 +36,20 @@ function App() {
     };
   }, []);
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/*" element={<PublicRoutes />} />
-          <Route path="/admin/*" element={<AdminRoutes />} />
-          <Route path="/employ/*" element={<EmployRoutes />} />
-        </Routes>
-        <ToastContainer 
-          autoClose={2000} 
-          closeOnClick={true} 
-        />
-      </Router>
-    </AuthProvider>
+    <PrimeReactProvider>
+      <AlertProvider>
+        <AuthProvider>
+          <Router>
+            <Routes>
+              <Route path="/*" element={<PublicRoutes />} />
+              <Route path="/admin/*" element={<AdminRoutes />} />
+              <Route path="/employ/*" element={<EmployRoutes />} />
+            </Routes>
+            <ToastContainer autoClose={2000} closeOnClick={true} />
+          </Router>
+        </AuthProvider>
+      </AlertProvider>
+    </PrimeReactProvider>
   );
 }
 

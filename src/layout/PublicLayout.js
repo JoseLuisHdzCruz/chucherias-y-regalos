@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PublicHeader from "../components/Public/PublicHeader";
 import PublicFooter from "../components/Public/PublicFooter";
 import ScrollButton from "../components/Public/ScrollButton";
-import Breadcrumbs from "../components/Public/Breadcrumbs";
 import { useAuth } from "../context/AuthContext";
 import NotificationButton from "../components/Public/NotificationButton";
 
@@ -15,7 +14,7 @@ const PublicLayout = ({ children }) => {
     if (searchTerm !== "") {
       try {
         const response = await fetch(
-          `https://backend-c-r-production.up.railway.app/products/search`,
+          `https://backend-c-r.onrender.com//products/search`,
           {
             method: "POST",
             headers: {
@@ -40,8 +39,14 @@ const PublicLayout = ({ children }) => {
   return (
     <>
       <PublicHeader onSearch={handleSearch} />
-      {/* <Breadcrumbs /> */}
 
+      <div style={{ 
+      backgroundImage: "url('/images/PublicFound.jpg')", 
+      backgroundRepeat: "no-repeat", 
+      backgroundSize: "cover", 
+      backgroundPosition: "center center", 
+      // filter: "blur(2px)",
+    }}>
       {React.Children.map(
         children,
         (child) =>
@@ -50,6 +55,7 @@ const PublicLayout = ({ children }) => {
             searchTerm: searchTerm || null,
           }) // Pasar searchTerm
       )}
+    </div>
       <ScrollButton />
       {token && <NotificationButton />}
       <PublicFooter />

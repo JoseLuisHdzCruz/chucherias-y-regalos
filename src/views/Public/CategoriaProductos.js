@@ -4,10 +4,16 @@ import { Link } from "react-router-dom";
 import BootstrapCarousel from "../../components/Public/BootstrapCarousel";
 import { MdFilterAlt } from "react-icons/md";
 import { useParams } from "react-router-dom";
+import { Card } from "primereact/card";
+import { Paginator } from "primereact/paginator"; // Importa estilos básicos de PrimeReact
+import { Tag } from "primereact/tag";
+import { Rating } from "primereact/rating";
 
 function CategoriaProductos() {
+  const [categories, setCategories] = useState([]);
+  const [categoryName, setCategoryName] = useState("");
+  const [first, setFirst] = useState(0); // Para PrimeReact Paginator
   const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 20;
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -15,14 +21,12 @@ function CategoriaProductos() {
   const { id } = useParams();
 
   useEffect(() => {
-    if ( id ) {
-        fetch(`https://backend-c-r-production.up.railway.app/products/categoria/${id}`)
+    if (id) {
+      fetch(`https://backend-c-r.onrender.com//products/categoria/${id}`)
         .then((response) => response.json())
         .then((data) => setProducts(data))
         .catch((error) => console.error("Error fetching products:", error));
-      setCurrentPage(1); // Resetear a la primera página cuando hay resultados de búsqueda
     } else {
-      
     }
   }, [id]);
 
@@ -34,6 +38,26 @@ function CategoriaProductos() {
       setOrderBy("");
     }
   }, [products]);
+
+  useEffect(() => {
+    // Obtener categorías
+    fetch("https://backend-c-r.onrender.com//products/categories/getAll")
+      .then((response) => response.json())
+      .then((data) => {
+        setCategories(data);
+        // Obtener el nombre de la categoría basado en `id`
+        const category = data.find((cat) => cat.categoriaId === parseInt(id));
+        if (category) {
+          setCategoryName(category.categoria);
+        }
+      })
+      .catch((error) => console.error("Error fetching categories:", error));
+  }, [id]);
+
+  const getCategoryName = (categoriaId) => {
+    const category = categories.find((cat) => cat.categoriaId === categoriaId);
+    return category ? category.categoria : "Sin categoría";
+  };
 
   // Filtrar y ordenar productos según criterios
   const filteredAndSortedProducts = () => {
@@ -65,18 +89,16 @@ function CategoriaProductos() {
   };
 
   // Cambiar de página
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const onPageChange = (event) => {
+    setFirst(event.first);
   };
-
-  // Calcular el número total de páginas
-  const totalPages = Math.ceil(filteredAndSortedProducts().length / productsPerPage);
 
   return (
     <>
       <BootstrapCarousel />
       <main>
-        <PageTitle title="Chucherias & Regalos | Inicio" />
+        <PageTitle title="Chucherías & Regalos | Inicio" />
+        <h3 className="title-pag fw-bold text-uppercase">Productos disponibles para la categoria:  {categoryName}</h3>
 
         {products && products.length > 0 && (
            <div className="advanced-search">
@@ -166,56 +188,68 @@ function CategoriaProductos() {
           </div>
         )}
 
-        <hr className="hr-primary" />
 
-        <div className="catalog">
-          {filteredAndSortedProducts().length > 0 ? (
-            filteredAndSortedProducts()
-              .slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage)
-              .map((product) => (
-                <Link
-                  to={`/product/${product.productoId}`}
-                  key={product.productoId}
-                >
-                  <div className="card mt-4" style={{ width: "18rem" }}>
-                    <div className="cont-img">
-                      <img
-                        src={product.imagen}
-                        className="card-img-top img-catalog"
-                        alt={product.nombre}
-                      />
-                    </div>
-                    <div className="card-body mt-3">
-                      <div className="cont-description">
-                        <h5>{product.nombre}</h5>
-                      </div>
-                      <div className="cont-price mt-4">
-                        <h3 className="fw-bold">{`$ ${product.precioFinal}`}</h3>
-                      </div>
-                    </div>
+        <hr className="hr-primary my-4" />
+
+        <div className="section">
+          <div className="row catalogo">
+            {filteredAndSortedProducts().length > 0 ? (
+              filteredAndSortedProducts()
+                .slice(first, first + productsPerPage)
+                .map((product) => (
+                  <div
+                    className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 catalog"
+                    key={product.productoId}
+                  >
+                    <Link
+                      to={`/product/${product.productoId}`}
+                      className="text-decoration-none"
+                    >
+                      <Card className="card shadow-sm">
+                        <div className="cont-img item-center">
+                          <img
+                            src={product.imagen}
+                            className="card-img-top img-catalog"
+                            alt={product.nombre}
+                          />
+                        </div>
+                        <div className="card-body">
+                          <Tag
+                            className="mr-2 mb-2"
+                            icon="pi pi-tag"
+                            severity="secondary"
+                            value={getCategoryName(product.categoriaId)}
+                            style={{fontSize:15}}
+                          ></Tag>
+                          <div className="row">
+                            <h5 className="card-title">{product.nombre}</h5>
+                            <Rating
+                              value={product.ranking}
+                              className="mt-2"
+                              readOnly
+                              cancel={false}
+                            />
+                            <p className="card-text fw-bold mt-3">{`$ ${product.precioFinal}`}</p>
+                          </div>
+                        </div>
+                      </Card>
+                    </Link>
                   </div>
-                </Link>
-              ))
-          ) : (
-            <p>No se encontraron productos.</p>
-          )}
+                ))
+            ) : (
+              <p>No se encontraron productos.</p>
+            )}
+          </div>
         </div>
 
-        {/* Agregar paginación */}
-        <ul className="pagination text-center mt-4">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <li
-              key={index}
-              className={`page-item ${
-                currentPage === index + 1 ? "active" : ""
-              }`}
-            >
-              <button onClick={() => paginate(index + 1)} className="page-link">
-                {index + 1}
-              </button>
-            </li>
-          ))}
-        </ul>
+        {/* Paginación con PrimeReact */}
+        <Paginator
+          first={first}
+          rows={productsPerPage}
+          totalRecords={filteredAndSortedProducts().length}
+          onPageChange={onPageChange}
+          template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
+        />
       </main>
     </>
   );

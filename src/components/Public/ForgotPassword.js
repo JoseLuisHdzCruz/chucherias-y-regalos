@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import ReCAPTCHA from "react-google-recaptcha";
+import { Card } from "primereact/card";
 
 //validaciones correspondientes al formulario de registro
 const validationEmail = Yup.object().shape({
@@ -45,7 +46,7 @@ const LoginPage = () => {
 
       // Enviar datos al backend para la autenticación
       await axios.post(
-        "https://backend-c-r-production.up.railway.app/users/forgotPassword",
+        "https://backend-c-r.onrender.com//users/forgotPassword",
         values
       );
 
@@ -82,18 +83,14 @@ const LoginPage = () => {
       setSubmitting(false);
     }
   };
-
-  const loginPageStyle = {
-    minHeight: "400px",
-    background: "none", // Agrega esta línea para quitar el fondo
-  };
+  
   return (
     <div className="section row3 mt-4">
       <PageTitle title="Chucherias & Regalos | Recuperar contraseña" />
       <div className="hoc section clear m-3">
         <div className="col-lg-12 cont-forgot">
           <div className="col-lg-8">
-            <div className="card card-outline card-primary">
+            <Card className="card card-outline card-primary">
               <div className="card-header text-center">
                 <Link to="/" className="h1">
                   Chucherias <b>&</b> Regalos
@@ -172,7 +169,7 @@ const LoginPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       </div>

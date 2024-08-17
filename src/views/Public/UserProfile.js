@@ -77,8 +77,8 @@ const UserProfile = () => {
             </div>
           )}
         </div>
-        <div className="col-md-3 d-none d-md-block">
-          <div className="sidebar item-no-responsive bg-light">
+        <div className="col-md-3 d-none d-md-block user-sidebar">
+          <div className="sidebar item-no-responsive">
             <h3 className="mt-4 mb-3 ml-4 fw-bold">PERFIL DE USUARIO</h3>
             <ul className="list-unstyled mt-4">
               <li>

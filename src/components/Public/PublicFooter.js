@@ -24,7 +24,7 @@ function PublicFooter() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://backend-c-r-production.up.railway.app/admin/getNosotros/1");
+        const response = await axios.get("https://backend-c-r.onrender.com//admin/getNosotros/1");
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

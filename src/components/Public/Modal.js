@@ -5,7 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
-import { toast } from "react-toastify";
+import { useAlert } from "../../context/AlertContext";
 import { jwtDecode } from "jwt-decode";
 import ReCAPTCHA from "react-google-recaptcha";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
@@ -33,6 +33,7 @@ const loginValidationSchema = Yup.object().shape({
 });
 
 const ModalComponent = ({ show, onClose }) => {
+  const showAlert = useAlert();
   const [capchaValue, setCaptchaValue] = useState(null);
   const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
   const { setAuthToken } = useAuth(); // Obtén la función setAuthToken del contexto de autenticación
@@ -51,14 +52,14 @@ const ModalComponent = ({ show, onClose }) => {
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       if (!capchaValue) {
-        toast.error("Por favor, completa el CAPTCHA.");
+        showAlert("error","Por favor, completa el CAPTCHA.");
         setErrors({ captcha: "Complete el Captcha" });
         return;
       }
 
       // Enviar datos al backend para la autenticación
       const response = await axios.post(
-        "https://backend-c-r-production.up.railway.app/users/login",
+        "https://backend-c-r.onrender.com//users/login",
         values
       );
 
@@ -72,7 +73,7 @@ const ModalComponent = ({ show, onClose }) => {
       const mensaje = `Inicio de sesión exitoso. Bienvenid${
         user.sexo === "masculino" ? "o" : "a"
       }, ${user.nombre}!`;
-      toast.success(mensaje);
+      showAlert("success", mensaje);
       onClose();
     } catch (error) {
       if (error.response) {
@@ -82,25 +83,23 @@ const ModalComponent = ({ show, onClose }) => {
           responseData.error ===
           "El correo ingresado no está asociado a una cuenta"
         ) {
-          toast.error("El correo ingresado no está asociado a una cuenta.");
+          showAlert("error", "El correo ingresado no está asociado a una cuenta.");
           setErrors({
             correo: "El correo ingresado no esta asociado a una cuenta",
           });
         } else if (responseData.error === "Contraseña incorrecta") {
-          toast.error("Contraseña incorrecta.");
+          showAlert("error", "Contraseña incorrecta.");
           setErrors({ contraseña: "La contraseña es incorrecta" });
         } else if (
           responseData.error === "Se ha excedido el límite de intentos"
         ) {
-          toast.error(
-            "Se ha excedido el límite de intentos de inicio de sesión. Por favor espere 30s para intentarlo de nuevo."
+          showAlert("error", "Se ha excedido el límite de intentos de inicio de sesión. Por favor espere 30s para intentarlo de nuevo."
           );
         }
       } else {
         // Si hay un error de red u otro tipo de error
         console.error(error);
-        toast.error(
-          "Error de conexión. Por favor, verifica tu conexión a Internet e inténtalo de nuevo más tarde."
+        showAlert("error", "Error de conexión. Por favor, verifica tu conexión a Internet e inténtalo de nuevo más tarde."
         );
         // Redirigir a la vista de error 500
         navigate("/error-500");

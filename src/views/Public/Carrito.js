@@ -1,59 +1,82 @@
-import React, { useContext, useState } from "react";
-import {
-  MdAdd,
-  MdRemove,
-  MdDelete,
-  MdRemoveShoppingCart,
-} from "react-icons/md";
+import React, { useContext, useRef, useState } from "react";
+import { MdAdd, MdRemove, MdDelete, MdRemoveShoppingCart } from "react-icons/md";
 import { Link } from "react-router-dom";
 import PageTitle from "../../components/Public/PageTitle";
 import { CartContext } from "../../context/CartContext";
-import ConfirmationModal from "../../components/Public/ConfirmationModal";
+import { Card } from 'primereact/card';
+import { Chip } from "primereact/chip";
+import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
+import { Avatar } from "primereact/avatar";
 
 const Carrito = () => {
-  const { cart, removeFromCart, addToCart, clearCart } =
-    useContext(CartContext);
-  const totalItemsEnCarrito = cart.reduce(
-    (total, item) => total + item.cantidad,
-    0
-  );
+  const { cart, removeFromCart, addToCart, clearCart } = useContext(CartContext);
+  const totalItemsEnCarrito = cart.reduce((total, item) => total + item.cantidad, 0);
+  const totalIVA = cart.reduce((total, item) => total + item.IVA * item.cantidad, 0);
 
-  // Calcular el total del IVA sumando el IVA de cada producto en el carrito
-  const totalIVA = cart.reduce(
-    (total, item) => total + item.IVA * item.cantidad,
-    0
-  );
-
-  // Estado para controlar la visibilidad del modal de confirmación
-  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  // Referencia para el Toast
+  const toast = useRef(null);
+  const [visible, setVisible] = useState(false);
 
   const handleIncrement = (product) => {
-    addToCart(product, 1); // Suponiendo que addToCart actualiza la cantidad en 1
+    addToCart(product, 1);
   };
 
   const handleDecrement = (product) => {
-    // Comprueba si la cantidad es mayor que 1 antes de decrementar
-    const itemInCart = cart.find(
-      (item) => item.productoId === product.productoId
-    );
+    const itemInCart = cart.find((item) => item.productoId === product.productoId);
     if (itemInCart && itemInCart.cantidad > 1) {
-      addToCart(product, -1); // Suponiendo que addToCart permite actualizar la cantidad
+      addToCart(product, -1);
     } else {
-      removeFromCart(product.productoId); // Eliminar si la cantidad llega a 0
+      removeFromCart(product.productoId);
     }
   };
 
   const vaciarCarrito = () => {
-    setIsConfirmationModalOpen(true); // Mostrar el modal de confirmación
-  };
-
-  const confirmVaciarCarrito = () => {
-    clearCart();
-    setIsConfirmationModalOpen(false); // Cerrar el modal de confirmación después de vaciar el carrito
-  };
-
-  const cancelVaciarCarrito = () => {
-    setIsConfirmationModalOpen(false); // Cerrar el modal de confirmación sin vaciar el carrito
+    if (!visible) {
+      setVisible(true);
+      toast.current.clear();
+      toast.current.show({
+        severity: 'info',
+        summary: '¿Desea vaciar su carrito?',
+        sticky: true,
+        content: (props) => (
+          <div className="d-flex flex-column align-items-left" style={{ flex: '1' }}>
+            <div className="d-flex align-items-center gap-2 mb-4">
+                <Avatar image="/images/user.png" shape="circle" />
+                <span className="fw-bold text-900 text-uppercase">{props.message.summary}</span>
+            </div>
+            <div className="text-center">
+              <span className="font-bold text-900">Esta acción no se puede revertir.</span>
+            </div>
+            <div className="flex gap-2 item-center mt-3">
+              <Button 
+                label="Confirmar" 
+                icon="pi pi-check" 
+                severity="danger" 
+                onClick={() => {
+                  clearCart();
+                  toast.current.clear();
+                  setVisible(false);
+                }} 
+                className="p-button-sm flex mr-4"
+                style={{borderRadius:10, color:"white"}}
+              />
+              <Button 
+                label="Cancelar" 
+                icon="pi pi-times" 
+                severity="secondary"
+                onClick={() => {
+                  toast.current.clear();
+                  setVisible(false);
+                }} 
+                style={{borderRadius:10, color:"white"}}
+                className="p-button-sm flex"
+              />
+            </div>
+          </div>
+        )
+      });
+    }
   };
 
   return (
@@ -61,13 +84,16 @@ const Carrito = () => {
       <PageTitle title="Chucherias & Regalos | Carrito" />
       <h3 className="title-pag fw-bold text-uppercase">CARRITO DE COMPRAS</h3>
       <hr className="hr-primary" />
+      <Toast ref={toast} position="bottom-center" onRemove={() => setVisible(false)} />
       <div className="ml-4 mr-4">
         {totalItemsEnCarrito > 0 ? (
           <>
             <div className="d-flex mr-4 ml-4 justify-content-between">
-              <h4 className="mr-4">
-                Actualmente tiene: {totalItemsEnCarrito} productos en su carrito
-              </h4>
+              <Chip 
+                label={`Actualmente tiene: ${totalItemsEnCarrito} producto(s) en su carrito`} 
+                icon="pi pi-shopping-cart" 
+                style={{ fontSize: '1.5rem' }} 
+              />
               <button
                 className="btn btn-danger fw-bold"
                 onClick={vaciarCarrito}
@@ -93,7 +119,7 @@ const Carrito = () => {
       <div className="row">
         <div className="col-lg-8">
           {Object.values(cart).map((item, index) => (
-            <div key={index} className="card column-detail mb-3 mt-4">
+            <Card key={index} className="card column-detail mb-3 mt-4">
               <div className="card-body">
                 <div className="row">
                 <div className="col-md-5 row ml-4 item-carrito-responsive">
@@ -163,12 +189,12 @@ const Carrito = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
         {totalItemsEnCarrito > 0 && (
           <div className="col-lg-4">
-            <div className="card mt-4">
+            <Card className="card mt-4">
               <div className="card-body">
                 <h5 className="text-center text-uppercase fw-bold">
                   Información de compra
@@ -215,18 +241,10 @@ const Carrito = () => {
                   </Link>
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         )}
       </div>
-      {/* Modal de confirmación */}
-      <ConfirmationModal
-        isOpen={isConfirmationModalOpen}
-        onClose={cancelVaciarCarrito}
-        onConfirm={confirmVaciarCarrito}
-        title="¿VACIAR CARRITO?"
-        message="¿Estás seguro de que deseas vaciar tu carrito? Esta acción no se puede deshacer."
-      />
     </main>
   );
 };

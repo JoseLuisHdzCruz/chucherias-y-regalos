@@ -49,7 +49,7 @@ const AdminForgotPassword = () => {
       };
 
       // Enviar datos al backend para la autenticación
-      await axios.post("https://backend-c-r-production.up.railway.app/admin/forgotPassword", loginData);
+      await axios.post("https://backend-c-r.onrender.com//admin/forgotPassword", loginData);
 
       // Mostrar un toast con el nombre del usuario
       toast.success(`Se ha enviado a su correo el código de verificación!`);

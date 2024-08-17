@@ -22,7 +22,7 @@ const Nosotros = ({ title }) => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "https://backend-c-r-production.up.railway.app/admin/getNosotros/1"
+        "https://backend-c-r.onrender.com//admin/getNosotros/1"
       );
       setNosotrosData(response.data);
     } catch (error) {
@@ -33,7 +33,7 @@ const Nosotros = ({ title }) => {
   const handleSave = async () => {
     try {
       await axios.put(
-        "https://backend-c-r-production.up.railway.app/admin/updateNosotros/1",
+        "https://backend-c-r.onrender.com//admin/updateNosotros/1",
         nosotrosData
       );
       fetchData();

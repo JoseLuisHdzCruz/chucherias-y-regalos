@@ -23,9 +23,9 @@ const EditStockProducts = ({ title }) => {
   const fetchData = async () => {
     try {
       const [productsResponse, categoriesResponse, statusesResponse] = await Promise.all([
-        axios.get('https://backend-c-r-production.up.railway.app/products/'),
-        axios.get('https://backend-c-r-production.up.railway.app/products/categories/getAll'),
-        axios.get('https://backend-c-r-production.up.railway.app/products/status/getAll')
+        axios.get('https://backend-c-r.onrender.com//products/'),
+        axios.get('https://backend-c-r.onrender.com//products/categories/getAll'),
+        axios.get('https://backend-c-r.onrender.com//products/status/getAll')
       ]);
 
       setProductos(productsResponse.data);
@@ -39,7 +39,7 @@ const EditStockProducts = ({ title }) => {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://backend-c-r-production.up.railway.app/products/search-advance', {
+      const response = await axios.post('https://backend-c-r.onrender.com//products/search-advance', {
         nombre: filterNombre,
         categoriaId: filterCategoria,
         statusId: filterStatus
@@ -80,7 +80,7 @@ const EditStockProducts = ({ title }) => {
   const handleUpdate = async (productId) => {
     const nuevaExistencia = newExistencias[productId];
     try {
-      await axios.put(`https://backend-c-r-production.up.railway.app/products/update/${productId}`, {
+      await axios.put(`https://backend-c-r.onrender.com//products/update/${productId}`, {
         existencia: nuevaExistencia
       });
       setNewExistencias((prevState) => ({

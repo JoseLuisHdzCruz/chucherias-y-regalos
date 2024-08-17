@@ -6,16 +6,9 @@
 Sidebar
 */
 
-.header-public {
-  transition: top 0.3s;
-}
-
-.header-public.hidden {
-  top: -100px; /* O el valor necesario para ocultar el header */
-}
-
-.header-public.sticky {
-  top: 0;
+.user-sidebar .sidebar{
+  height: 100% !important;
+  background-color: rgb(247, 248, 250);
 }
 
 
@@ -239,14 +232,6 @@ Sidebar end
 }
 
 /* CartModal.css */
-
-.card-alumno {
-  background-color: #f9f9f6;
-  border-radius: 20px;
-  width: 600px;
-  padding: 40px;
-  margin-bottom: 50px;
-}
 
 .input-group-append {
   height: 38px;
@@ -484,13 +469,7 @@ a {
   margin-left: 0.5rem;
 }
 
-.credentials {
-  padding: 10px;
-}
 
-.credentials .form-group {
-  font-size: 20px;
-}
 
 .register-footer {
   display: flex;
@@ -569,8 +548,17 @@ footer a {
 
 /* Estilos para el cuerpo de la página */
 main, .section{
-  background-color: #f8f8f8 !important;
+  background-color: #f8f8f800 !important;
+  
 }
+
+/* body{
+  background-image: url('../../public/images/fondoInicio.png') !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  filter: blur(5px) opacity(0.7);
+} */
 
 main {
   flex: 1;
@@ -606,27 +594,31 @@ main {
   color: #000000;
 }
 
-.carrusel-detalle a .card{
-  height: 380px;
-  width: 350px;
-}
-
-.carrusel-detalle .img-catalog{
-  min-width: 300px !important;
-  max-width: 300px !important;
-}
 
 
 /* Estilo base para la tarjeta */
-.row .card, .column-detail, .card-add {
+.row .card, .column-detail, .card-add, .card {
   transition: box-shadow 0.3s ease !important; 
-  border: 0.5px solid #f8c6f9;
+  border: 0.5px solid #f8c6f9!important;
 }
 
 /* Efecto de sombra al pasar el ratón sobre la tarjeta */
 .row .catalogo .card:hover {
   box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
     0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
+}
+
+.catalogo .card:hover {
+  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
+}
+
+.row .card, .card{
+  padding: 0px !important;
+}
+
+.p-card .p-card-content {
+  padding: 0rem 0 !important;
 }
 
 /* Efecto de transición cuando se selecciona la tarjeta (por ejemplo, haciendo clic en ella) */
@@ -645,57 +637,6 @@ main {
 .carrusel-detalle .card:hover {
   box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
     0 10px 10px -5px rgba(0, 0, 0, 0.2);
-}
-
-/* Efecto de transición cuando se selecciona la tarjeta (por ejemplo, haciendo clic en ella) */
-.carrusel-detalle .card:active {
-  transform: scale(1.05); /* Escala la tarjeta al hacer clic */
-  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
-    0 10px 10px -5px rgba(0, 0, 0, 0.2);
-}
-
-.row .card {
-  padding: 20px;
-  border-radius: 20px;
-}
-
-.carrusel-detalle {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 58px; /* Espacio entre las cartas */
-  width: 95%;
-  margin-left: 30px;
-  justify-content: center;
-}
-
-
-
-.carrusel-button {
-  background-color: #f8c6f9;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 25px;
-  width: 60px;
-  height: 60px;
-  cursor: pointer;
-  position: absolute;
-  top: 150%;
-  transform: translateY(-50%);
-}
-
-/* Efecto de sombra al pasar el ratón sobre la tarjeta */
-.carrusel-button:hover {
-  box-shadow: -10px 0 10px -5px rgba(0, 0, 0, 0.2),
-    0 10px 10px -5px rgba(0, 0, 0, 0.2);
-}
-
-.carrusel-button-left {
-  left: 55px;
-}
-
-.carrusel-button-right {
-  right: 25px;
 }
 
 
@@ -801,7 +742,7 @@ main {
   background-color: #38ccec !important;
 }
 .bg-primary-c {
-  background-color: #c543c7;
+  background-color: #b685b7;
   align-items: center;
   color: white;
 }
@@ -936,7 +877,7 @@ main {
 .cont-not .btn-info {
   width: 250px;
   height: 40px;
-  border-radius: 20px;
+  border-radius: 10px;
   border: none;
   color: #fff;
   font-size: 15px;
@@ -1126,14 +1067,6 @@ table {
   color: black;
 }
 
-.form-group {
-  padding-left: 15px;
-}
-
-/* .form-group textarea{
-    padding-left: 15px;
-  } */
-
 .profile-usr {
   display: flex;
   justify-content: center;
@@ -1154,7 +1087,21 @@ table {
 .cont-breadcrumbs {
   background-color: #f8c6f9;
   width: 100%;
+  margin-bottom: 0px !important;
 }
+
+.p-breadcrumb {
+  background: #f8c6f9;
+  border: 1px solid #f8c6f9;
+  border-radius: 0px;
+  margin-bottom: 0px !important;
+  padding: 0rem !important;
+}
+
+.p-breadcrumb dl, ol, ul {
+  margin-bottom: 0px !important;
+}
+
 
 .cont-breadcrumbs a {
   text-decoration: none;

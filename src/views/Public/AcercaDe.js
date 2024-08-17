@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PageTitle from "../../components/Public/PageTitle";
+import { Fieldset } from "primereact/fieldset";
 
 function AcercaDe() {
   const [data, setData] = useState({
     descripcion: "",
     mision: "",
-    vision: ""
+    vision: "",
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://backend-c-r-production.up.railway.app/admin/getNosotros/1');
+        const response = await axios.get(
+          "https://backend-c-r.onrender.com//admin/getNosotros/1"
+        );
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -25,66 +28,65 @@ function AcercaDe() {
   return (
     <div className="section mt-3 mb-4">
       <div className="section m-5">
-      <h3 className="title-pag fw-bold text-uppercase">Acerca de nosotros</h3>
-      <hr className="hr-primary" />
+        <h3 className="title-pag fw-bold text-uppercase">Acerca de nosotros</h3>
+        <hr className="hr-primary" />
 
-      <div className="row justify-content-center">
-        <div className="col-md-11 text-center mb-4">
-          <img
-            src="/images/Chucherias.png"
-            className="img-fluid rounded-start mt-4"
-            alt="Chucherias & Regalos"
-            style={{ height: "100px" }}
-          />
+        <div className="row justify-content-center">
+          <div className="col-md-11 text-center mb-4">
+            <img
+              src="/images/Chucherias.png"
+              className="img-fluid rounded-start mt-4"
+              alt="Chucherias & Regalos"
+              style={{ height: "100px" }}
+            />
+          </div>
+          <div className="col-md-11">
+          <Fieldset legend="">
+              <p className="m-0 text-justify">
+                {data.descripcion}
+              </p>
+            </Fieldset>
+          </div>
         </div>
-        <div className="col-md-11">
-          <p className="text-justify">
-            {data.descripcion}
-          </p>
-        </div>
-      </div>
-      <hr className="hr-primary" />
+        <hr className="hr-primary" />
 
-      <div className="row ml-4 align-items-center">
-        <div className="col-md-5 text-center">
-          <img
-            src="/images/empresa1.png"
-            className="img-fluid rounded-start mt-4"
-            alt="Chucherias & Regalos"
-            style={{ height: "300px" }}
-          />
+        <div className="row ml-4 align-items-center">
+          <div className="col-md-5 text-center">
+            <img
+              src="/images/empresa1.png"
+              className="img-fluid rounded-start mt-4"
+              alt="Chucherias & Regalos"
+              style={{ height: "300px" }}
+            />
+          </div>
+          <div className="col-md-6">
+            <Fieldset legend="Misión">
+              <p className="m-0 text-justify">
+                {data.mision}
+              </p>
+            </Fieldset>
+          </div>
         </div>
-        <div className="col-md-6">
-          <h3 className="title-pag fw-bold text-uppercase mt-4 text-center">
-            Misión
-          </h3>
-          <p className="ml-4 text-justify">
-            {data.mision}
-          </p>
-        </div>
-      </div>
 
-      <div className="row ml-4 align-items-center">
-        <div className="col-md-6">
-          <h3 className="title-pag fw-bold text-uppercase mt-4 text-center">
-            Visión
-          </h3>
-          <p className="ml-4 text-justify">
-            {data.vision}
-          </p>
+        <div className="row ml-4 align-items-center">
+          <div className="col-md-6">
+            <Fieldset legend="Visión">
+              <p className="m-0 text-justify">
+                {data.vision}
+              </p>
+            </Fieldset>
+          </div>
+          <div className="col-md-5 text-center">
+            <img
+              src="/images/empresa2.png"
+              className="img-fluid rounded-start mt-4"
+              alt="Chucherias & Regalos"
+              style={{ height: "300px" }}
+            />
+          </div>
         </div>
-        <div className="col-md-5 text-center">
-          <img
-            src="/images/empresa2.png"
-            className="img-fluid rounded-start mt-4"
-            alt="Chucherias & Regalos"
-            style={{ height: "300px" }}
-          />
-        </div>
-      </div>
       </div>
       <PageTitle title="Chucherias & Regalos | Acerca De" />
-      
     </div>
   );
 }
