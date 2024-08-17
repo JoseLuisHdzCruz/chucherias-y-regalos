@@ -15,16 +15,16 @@ const Home = ({ title }) => {
       try {
         // Realiza las solicitudes a la API
         const productosResponse = await axios.get(
-          "https://backend-c-r.onrender.com/products"
+          "http://localhost:5000/products"
         );
         const ventasResponse = await axios.get(
-          "https://backend-c-r.onrender.com/ventas"
+          "http://localhost:5000/ventas"
         );
         const notificacionesResponse = await axios.get(
-          "https://backend-c-r.onrender.com/admin/notification/1"
+          "http://localhost:5000/admin/notification/1"
         );
         const usuariosSuspendidosResponse = await axios.get(
-          "https://backend-c-r.onrender.com/users"
+          "http://localhost:5000/users"
         );
 
         // Filtrar usuarios suspendidos excluyendo aquellos con statusId = 1

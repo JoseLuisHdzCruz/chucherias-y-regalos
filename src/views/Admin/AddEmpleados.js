@@ -37,7 +37,7 @@ const AddEmployee = ({ title }) => {
     // console.log(values)
     try {
       console.log(values);
-      const response = await axios.post('https://backend-c-r.onrender.com/admin/add-employee', values);
+      const response = await axios.post('http://localhost:5000/admin/add-employee', values);
       console.log(response.data);
       toast.success('¡Empleado registrado exitosamente!');
       setTimeout(() => {

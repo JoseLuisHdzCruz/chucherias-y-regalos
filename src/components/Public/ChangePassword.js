@@ -42,7 +42,7 @@ const ChangePassword = () => {
     try {
       // Enviar la solicitud POST a la API
       const response = await axios.post(
-        "https://backend-c-r.onrender.com/users/changePassword",
+        "http://localhost:5000/users/changePassword",
         {
           correo: correo,
           nuevaContraseña: values.contraseña,

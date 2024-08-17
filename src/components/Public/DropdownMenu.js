@@ -28,7 +28,7 @@ function DropdownMenu() {
 
   useEffect(() => {
     // Hacer la solicitud a la API para obtener las categorías
-    fetch('https://backend-c-r.onrender.com/products/categories/getAll')
+    fetch('http://localhost:5000/products/categories/getAll')
       .then(response => response.json())
       .then(data => setCategories(data))
       .catch(error => console.error('Error fetching categories:', error));

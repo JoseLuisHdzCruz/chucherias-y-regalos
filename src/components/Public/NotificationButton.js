@@ -19,7 +19,7 @@ function NotificationButton() {
   useEffect(() => {
     if (decodedToken && decodedToken.customerId) {
       fetch(
-        `https://backend-c-r.onrender.com/users/getAllNotifications/${decodedToken.customerId}`
+        `http://localhost:5000/users/getAllNotifications/${decodedToken.customerId}`
       )
         .then((response) => response.json())
         .then((data) => {

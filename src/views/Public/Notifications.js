@@ -28,7 +28,7 @@ const Notifications = () => {
   const fetchNotifications = (customerId) => {
     axios
       .get(
-        `https://backend-c-r.onrender.com/users/getAllNotifications/${customerId}`
+        `http://localhost:5000/users/getAllNotifications/${customerId}`
       )
       .then((response) => {
         setNotifications(response.data);
@@ -40,7 +40,7 @@ const Notifications = () => {
   const markNotificationAsRead = (notificationId) => {
     axios
       .put(
-        `https://backend-c-r.onrender.com/users/notificaciones/${notificationId}`
+        `http://localhost:5000/users/notificaciones/${notificationId}`
       )
       .then((response) => {
         fetchNotifications(decodedToken.customerId);

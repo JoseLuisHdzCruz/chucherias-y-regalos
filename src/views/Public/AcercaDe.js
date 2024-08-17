@@ -14,7 +14,7 @@ function AcercaDe() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://backend-c-r.onrender.com/admin/getNosotros/1"
+          "http://localhost:5000/admin/getNosotros/1"
         );
         setData(response.data);
       } catch (error) {

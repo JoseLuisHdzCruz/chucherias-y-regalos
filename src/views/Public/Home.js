@@ -24,7 +24,7 @@ function Home({ searchResults, searchTerm }) {
       setProducts(searchResults);
       setFirst(0); // Resetear el índice de paginación
     } else {
-      fetch("https://backend-c-r.onrender.com/products/")
+      fetch("http://localhost:5000/products/")
         .then((response) => response.json())
         .then((data) => setProducts(data))
         .catch((error) => console.error("Error fetching products:", error));
@@ -33,7 +33,7 @@ function Home({ searchResults, searchTerm }) {
 
   useEffect(() => {
     // Obtener categorías
-    fetch("https://backend-c-r.onrender.com/products/categories/getAll")
+    fetch("http://localhost:5000/products/categories/getAll")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));

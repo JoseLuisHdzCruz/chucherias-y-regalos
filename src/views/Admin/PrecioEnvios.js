@@ -18,7 +18,7 @@ const PrecioEnvios = ({ title }) => {
     const fetchColonias = async () => {
       try {
         const response = await axios.get(
-          "https://backend-c-r.onrender.com/address/get-colonias/43000"
+          "http://localhost:5000/address/get-colonias/43000"
         );
         setColonias(response.data);
       } catch (error) {
@@ -53,7 +53,7 @@ const PrecioEnvios = ({ title }) => {
   const handleActualizarPrecio = async (values, { resetForm }) => {
     try {
       await axios.put(
-        `https://backend-c-r.onrender.com/address/colonias/${coloniaSeleccionada}`,
+        `http://localhost:5000/address/colonias/${coloniaSeleccionada}`,
         {
           nuevoEnvio: values.newPrecio,
         }

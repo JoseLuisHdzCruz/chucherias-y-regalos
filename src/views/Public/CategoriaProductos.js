@@ -22,7 +22,7 @@ function CategoriaProductos() {
 
   useEffect(() => {
     if (id) {
-      fetch(`https://backend-c-r.onrender.com/products/categoria/${id}`)
+      fetch(`http://localhost:5000/products/categoria/${id}`)
         .then((response) => response.json())
         .then((data) => setProducts(data))
         .catch((error) => console.error("Error fetching products:", error));
@@ -41,7 +41,7 @@ function CategoriaProductos() {
 
   useEffect(() => {
     // Obtener categorías
-    fetch("https://backend-c-r.onrender.com/products/categories/getAll")
+    fetch("http://localhost:5000/products/categories/getAll")
       .then((response) => response.json())
       .then((data) => {
         setCategories(data);

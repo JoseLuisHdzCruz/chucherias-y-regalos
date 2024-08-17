@@ -4,7 +4,7 @@ import axios from 'axios';
 const CheckoutButton = () => {
   const handleClick = async (event) => {
     // Llama a tu backend para crear una sesión de Checkout
-    const { data } = await axios.post('https://backend-c-r.onrender.com/ventas/create-checkout-session', {
+    const { data } = await axios.post('http://localhost:5000/ventas/create-checkout-session', {
       amount: 5000, // Monto en centavos (por ejemplo, 50.00 USD)
     });
 

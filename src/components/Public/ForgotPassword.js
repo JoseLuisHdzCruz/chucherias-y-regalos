@@ -46,7 +46,7 @@ const LoginPage = () => {
 
       // Enviar datos al backend para la autenticación
       await axios.post(
-        "https://backend-c-r.onrender.com/users/forgotPassword",
+        "http://localhost:5000/users/forgotPassword",
         values
       );
 

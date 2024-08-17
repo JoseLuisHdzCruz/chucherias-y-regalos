@@ -24,7 +24,7 @@ const KeyVeriflyWhatsApp = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://backend-c-r.onrender.com/users/findPhone/${correo}`)
+    fetch(`http://localhost:5000/users/findPhone/${correo}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.telefono) {
@@ -47,7 +47,7 @@ const KeyVeriflyWhatsApp = () => {
 
     try {
       const response = await axios.post(
-        "https://backend-c-r.onrender.com/users/keyCompare",
+        "http://localhost:5000/users/keyCompare",
         {
           correo: correo,
           clave: clave,
@@ -91,7 +91,7 @@ const KeyVeriflyWhatsApp = () => {
       setIsResending(true);
 
       await axios.post(
-        "https://backend-c-r.onrender.com/users/sedKeyWhatsApp",
+        "http://localhost:5000/users/sedKeyWhatsApp",
         {
           correo,
         }

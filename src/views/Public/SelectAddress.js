@@ -36,7 +36,7 @@ const SelectAddress = () => {
 
       // Obtener sucursales
       fetch(
-        "https://backend-c-r.onrender.com/address/get-sucursal"
+        "http://localhost:5000/address/get-sucursal"
       )
         .then((response) => response.json())
         .then((data) => setSucursales(data))
@@ -46,7 +46,7 @@ const SelectAddress = () => {
 
       // Obtener domicilios
       fetch(
-        `https://backend-c-r.onrender.com/address/get-domicilio/${UserId}`
+        `http://localhost:5000/address/get-domicilio/${UserId}`
       )
         .then((response) => response.json())
         .then((data) => setDomicilios(data))
@@ -73,7 +73,7 @@ const SelectAddress = () => {
       const selectedCPValue = event.target.dataset.cp;
       console.log(selectedCPValue);
       const response = await fetch(
-        `https://backend-c-r.onrender.com/address/get-colonias/${selectedCPValue}`
+        `http://localhost:5000/address/get-colonias/${selectedCPValue}`
       );
       if (!response.ok) {
         throw new Error(

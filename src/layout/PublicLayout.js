@@ -14,7 +14,7 @@ const PublicLayout = ({ children }) => {
     if (searchTerm !== "") {
       try {
         const response = await fetch(
-          `https://backend-c-r.onrender.com/products/search`,
+          `http://localhost:5000/products/search`,
           {
             method: "POST",
             headers: {

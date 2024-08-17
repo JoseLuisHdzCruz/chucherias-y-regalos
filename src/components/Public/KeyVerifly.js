@@ -43,7 +43,7 @@ const KeyVerifly = () => {
     console.log(values.otp);
     try {
       const response = await axios.post(
-        "https://backend-c-r.onrender.com/users/keyCompare",
+        "http://localhost:5000/users/keyCompare",
         {
           correo: correo,
           clave: values.otp,
@@ -85,7 +85,7 @@ const KeyVerifly = () => {
       setIsResending(true);
 
       await axios.post(
-        "https://backend-c-r.onrender.com/users/forgotPassword",
+        "http://localhost:5000/users/forgotPassword",
         {
           correo,
         }
@@ -114,7 +114,7 @@ const KeyVerifly = () => {
   const handleClick = async () => {
     try {
       await axios.post(
-        "https://backend-c-r.onrender.com/users/sedKeyWhatsApp",
+        "http://localhost:5000/users/sedKeyWhatsApp",
         {
           correo: correo,
         }

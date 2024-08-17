@@ -25,7 +25,7 @@ const Promociones = ({ title }) => {
   const fetchPromociones = async () => {
     try {
       const response = await axios.get(
-        "https://backend-c-r.onrender.com/admin/getPromociones"
+        "http://localhost:5000/admin/getPromociones"
       );
       setPromocionesData(response.data);
     } catch (error) {
@@ -36,7 +36,7 @@ const Promociones = ({ title }) => {
   const fetchCategorias = async () => {
     try {
       const response = await axios.get(
-        "https://backend-c-r.onrender.com/products/categories/getAll"
+        "http://localhost:5000/products/categories/getAll"
       );
       setCategoriasData(response.data);
     } catch (error) {
@@ -50,7 +50,7 @@ const Promociones = ({ title }) => {
         (p) => p.promocionId === promocionId
       );
       await axios.put(
-        `https://backend-c-r.onrender.com/admin/updatePromociones/${promocionId}`,
+        `http://localhost:5000/admin/updatePromociones/${promocionId}`,
         promocion
       );
       fetchPromociones();
@@ -86,7 +86,7 @@ const Promociones = ({ title }) => {
   const handleAddSave = async () => {
     try {
       await axios.post(
-        "https://backend-c-r.onrender.com/admin/createPromociones",
+        "http://localhost:5000/admin/createPromociones",
         newPromocion
       );
       fetchPromociones();
