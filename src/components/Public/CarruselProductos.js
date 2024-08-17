@@ -11,7 +11,7 @@ const CarruselProductos = () => {
   // const [elementsPerPage, setElementsPerPage] = useState(3);
 
   useEffect(() => {
-    fetch("https://backend-c-r.onrender.com//products/randomProducts")
+    fetch("https://backend-c-r.onrender.com/products/randomProducts")
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.error("Error fetching products:", error));
@@ -34,7 +34,7 @@ const CarruselProductos = () => {
   }, []);
   useEffect(() => {
     // Obtener categorías
-    fetch("https://backend-c-r.onrender.com//products/categories/getAll")
+    fetch("https://backend-c-r.onrender.com/products/categories/getAll")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));

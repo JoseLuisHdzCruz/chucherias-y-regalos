@@ -21,9 +21,9 @@ const Inventario = ({ title }) => {
   const fetchData = async () => {
     try {
       const [productsResponse, categoriesResponse, statusesResponse] = await Promise.all([
-        axios.get('https://backend-c-r.onrender.com//products/'),
-        axios.get('https://backend-c-r.onrender.com//products/categories/getAll'),
-        axios.get('https://backend-c-r.onrender.com//products/status/getAll')
+        axios.get('https://backend-c-r.onrender.com/products/'),
+        axios.get('https://backend-c-r.onrender.com/products/categories/getAll'),
+        axios.get('https://backend-c-r.onrender.com/products/status/getAll')
       ]);
 
       setProducts(productsResponse.data);
@@ -37,7 +37,7 @@ const Inventario = ({ title }) => {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://backend-c-r.onrender.com//products/search-advance', {
+      const response = await axios.post('https://backend-c-r.onrender.com/products/search-advance', {
         nombre: filterNombre,
         categoriaId: filterCategoria,
         statusId: filterStatus

@@ -50,7 +50,7 @@ const SelectPayment = () => {
     try {
       const customerId = decodedToken.customerId;
       const response = await axios.post(
-        "https://backend-c-r.onrender.com//ventas/",
+        "https://backend-c-r.onrender.com/ventas/",
         {
           metodoPagoId: 1,
           customerId,
@@ -89,7 +89,7 @@ const SelectPayment = () => {
       const customerId = decodedToken.customerId;
 
       const response = await axios.post(
-        "https://backend-c-r.onrender.com//order/create-order",
+        "https://backend-c-r.onrender.com/order/create-order",
         {
           items,
           customerId,
@@ -132,7 +132,7 @@ const SelectPayment = () => {
       }
 
       const response = await axios.post(
-        "https://backend-c-r.onrender.com//ventas/create-checkout-session",
+        "https://backend-c-r.onrender.com/ventas/create-checkout-session",
         {
           items,
           shipping,

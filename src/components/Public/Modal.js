@@ -59,7 +59,7 @@ const ModalComponent = ({ show, onClose }) => {
 
       // Enviar datos al backend para la autenticación
       const response = await axios.post(
-        "https://backend-c-r.onrender.com//users/login",
+        "https://backend-c-r.onrender.com/users/login",
         values
       );
 

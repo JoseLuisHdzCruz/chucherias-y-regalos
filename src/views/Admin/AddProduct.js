@@ -39,7 +39,7 @@ const AddProduct = ({ title }) => {
 
       console.log("FormData:", formData);
 
-      const response = await axios.post('https://backend-c-r.onrender.com//products/add', formData, {
+      const response = await axios.post('https://backend-c-r.onrender.com/products/add', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

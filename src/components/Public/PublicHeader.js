@@ -92,7 +92,7 @@ function PublicHeader({ onSearch }) {
   
         // Llamada a la API para obtener los datos del usuario
         const response = await axios.get(
-          `https://backend-c-r.onrender.com//users/${decoded.customerId}`
+          `https://backend-c-r.onrender.com/users/${decoded.customerId}`
         );
   
         // Actualiza el estado con los datos del usuario
@@ -138,7 +138,7 @@ function PublicHeader({ onSearch }) {
       const fetchSessionData = async () => {
         try {
           const response = await fetch(
-            `https://backend-c-r.onrender.com//users/getSession/${customer.sesion}`
+            `https://backend-c-r.onrender.com/users/getSession/${customer.sesion}`
           );
           const data = await response.json();
           setVerificacionRealizada(true);
@@ -160,7 +160,7 @@ function PublicHeader({ onSearch }) {
 
   const cerrarSesion = async () => {
     try {
-      // await axios.post("https://backend-c-r.onrender.com//users/logout", {
+      // await axios.post("https://backend-c-r.onrender.com/users/logout", {
       //   sessionId: usuario.sesion,
       // });
 

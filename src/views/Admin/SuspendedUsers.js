@@ -19,7 +19,7 @@ const Empleados = ({ title }) => {
 
   const fetchUsuarios = async () => {
     try {
-      const response = await axios.get("https://backend-c-r.onrender.com//users");
+      const response = await axios.get("https://backend-c-r.onrender.com/users");
       setUsuarios(response.data);
     } catch (error) {
       console.error("Error al obtener usuarios:", error);
@@ -28,7 +28,7 @@ const Empleados = ({ title }) => {
 
   const fetchStatuses = async () => {
     try {
-      const response = await axios.get('https://backend-c-r.onrender.com//products/status/getAll');
+      const response = await axios.get('https://backend-c-r.onrender.com/products/status/getAll');
       setStatuses(response.data);
     } catch (error) {
       console.error('Error fetching statuses:', error);
@@ -38,7 +38,7 @@ const Empleados = ({ title }) => {
   const handleToggle = async (userId, habilitado) => {
     try {
       const nuevoEstado = habilitado ? 1 : 2;
-      await axios.put(`https://backend-c-r.onrender.com//admin/status/${userId}`, {
+      await axios.put(`https://backend-c-r.onrender.com/admin/status/${userId}`, {
         statusId: nuevoEstado,
       });
 
@@ -59,7 +59,7 @@ const Empleados = ({ title }) => {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('https://backend-c-r.onrender.com//users/searchAdvance', {
+      const response = await axios.post('https://backend-c-r.onrender.com/users/searchAdvance', {
         correo: filterCorreo,
         statusId: filterStatus
       });

@@ -41,7 +41,7 @@ const EditEmployee = ({ title }) => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `https://backend-c-r.onrender.com//admin/get-employee/${empleadoId}`
+          `https://backend-c-r.onrender.com/admin/get-employee/${empleadoId}`
         );
         const {
             nombre,
@@ -88,7 +88,7 @@ const EditEmployee = ({ title }) => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const response = await axios.put(`https://backend-c-r.onrender.com//admin/update-employee/${empleadoId}`, values);
+      const response = await axios.put(`https://backend-c-r.onrender.com/admin/update-employee/${empleadoId}`, values);
       console.log(response.data);
       toast.success('Empleado actualizado exitosamente!');
       setTimeout(() => {

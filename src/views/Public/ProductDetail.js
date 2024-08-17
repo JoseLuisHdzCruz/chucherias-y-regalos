@@ -26,7 +26,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     // Hacer la solicitud a la API para obtener los detalles del producto
-    fetch(`https://backend-c-r.onrender.com//products/${id}`)
+    fetch(`https://backend-c-r.onrender.com/products/${id}`)
       .then((response) => response.json())
       .then((data) => setProduct(data))
       .catch((error) =>
@@ -36,7 +36,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     // Obtener categorías
-    fetch("https://backend-c-r.onrender.com//products/categories/getAll")
+    fetch("https://backend-c-r.onrender.com/products/categories/getAll")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));

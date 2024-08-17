@@ -34,7 +34,7 @@ function SidebarMenu({ activarModal, mostrarModal, cerrarModal, cerrarSesion, me
   };
 
   useEffect(() => {
-    fetch('https://backend-c-r.onrender.com//products/categories/getAll')
+    fetch('https://backend-c-r.onrender.com/products/categories/getAll')
       .then(response => response.json())
       .then(data => {
         setCategories(data);

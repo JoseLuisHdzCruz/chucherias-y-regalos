@@ -49,14 +49,14 @@ const PurchaseHistory = () => {
       const fetchPurchaseHistory = async () => {
         try {
           const response = await axios.get(
-            `https://backend-c-r.onrender.com//ventas/cliente/${user}`
+            `https://backend-c-r.onrender.com/ventas/cliente/${user}`
           );
           const historyData = response.data;
 
           // Obtener los detalles de cada compra
           const purchaseDetailsPromises = historyData.map(async (purchase) => {
             const detailResponse = await axios.get(
-              `https://backend-c-r.onrender.com//ventas/detalle/${purchase.ventaId}`
+              `https://backend-c-r.onrender.com/ventas/detalle/${purchase.ventaId}`
             );
             return {
               ...purchase,
@@ -84,7 +84,7 @@ const PurchaseHistory = () => {
   const openModal = async (purchase, ventaId) => {
     try {
       const response = await axios.get(
-        `https://backend-c-r.onrender.com//ventas/${ventaId}`
+        `https://backend-c-r.onrender.com/ventas/${ventaId}`
       );
       setSelectedPurchase(purchase);
       setVenta(response.data);
@@ -133,7 +133,7 @@ const PurchaseHistory = () => {
     try {
       console.log(folioVenta, cancelReason);
       // Aquí consumes la API para cambiar el estado de la venta al cancelarla
-      await axios.post(`https://backend-c-r.onrender.com//ventas/cancelar-venta`, {
+      await axios.post(`https://backend-c-r.onrender.com/ventas/cancelar-venta`, {
         folio: folioVenta, // Folio de la venta
         reason: cancelReason, // Razón de la cancelación
       });
@@ -211,7 +211,7 @@ const PurchaseHistory = () => {
             onSubmit={async (values, { setSubmitting }) => {
               try {
                 const response = await axios.post(
-                  "https://backend-c-r.onrender.com//ventas/filtroVentas",
+                  "https://backend-c-r.onrender.com/ventas/filtroVentas",
                   {
                     fechaInicial: values.fechaInicial,
                     fechaFinal: values.fechaFinal,
@@ -224,7 +224,7 @@ const PurchaseHistory = () => {
                 const purchaseDetailsPromises = filterHistory.map(
                   async (purchase) => {
                     const detailResponse = await axios.get(
-                      `https://backend-c-r.onrender.com//ventas/detalle/${purchase.ventaId}`
+                      `https://backend-c-r.onrender.com/ventas/detalle/${purchase.ventaId}`
                     );
                     return { ...purchase, detalleVenta: detailResponse.data };
                   }

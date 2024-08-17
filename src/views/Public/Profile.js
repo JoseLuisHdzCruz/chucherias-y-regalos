@@ -37,7 +37,7 @@ const Profile = () => {
 
           // Llamada a la API para obtener los datos del usuario
           const response = await axios.get(
-            `https://backend-c-r.onrender.com//users/${decoded.customerId}`
+            `https://backend-c-r.onrender.com/users/${decoded.customerId}`
           );
 
           // Actualiza el estado con los datos del usuario
@@ -77,7 +77,7 @@ const Profile = () => {
 
     try {
       const response = await axios.put(
-        `https://backend-c-r.onrender.com//users/banner/${customer.customerId}`,
+        `https://backend-c-r.onrender.com/users/banner/${customer.customerId}`,
         formData
       );
 
@@ -136,7 +136,7 @@ const Profile = () => {
                 ref={fileUploadRef}
                 mode="basic"
                 name="imagen"
-                url={`https://backend-c-r.onrender.com//users/usuario/${customer.customerId}/imagen`}
+                url={`https://backend-c-r.onrender.com/users/usuario/${customer.customerId}/imagen`}
                 accept="image/*"
                 customUpload
                 uploadHandler={customBase64Uploader}

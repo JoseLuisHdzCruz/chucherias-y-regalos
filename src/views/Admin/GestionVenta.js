@@ -24,7 +24,7 @@ const ViewOrders = ({ title }) => {
   const fetchVentas = async () => {
     try {
       const response = await axios.get(
-        "https://backend-c-r.onrender.com//ventas/"
+        "https://backend-c-r.onrender.com/ventas/"
       );
       const sortedVentas = response.data.sort(
         (a, b) => new Date(b.fecha) - new Date(a.fecha)
@@ -38,7 +38,7 @@ const ViewOrders = ({ title }) => {
   const fetchStatuses = async () => {
     try {
       const response = await axios.get(
-        "https://backend-c-r.onrender.com//ventas/status/getAllStatusVenta"
+        "https://backend-c-r.onrender.com/ventas/status/getAllStatusVenta"
       );
       setStatuses(response.data);
     } catch (error) {
@@ -49,7 +49,7 @@ const ViewOrders = ({ title }) => {
   const fetchUsuarios = async () => {
     try {
       const response = await axios.get(
-        "https://backend-c-r.onrender.com//users/"
+        "https://backend-c-r.onrender.com/users/"
       );
       setUsuarios(response.data);
     } catch (error) {
@@ -60,7 +60,7 @@ const ViewOrders = ({ title }) => {
   const fetchDetalleVenta = async (ventaId) => {
     try {
       const response = await axios.get(
-        `https://backend-c-r.onrender.com//ventas/detalle/${ventaId}`
+        `https://backend-c-r.onrender.com/ventas/detalle/${ventaId}`
       );
       setDetalleVenta(response.data);
     } catch (error) {
@@ -81,7 +81,7 @@ const ViewOrders = ({ title }) => {
   const handleChangeStatus = async () => {
     try {
       await axios.put(
-        `https://backend-c-r.onrender.com//ventas/updateStatusVenta/${selectedVenta.ventaId}`,
+        `https://backend-c-r.onrender.com/ventas/updateStatusVenta/${selectedVenta.ventaId}`,
         {
           statusVentaId: newStatus,
         }

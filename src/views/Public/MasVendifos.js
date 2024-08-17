@@ -18,7 +18,7 @@ function MasVendidos() {
   const [orderBy, setOrderBy] = useState("");
 
   useEffect(() => {
-    fetch("https://backend-c-r.onrender.com//products/productos/mas-vendidos")
+    fetch("https://backend-c-r.onrender.com/products/productos/mas-vendidos")
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.error("Error fetching products:", error));
@@ -35,7 +35,7 @@ function MasVendidos() {
 
   useEffect(() => {
     // Obtener categorías
-    fetch("https://backend-c-r.onrender.com//products/categories/getAll")
+    fetch("https://backend-c-r.onrender.com/products/categories/getAll")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));

@@ -47,7 +47,7 @@ const ProfileSecurity = () => {
   const fetchData = async (customerId) => {
     try {
       const response = await axios.get(
-        `https://backend-c-r.onrender.com//users/${customerId}`
+        `https://backend-c-r.onrender.com/users/${customerId}`
       );
 
       setPreguntaSecreta(response.data.preguntaSecreta);
@@ -71,7 +71,7 @@ const ProfileSecurity = () => {
         return;
       }
 
-      const response = await axios.put(`https://backend-c-r.onrender.com//users/updateUser/${decodedToken.customerId}`, {
+      const response = await axios.put(`https://backend-c-r.onrender.com/users/updateUser/${decodedToken.customerId}`, {
         respuestaPSecreta: values.respuesta,
         preguntaSecreta,
       });
