@@ -8,17 +8,21 @@ import reportWebVitals from "./reportWebVitals";
 import "./modalConfig"; // Importa el archivo de configuración de react-modal
 import { AuthProvider } from "./context/AuthContext";
 import CartContextProvider from "./context/CartContext";
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <AuthProvider>
-    <CartContextProvider>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-    </CartContextProvider>
-  </AuthProvider>
+  <React.StrictMode>
+    <AuthProvider>
+      <CartContextProvider>
+        <App />
+      </CartContextProvider>
+    </AuthProvider>
+  </React.StrictMode>
 );
+
+// Este código registra el service worker
+serviceWorkerRegistration.register();
 
 // Si deseas medir el rendimiento de tu aplicación, puedes usar reportWebVitals
 reportWebVitals();
