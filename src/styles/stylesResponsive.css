@@ -130,6 +130,10 @@
 @media (max-width: 768px) {
   /* Sidebar Styles */
 
+  .img-catalog{
+    width: 80% !important;
+  }
+
   .header-public {
     flex-direction: column;
   }
