@@ -1,19 +1,19 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Chucherías y Regalos",
+  "name": "Chucherías y Regalos Huejutla",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "images/Imagen1-3n4j4J1C4-transformed (1).jpg",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "images/Imagen1-3n4j4J1C4-transformed (1).jpg",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "images/Imagen1-3n4j4J1C4-transformed (1).jpg",
       "type": "image/png",
       "sizes": "512x512"
     }

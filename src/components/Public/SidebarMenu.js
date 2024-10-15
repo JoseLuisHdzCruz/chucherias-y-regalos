@@ -53,7 +53,7 @@ function SidebarMenu({ activarModal, mostrarModal, cerrarModal, cerrarSesion, me
             <li className="sidebar-item fw-bold">
               <Link onClick={toggleMenu} to="/user-profile">
                 {usuario.imagen ? (
-                  <img src={usuario.imagen} className="img-fluid mt-2 rounded-image" alt={usuario.nombre} />
+                  <img src={usuario.imagen} className="logo-user rounded-image" alt={usuario.nombre} />
                 ) : selectedSexo === "masculino" ? (
                   <img src="/images/user-masculino.png" className="logo-user rounded-image" alt={usuario.nombre} />
                 ) : (

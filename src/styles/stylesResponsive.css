@@ -3,6 +3,16 @@
   display: none; /* Asegúrate de que siempre esté visible */
 }
 
+.p-steps-number{
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.p-menuitem-link{
+  display: flex;
+  justify-content: center;
+}
+
 .cont-forgot{
   display: flex;
   justify-content: center;
@@ -18,17 +28,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 20px;
+  padding: 5px 10px;
+
 }
+
+
 
 .header-public.hidden {
   transform: translateX(
-    -100%
-  ); /* Ocultar el contenido moviéndolo fuera de la vista */
+    0%
+  ); 
 }
 
 .header-public.show-menu {
-  transform: translateX(0); /* Mostrar el contenido */
+  transform: translateX(0);
 }
 
 .Menu {
@@ -495,6 +508,9 @@
     display: none !important;
   }
 
+  .toggle-button{
+    width: auto;
+  }
   .item-responsive{
     display: block !important;
   }

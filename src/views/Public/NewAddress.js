@@ -5,9 +5,10 @@ import axios from "axios";
 import PageTitle from "../../components/Public/PageTitle";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
-import { toast } from "react-toastify";
+import { useAlert } from "../../context/AlertContext";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate, useParams } from "react-router-dom";
+import { Button } from "primereact/button";
 
 const validationSchema = Yup.object().shape({
   Nombre: Yup.string().required("El nombre es requerido"),
@@ -22,6 +23,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const NewAddress = () => {
+  const showAlert = useAlert();
   const { token } = useAuth();
   const [decodedToken, setDecodedToken] = useState(null);
   const [capchaValue, setCaptchaValue] = useState(null);
@@ -89,9 +91,7 @@ const NewAddress = () => {
       console.log(id);
 
       // Si hay un ID en los parámetros de la URL, obtén los detalles de la dirección existente
-      fetch(
-        `http://localhost:5000/address/get-domicilioById/${id}`
-      )
+      fetch(`http://localhost:5000/address/get-domicilioById/${id}`)
         .then((response) => response.json())
         .then((data) => {
           setAddressDetails(data);
@@ -110,7 +110,7 @@ const NewAddress = () => {
           `http://localhost:5000/address/update-domicilio/${id}`,
           values
         );
-        toast.success("La dirección se actualizó correctamente");
+        showAlert("success", "La dirección se actualizó correctamente");
       } else {
         // Si no hay un ID en los parámetros de la URL, agrega una nueva dirección
         // Combina los valores del formulario con el customerId
@@ -118,18 +118,15 @@ const NewAddress = () => {
           ...values,
           customerId: decodedToken.customerId,
         };
-        await axios.post(
-          "http://localhost:5000/address/add-domicilio",
-          data
-        );
-        toast.success("La dirección se agregó correctamente");
+        await axios.post("http://localhost:5000/address/add-domicilio", data);
+        showAlert("success", "La dirección se agregó correctamente");
       }
       setTimeout(() => {
         navigate(-1);
       }, 3000);
     } catch (error) {
       console.error("Error al agregar/actualizar la dirección:", error);
-      toast.error("Error al agregar/actualizar la dirección");
+      showAlert("error", "Error al agregar/actualizar la dirección");
     }
     setSubmitting(false);
   };
@@ -168,7 +165,9 @@ const NewAddress = () => {
               <Form className="col-md-7">
                 <div className="col-md-12 mt-2">
                   {addressDetails ? (
-                    <h3 className="fw-bold">Actualice su domicilio de entrega</h3>
+                    <h3 className="fw-bold">
+                      Actualice su domicilio de entrega
+                    </h3>
                   ) : (
                     <h3 className="fw-bold">Ingrese su domicilio de entrega</h3>
                   )}
@@ -410,22 +409,26 @@ const NewAddress = () => {
                   </div>
 
                   <div className="cont-btn">
-                    <a className="btn-secondary" onClick={handleBack}>
-                      Regresar
-                    </a>
-                    <button
-                      type="submit"
-                      className="btn-primary"
-                      disabled={!capchaValue || captchaExpired || isSubmitting}
-                    >
-                      {addressDetails
+                    <Button
+                      label="Ingresar"
+                      severity="secondary"
+                      icon="pi pi-chevron-left"
+                      style={{ color: "white", borderRadius: 10 }}
+                      onClick={handleBack}
+                    />
+                    <Button
+                      label={addressDetails
                         ? isSubmitting
                           ? "Actualizando..."
                           : "Actualizar"
                         : isSubmitting
                         ? "Registrando..."
                         : "Registrar"}
-                    </button>
+                      severity="success"
+                      icon="pi pi-check"
+                      style={{ color: "white", borderRadius: 10 }}
+                      disabled={!capchaValue || captchaExpired || isSubmitting}
+                    />
                   </div>
                 </div>
               </Form>

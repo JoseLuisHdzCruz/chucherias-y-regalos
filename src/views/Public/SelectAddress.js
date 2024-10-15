@@ -6,14 +6,16 @@ import { useAuth } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import { MdHome, MdStore } from "react-icons/md";
+import { RadioButton } from "primereact/radiobutton";
 import { Card } from "react-bootstrap";
+import { Button } from "primereact/button";
 
 const SelectAddress = () => {
   const [sucursales, setSucursales] = useState([]);
   const [domicilioS, setDomicilios] = useState([]);
   const [mostrarSucursales, setMostrarSucursales] = useState(false);
   const [mostrarDomicilios, setMostrarDomicilios] = useState(false);
-  const [envio, setEnvio] = useState(0); // Nuevo estado para almacenar el CP seleccionado
+  const [envio, setEnvio] = useState(null); // Nuevo estado para almacenar el CP seleccionado
   const { token } = useAuth();
   const [decodedToken, setDecodedToken] = useState(null);
   const [direccionSeleccionada, setDireccionSeleccionada] = useState(false); // Nuevo estado para rastrear la selección de dirección
@@ -35,9 +37,7 @@ const SelectAddress = () => {
       const UserId = decodedToken.customerId;
 
       // Obtener sucursales
-      fetch(
-        "http://localhost:5000/address/get-sucursal"
-      )
+      fetch("http://localhost:5000/address/get-sucursal")
         .then((response) => response.json())
         .then((data) => setSucursales(data))
         .catch((error) =>
@@ -45,9 +45,7 @@ const SelectAddress = () => {
         );
 
       // Obtener domicilios
-      fetch(
-        `http://localhost:5000/address/get-domicilio/${UserId}`
-      )
+      fetch(`http://localhost:5000/address/get-domicilio/${UserId}`)
         .then((response) => response.json())
         .then((data) => setDomicilios(data))
         .catch((error) =>
@@ -90,16 +88,16 @@ const SelectAddress = () => {
     }
   };
 
-  const handleChangeEnvio = (event) => {
-    if (event.target.value === "domicilio") {
+  const handleChangeEnvio = (e) => {
+    if (e.value === "domicilio") {
       setMostrarDomicilios(true);
       setMostrarSucursales(false); // Ocultar las sucursales cuando se selecciona domicilio
       setSucursalSeleccionada(false); // Reiniciar el estado de selección de sucursal
-    } else if (event.target.value === "sucursal") {
+    } else if (e.value === "sucursal") {
       setMostrarSucursales(true);
       setMostrarDomicilios(false); // Ocultar los domicilios cuando se selecciona sucursal
       setDireccionSeleccionada(false); // Reiniciar el estado de selección de dirección
-      setEnvio(0);
+      setEnvio(null);
     }
   };
 
@@ -152,11 +150,14 @@ const SelectAddress = () => {
   // Guardar la cadena JSON en el localStorage
   localStorage.setItem("Venta", ventaJSON);
 
+  const combinedHandleChange = (e) => {
+    setEnvio(e.value); // Primera función
+    handleChangeEnvio(e); // Segunda función
+  };
+
   return (
     <main>
       <PageTitle title="Chucherias & Regalos | Carrito" />
-      <h3 className="title-pag fw-bold text-uppercase">Metodo de entrega</h3>
-      <hr className="hr-primary" />
       <div className="ml-4 mr-4">
         <div className="d-flex mr-4 ml-4">
           <h3>Elige la forma de entrega</h3>
@@ -172,20 +173,17 @@ const SelectAddress = () => {
               <div className="row">
                 <div className="col-12">
                   <div className="d-flex align-items-center">
-                    <input
-                      type="radio"
+                    <RadioButton
+                      inputId="domicilio"
                       name="envio"
                       value="domicilio"
-                      className="form-check-input"
-                      onChange={handleChangeEnvio}
+                      onChange={combinedHandleChange}
+                      checked={envio === "domicilio"}
                     />
-                    <h5
-                      className="card-title fw-bold"
-                      style={{ fontSize: "20px" }}
-                    >
-                      <MdHome size={35} color="#9087b1" className="me-2" />{" "}
+                    <label htmlFor="domicilio" className="ml-2 fs-4">
+                      <MdHome size={35} color="#9087b1" className="me-2" />
                       Enviar a domicilio
-                    </h5>
+                    </label>
                   </div>
                 </div>
               </div>
@@ -201,7 +199,7 @@ const SelectAddress = () => {
                         <Card className="card h-100">
                           <div className="card-body d-flex flex-column">
                             <div className="row">
-                              <div className="col-1 d-flex align-items-center justify-content-center">
+                              <div className="col-2 item-center">
                                 <input
                                   type="radio"
                                   name="domicilio"
@@ -211,7 +209,7 @@ const SelectAddress = () => {
                                   onChange={handleSelectDomicilio}
                                 />
                               </div>
-                              <div className="col-11">
+                              <div className="col-10">
                                 <h5 className="card-title fw-bold">
                                   {domicilio.Nombre}
                                 </h5>
@@ -219,8 +217,10 @@ const SelectAddress = () => {
                             </div>
                             <div className="row mt-2">
                               <div className="col-12">
-                                <span>{domicilio.Calle}</span><br/>
-                                <span>{domicilio.Telefono}</span><br/>
+                                <span>{domicilio.Calle}</span>
+                                <br />
+                                <span>{domicilio.Telefono}</span>
+                                <br />
                                 <span>{domicilio.Referencias}</span>
                               </div>
                             </div>
@@ -252,7 +252,18 @@ const SelectAddress = () => {
               <div className="row">
                 <div className="col-12">
                   <div className="d-flex align-items-center">
-                    <input
+                    <RadioButton
+                      inputId="sucursal"
+                      name="envio"
+                      value="sucursal"
+                      onChange={combinedHandleChange}
+                      checked={envio === "sucursal"}
+                    />
+                    <label htmlFor="sucursal" className="ml-2 fs-4">
+                      <MdStore size={35} color="#9087b1" className="me-2" />
+                      Recoger en alguna de nuestras sucursales
+                    </label>
+                    {/* <input
                       type="radio"
                       name="envio"
                       value="sucursal"
@@ -265,7 +276,7 @@ const SelectAddress = () => {
                     >
                       <MdStore size={35} color="#9087b1" className="me-2" />
                       Recoger en alguna de nuestras sucursales
-                    </h5>
+                    </h5> */}
                   </div>
                 </div>
               </div>
@@ -280,7 +291,7 @@ const SelectAddress = () => {
                         <Card className="card h-100">
                           <div className="card-body d-flex flex-column">
                             <div className="row">
-                              <div className="col-1 d-flex align-items-center justify-content-center">
+                              <div className="col-2 item-center">
                                 <input
                                   type="radio"
                                   name="sucursal"
@@ -289,7 +300,7 @@ const SelectAddress = () => {
                                   onChange={handleSelectSucursal}
                                 />
                               </div>
-                              <div className="col-11">
+                              <div className="col-10">
                                 <h5 className="card-title fw-bold">
                                   {sucursal.Nombre}
                                 </h5>
@@ -297,8 +308,10 @@ const SelectAddress = () => {
                             </div>
                             <div className="row mt-2">
                               <div className="col-12">
-                                <span>{sucursal.Calle}</span><br/>
-                                <span>{sucursal.Telefono}</span><br/>
+                                <span>{sucursal.Calle}</span>
+                                <br />
+                                <span>{sucursal.Telefono}</span>
+                                <br />
                                 <span>{sucursal.Horario}</span>
                               </div>
                             </div>
@@ -374,7 +387,7 @@ const SelectAddress = () => {
                             <strong>$ 0.00</strong>
                           )
                         ) : mostrarSucursales ? (
-                          <strong>No aplica</strong>
+                          <strong>No aplica</strong        >
                         ) : (
                           <span className="text-muted">
                             Elija la forma de entrega
@@ -402,13 +415,14 @@ const SelectAddress = () => {
                   </tbody>
                 </table>
                 <div className="text-center mt-4">
-                  <button
-                    className="btn btn-success"
+                  <Button
+                    label="Proceder a pago"
+                    severity="success"
+                    icon="pi pi-check"
+                    style={{ color: "white", borderRadius: 10 }}
                     onClick={handleProceedToPayment}
                     disabled={!direccionSeleccionada && !sucursalSeleccionada}
-                  >
-                    Proceder a pago
-                  </button>
+                  />
                 </div>
               </div>
             </Card>

@@ -31,8 +31,8 @@ const PublicLayout = ({ children }) => {
         console.error("Error searching products:", error);
       }
     } else {
-      setSearchResults([]); // Si el término de búsqueda está vacío, establecer los resultados como vacíos
-      setSearchTerm(null); // O podrías establecer searchTerm como null o 0 según lo necesites
+      setSearchResults([]);
+      setSearchTerm(null);
     }
   };
 
@@ -41,21 +41,21 @@ const PublicLayout = ({ children }) => {
       <PublicHeader onSearch={handleSearch} />
 
       <div style={{ 
-      backgroundImage: "url('/images/PublicFound.jpg')", 
-      backgroundRepeat: "no-repeat", 
-      backgroundSize: "cover", 
-      backgroundPosition: "center center", 
-      // filter: "blur(2px)",
-    }}>
-      {React.Children.map(
-        children,
-        (child) =>
-          React.cloneElement(child, {
-            searchResults: searchResults,
-            searchTerm: searchTerm || null,
-          }) // Pasar searchTerm
-      )}
-    </div>
+        backgroundImage: "url('/images/PublicFound.jpg')", 
+        backgroundRepeat: "no-repeat", 
+        backgroundSize: "cover", 
+        backgroundPosition: "center center", 
+      }}>
+        {React.Children.map(
+          children,
+          (child) =>
+            React.cloneElement(child, {
+              searchResults: searchResults,
+              searchTerm: searchTerm || null,
+            }) // Pasar searchTerm
+        )}
+      </div>
+      
       <ScrollButton />
       {token && <NotificationButton />}
       <PublicFooter />

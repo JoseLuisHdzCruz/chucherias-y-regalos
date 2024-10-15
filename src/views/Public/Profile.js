@@ -122,11 +122,12 @@ const Profile = () => {
                 // Mostrar la imagen predeterminada o la imagen del usuario si no hay una imagen cargada
                 <img
                   src={
-                    customer.imagen !== null
+                    customer.imagen !== null 
+                    && customer.imagen !== ''
                       ? customer.imagen
-                      : selectedSexo === "masculino"
+                      : (selectedSexo === "masculino"
                       ? "/images/user-masculino.png"
-                      : "/images/OIP (1).jpg"
+                      : "/images/OIP (1).jpg")
                   }
                   className="img-fluid mt-2"
                   alt="Chucherias & Regalos"

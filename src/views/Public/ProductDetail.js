@@ -1,5 +1,6 @@
 import PageTitle from "../../components/Public/PageTitle";
 import React, { useState, useEffect, useContext } from "react";
+import ReviewsSection from "../../components/Public/ProductReview";
 import { MdAdd, MdRemove } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -8,9 +9,11 @@ import { CartContext } from "../../context/CartContext";
 import CartModal from "../../components/Public/CartModal";
 import { Chip } from "primereact/chip";
 import { Card } from "primereact/card";
+import { Rating } from 'primereact/rating';
 import { Tag } from "primereact/tag";
 import { useAlert } from "../../context/AlertContext";
 import { Message } from "primereact/message";
+import { Button } from "primereact/button";
 
 import LoadingSpinner from "../../components/Admin/LoadingSpinner";
 
@@ -102,7 +105,11 @@ const ProductDetail = () => {
                 <h2 className="text-price mt-2 fw-bold">
                   $ {product.precioFinal}
                 </h2>
-                <Chip label="IVA Incluido" icon="pi pi-tag" />
+
+                <Chip label="IVA Incluido" icon="pi pi-tag" className="mb-2"/>
+
+                <Rating value={product.ranking} readOnly stars={5} cancel={false} />
+
                 <p className="card-text mt-4">{product.descripcion}</p>
                 <div className="d-flex flex-column align-items-center mt-4">
                   <h5 className="text-center">
@@ -132,15 +139,15 @@ const ProductDetail = () => {
                         </div>
                       </div>
                       <div className="text-center mt-4">
-                        <button
-                          className="btn btn-primary"
-                          onClick={handleAddToCart}
-                          disabled={quantity > product.existencia}
-                        >
-                          {quantity > product.existencia
+                        <Button 
+                          label={quantity > product.existencia
                             ? "Cantidad no disponible"
                             : "Agregar a carrito"}
-                        </button>
+                          icon="pi pi-cart-arrow-down" 
+                          style={{color:"white", borderRadius:10}}
+                          onClick={handleAddToCart}
+                          disabled={quantity > product.existencia}
+                        />
                       </div>
                       {quantity && quantity > product.existencia && (
                         <Message severity="info" text="Productos en existencia insuficientes" className="mt-4" />
@@ -156,6 +163,7 @@ const ProductDetail = () => {
             </Card>
           </div>
         </div>
+        <ReviewsSection ProductReviews={product.ProductReviews} />
         <CarruselProductos className="mb-4" />{" "}
         {/* Ajustado el margen inferior */}
       </div>

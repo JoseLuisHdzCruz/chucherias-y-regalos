@@ -1,18 +1,30 @@
 import React, { useContext, useRef, useState } from "react";
-import { MdAdd, MdRemove, MdDelete, MdRemoveShoppingCart } from "react-icons/md";
+import {
+  MdAdd,
+  MdRemove,
+  MdRemoveShoppingCart,
+  MdShoppingCart
+} from "react-icons/md";
 import { Link } from "react-router-dom";
 import PageTitle from "../../components/Public/PageTitle";
 import { CartContext } from "../../context/CartContext";
-import { Card } from 'primereact/card';
+import { Card } from "primereact/card";
 import { Chip } from "primereact/chip";
-import { Toast } from 'primereact/toast';
-import { Button } from 'primereact/button';
+import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
 import { Avatar } from "primereact/avatar";
 
 const Carrito = () => {
-  const { cart, removeFromCart, addToCart, clearCart } = useContext(CartContext);
-  const totalItemsEnCarrito = cart.reduce((total, item) => total + item.cantidad, 0);
-  const totalIVA = cart.reduce((total, item) => total + item.IVA * item.cantidad, 0);
+  const { cart, removeFromCart, addToCart, clearCart } =
+    useContext(CartContext);
+  const totalItemsEnCarrito = cart.reduce(
+    (total, item) => total + item.cantidad,
+    0
+  );
+  const totalIVA = cart.reduce(
+    (total, item) => total + item.IVA * item.cantidad,
+    0
+  );
 
   // Referencia para el Toast
   const toast = useRef(null);
@@ -23,7 +35,9 @@ const Carrito = () => {
   };
 
   const handleDecrement = (product) => {
-    const itemInCart = cart.find((item) => item.productoId === product.productoId);
+    const itemInCart = cart.find(
+      (item) => item.productoId === product.productoId
+    );
     if (itemInCart && itemInCart.cantidad > 1) {
       addToCart(product, -1);
     } else {
@@ -36,45 +50,52 @@ const Carrito = () => {
       setVisible(true);
       toast.current.clear();
       toast.current.show({
-        severity: 'info',
-        summary: '¿Desea vaciar su carrito?',
+        severity: "info",
+        summary: "¿Desea vaciar su carrito?",
         sticky: true,
         content: (props) => (
-          <div className="d-flex flex-column align-items-left" style={{ flex: '1' }}>
+          <div
+            className="d-flex flex-column align-items-left"
+            style={{ flex: "1" }}
+          >
             <div className="d-flex align-items-center gap-2 mb-4">
-                <Avatar image="/images/user.png" shape="circle" />
-                <span className="fw-bold text-900 text-uppercase">{props.message.summary}</span>
+              <Avatar image="/images/user.png" shape="circle" />
+              <span className="fw-bold text-900 text-uppercase">
+                {props.message.summary}
+              </span>
             </div>
             <div className="text-center">
-              <span className="font-bold text-900">Esta acción no se puede revertir.</span>
+              <span className="font-bold text-900">
+                Esta acción no se puede revertir.
+              </span>
             </div>
             <div className="flex gap-2 item-center mt-3">
-              <Button 
-                label="Confirmar" 
-                icon="pi pi-check" 
-                severity="danger" 
+              <Button
+                label="Confirmar"
+                icon="pi pi-check"
+                severity="danger"
                 onClick={() => {
                   clearCart();
                   toast.current.clear();
                   setVisible(false);
-                }} 
+                }}
                 className="p-button-sm flex mr-4"
-                style={{borderRadius:10, color:"white"}}
+                style={{ borderRadius: 10, color: "white" }}
               />
-              <Button 
-                label="Cancelar" 
-                icon="pi pi-times" 
+              <Button
+                label="Cancelar"
+                icon="pi pi-times"
                 severity="secondary"
                 onClick={() => {
                   toast.current.clear();
                   setVisible(false);
-                }} 
-                style={{borderRadius:10, color:"white"}}
+                }}
+                style={{ borderRadius: 10, color: "white" }}
                 className="p-button-sm flex"
               />
             </div>
           </div>
-        )
+        ),
       });
     }
   };
@@ -82,24 +103,25 @@ const Carrito = () => {
   return (
     <main>
       <PageTitle title="Chucherias & Regalos | Carrito" />
-      <h3 className="title-pag fw-bold text-uppercase">CARRITO DE COMPRAS</h3>
-      <hr className="hr-primary" />
-      <Toast ref={toast} position="bottom-center" onRemove={() => setVisible(false)} />
+      <Toast
+        ref={toast}
+        position="bottom-center"
+        onRemove={() => setVisible(false)}
+      />
       <div className="ml-4 mr-4">
         {totalItemsEnCarrito > 0 ? (
           <>
             <div className="d-flex mr-4 ml-4 justify-content-between">
-              <Chip 
-                label={`Actualmente tiene: ${totalItemsEnCarrito} producto(s) en su carrito`} 
-                icon="pi pi-shopping-cart" 
-                style={{ fontSize: '1.5rem' }} 
-              />
-              <button
-                className="btn btn-danger fw-bold"
+              <h5 className="text-uppercase fw-bold text-muted">
+                Actualmente tiene: {totalItemsEnCarrito} producto(s) en su carrito
+              </h5>
+              <Button
+                label="Vaciar carrito"
+                severity="danger"
+                icon="pi pi-trash"
+                style={{ color: "white", borderRadius: 10 }}
                 onClick={vaciarCarrito}
-              >
-                Vaciar carrito <MdRemoveShoppingCart size={25} />
-              </button>
+              />
             </div>
             <hr className="hr-primary" />
           </>
@@ -122,19 +144,20 @@ const Carrito = () => {
             <Card key={index} className="card column-detail mb-3 mt-4">
               <div className="card-body">
                 <div className="row">
-                <div className="col-md-5 row ml-4 item-carrito-responsive">
+                  <div className="col-md-5 row ml-4 item-carrito-responsive">
                     <h5
                       className="card-title fw-bold mr-2"
                       style={{ fontSize: "20px" }}
                     >
                       {item.nombre}
                     </h5>
-                    <button
-                      className="btn btn-danger"
+                    <Button
+                      label="Quitar del carrito"
+                      severity="danger"
+                      icon="pi pi-cart-minus"
+                      style={{ color: "white", borderRadius: 10 }}
                       onClick={() => removeFromCart(item.productoId)}
-                    >
-                      Quitar del carrito <MdDelete size={25} />
-                    </button>
+                    />
                   </div>
                   <div className="col-md-2 item-center">
                     <img
@@ -151,12 +174,13 @@ const Carrito = () => {
                       {item.nombre}
                     </h5>
                     <div className="cont-options ml-4">
-                      <button
-                        className="btn btn-danger"
+                      <Button
+                        label="Quitar del carrito"
+                        severity="danger"
+                        icon="pi pi-cart-minus"
+                        style={{ color: "white", borderRadius: 10 }}
                         onClick={() => removeFromCart(item.productoId)}
-                      >
-                        Quitar de carrito <MdDelete size={25} color="white" />
-                      </button>
+                      />
                     </div>
                   </div>
                   <div className="col-md-5 aling-center-cont">
@@ -236,8 +260,13 @@ const Carrito = () => {
                   </tbody>
                 </table>
                 <div className="text-center mt-4">
-                  <Link to="/select-address" className="btn btn-success">
-                    Continuar con la compra
+                  <Link to="/select-address">
+                    <Button
+                      label="Continuar con la compra"
+                      severity="success"
+                      icon="pi pi-check-circle"
+                      style={{ color: "white", borderRadius: 10 }}
+                    />
                   </Link>
                 </div>
               </div>

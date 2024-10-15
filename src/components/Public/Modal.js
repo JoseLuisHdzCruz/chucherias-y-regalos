@@ -10,6 +10,7 @@ import { jwtDecode } from "jwt-decode";
 import ReCAPTCHA from "react-google-recaptcha";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
+import { Button } from "primereact/button";
 
 //validaciones correspondientes al formulario de registro
 const loginValidationSchema = Yup.object().shape({
@@ -52,7 +53,7 @@ const ModalComponent = ({ show, onClose }) => {
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       if (!capchaValue) {
-        showAlert("error","Por favor, completa el CAPTCHA.");
+        showAlert("error", "Por favor, completa el CAPTCHA.");
         setErrors({ captcha: "Complete el Captcha" });
         return;
       }
@@ -83,7 +84,10 @@ const ModalComponent = ({ show, onClose }) => {
           responseData.error ===
           "El correo ingresado no está asociado a una cuenta"
         ) {
-          showAlert("error", "El correo ingresado no está asociado a una cuenta.");
+          showAlert(
+            "error",
+            "El correo ingresado no está asociado a una cuenta."
+          );
           setErrors({
             correo: "El correo ingresado no esta asociado a una cuenta",
           });
@@ -93,13 +97,17 @@ const ModalComponent = ({ show, onClose }) => {
         } else if (
           responseData.error === "Se ha excedido el límite de intentos"
         ) {
-          showAlert("error", "Se ha excedido el límite de intentos de inicio de sesión. Por favor espere 30s para intentarlo de nuevo."
+          showAlert(
+            "error",
+            "Se ha excedido el límite de intentos de inicio de sesión. Por favor espere 30s para intentarlo de nuevo."
           );
         }
       } else {
         // Si hay un error de red u otro tipo de error
         console.error(error);
-        showAlert("error", "Error de conexión. Por favor, verifica tu conexión a Internet e inténtalo de nuevo más tarde."
+        showAlert(
+          "error",
+          "Error de conexión. Por favor, verifica tu conexión a Internet e inténtalo de nuevo más tarde."
         );
         // Redirigir a la vista de error 500
         navigate("/error-500");
@@ -230,9 +238,12 @@ const ModalComponent = ({ show, onClose }) => {
               </div>
             </div>
             <Modal.Footer className="modal-footer">
-              <button type="submit" className="btn btn-primary">
-                Ingresar
-              </button>
+              <Button
+                label="Ingresar"
+                severity="success"
+                icon="pi pi-sign-in"
+                style={{ color: "white", borderRadius: 10 }}
+              />
             </Modal.Footer>
           </Form>
         </Formik>

@@ -10,7 +10,10 @@ import { AuthProvider } from "./context/AuthContext";
 import CartContextProvider from "./context/CartContext";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
+
+// Crea el root para la app
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
     <AuthProvider>
@@ -21,8 +24,8 @@ root.render(
   </React.StrictMode>
 );
 
-// Este código registra el service worker
+// Registra el Service Worker para soportar PWA y caché offline
 serviceWorkerRegistration.register();
 
-// Si deseas medir el rendimiento de tu aplicación, puedes usar reportWebVitals
+// Para medir el rendimiento de la aplicación
 reportWebVitals();

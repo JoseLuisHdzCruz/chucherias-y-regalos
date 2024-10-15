@@ -12,6 +12,7 @@ import KeyVerifly from '../components/Public/KeyVerifly';
 import KeyVeriflyWhatsApp from '../components/Public/KeyVeriflyWhatsApp';
 
 import GuardedLayout from '../layout/GuardedLayout';
+import CheckoutStepper from '../components/Public/Stepper';
 
 const NewAddress = lazy(() => import('../views/Public/NewAddress'));
 const UserProfile = lazy(() => import('../views/Public/UserProfile'));
@@ -65,12 +66,20 @@ const PublicRoutes = () => (
       <Route path="/new-address" element={<GuardedLayout><NewAddress /></GuardedLayout>} />
       <Route path="/update-address/:id" element={<GuardedLayout><NewAddress /></GuardedLayout>} />
       <Route path="/user-profile" element={<GuardedLayout><UserProfile /></GuardedLayout>} />
-      <Route path="/checkup" element={<GuardedLayout><Carrito /></GuardedLayout>} />
+      {/* <Route path="/checkup" element={<GuardedLayout><Carrito /></GuardedLayout>} /> */}
       <Route path="/purchase-history" element={<GuardedLayout><PurchaseHistory /></GuardedLayout>} />
-      <Route path="/select-address" element={<GuardedLayout><SelectAddress /></GuardedLayout>} />
-      <Route path="/select-payment" element={<GuardedLayout><SelectPayment /></GuardedLayout>} />
-      <Route path="/strip-payment" element={<GuardedLayout><StripPayment /></GuardedLayout>} />
+      {/* <Route path="/select-address" element={<GuardedLayout><SelectAddress /></GuardedLayout>} />
+      <Route path="/select-payment" element={<GuardedLayout><SelectPayment /></GuardedLayout>} /> */}
+      {/* <Route path="/strip-payment" element={<GuardedLayout><StripPayment /></GuardedLayout>} /> */}
       <Route path="/notifications" element={<GuardedLayout><Notifications /></GuardedLayout>} />
+
+      {/* Rutas de checkout con stepper */}
+      <Route element={<CheckoutStepper />}>
+        <Route path="/checkup" element={<Carrito />} />
+        <Route path="/select-address" element={<SelectAddress />} />
+        <Route path="/select-payment" element={<SelectPayment />} />
+        <Route path="/strip-payment" element={<StripPayment />} />
+      </Route>
     </Routes>
   </Suspense>
 );

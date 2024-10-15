@@ -18,9 +18,21 @@ import { Avatar } from "primereact/avatar";
 import { Chip } from "primereact/chip";
 import { useAlert } from "../../context/AlertContext";
 
+const getInitials = (name) => {
+  if (!name) return "";
+  const initials = name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+  return initials;
+};
+
 function PublicHeader({ onSearch }) {
   const [customer, setCustomer] = useState(null);
-  const showAlert = useAlert()
+  const showAlert = useAlert();
+  const [initials, setInitials] = useState("");
   const [selectedSexo, setSelectedSexo] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const { token, logout } = useAuth();
@@ -85,27 +97,27 @@ function PublicHeader({ onSearch }) {
 
   useEffect(() => {
     const fetchCustomerData = async () => {
-    try{
-      if (token) {
-        const decoded = jwtDecode(token);
-        setSelectedSexo(decoded.sexo);
-  
-        // Llamada a la API para obtener los datos del usuario
-        const response = await axios.get(
-          `http://localhost:5000/users/${decoded.customerId}`
-        );
-  
-        // Actualiza el estado con los datos del usuario
-        setCustomer(response.data);
-      } else {
-        setCustomer(null);
-      }
-    }
-    catch (error) {
-      console.error("Error al obtener el usuario", error);
+      try {
+        if (token) {
+          const decoded = jwtDecode(token);
+          setSelectedSexo(decoded.sexo);
+          let name = `${decoded.nombre} ${decoded.aPaterno}`;
+          setInitials(getInitials(name));
 
-    }}
-    
+          // Llamada a la API para obtener los datos del usuario
+          const response = await axios.get(
+            `http://localhost:5000/users/${decoded.customerId}`
+          );
+
+          // Actualiza el estado con los datos del usuario
+          setCustomer(response.data);
+        } else {
+          setCustomer(null);
+        }
+      } catch (error) {
+        console.error("Error al obtener el usuario", error);
+      }
+    };
 
     let lastScrollTop = 0;
 
@@ -166,14 +178,24 @@ function PublicHeader({ onSearch }) {
 
       logout();
 
-      showAlert('success', 'Cierre de sesión exitoso. ¡Hasta pronto!');
+      showAlert("success", "Cierre de sesión exitoso. ¡Hasta pronto!");
       setTimeout(() => {
         window.location.href = "/";
       }, 3000);
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
-      showAlert('error', 'Error al cerrar sesión.');
+      showAlert("error", "Error al cerrar sesión.");
     }
+  };
+
+  const avatarStyle = {
+    backgroundColor:
+      customer?.sexo === "masculino"
+        ? "#2196F3"
+        : customer?.sexo === "femenino"
+        ? "#9c27b0"
+        : "##e5e7eb",
+    color: customer ? "white" : "#353535",
   };
 
   return (
@@ -183,129 +205,123 @@ function PublicHeader({ onSearch }) {
           state.scrolled ? "hidden" : "sticky"
         } ${state.menuVisible ? "show-menu" : ""}`}
       >
-        <div className="columna-1">
-          <Link to="/">
-            <img
-              className="logo-app"
-              src="/images/Chucherias.png"
-              alt="Chucherias & Regalos"
-            />
-          </Link>
-        </div>
-        <div className="columna-2">
-          <div className="search-bar">
-            <input
-              type="text"
-              id="busquedaTermino"
-              placeholder="¿Qué productos buscas el día de hoy?"
-              onChange={handleSearch}
-              value={searchTerm}
-            />
-            {searchTerm && searchTerm.length > 0 ? (
-              <button onClick={limpiarBusqueda}>
-                <MdClose size={25} />
-              </button>
-            ) : (
-              <button>
-                <MdSearch size={25} />
-              </button>
-            )}
-          </div>
-          <nav className="opciones-cinta mt-2">
-            <ul>
-              <li className="cinta-opciones">
-                <DropdownMenu />
-              </li>
-              <li className="cinta-opciones">
-                <Link to="/ofertas">Ofertas</Link>
-              </li>
-              <li className="cinta-opciones">
-                <Link to="/mas-vendidos">Más vendidos</Link>
-              </li>
-              {!customer ? (
-                <li className="cinta-opciones">
-                  <a onClick={activarModal}>Iniciar sesión</a>
-                  {state.mostrarModal && (
-                    <ModalComponent
-                      show={state.mostrarModal}
-                      onClose={cerrarModal}
-                    />
+        <div className="col-lg-12">
+          <div className="row">
+            <div className="columna-1">
+              <Link to="/">
+                <img
+                  className="logo-app"
+                  src="/images/Chucherias.png"
+                  alt="Chucherias & Regalos"
+                />
+              </Link>
+            </div>
+            <div className="columna-2">
+              <div className="search-bar">
+                <input
+                  type="text"
+                  id="busquedaTermino"
+                  placeholder="¿Qué productos buscas el día de hoy?"
+                  onChange={handleSearch}
+                  value={searchTerm}
+                />
+                {searchTerm && searchTerm.length > 0 ? (
+                  <button onClick={limpiarBusqueda}>
+                    <MdClose size={25} />
+                  </button>
+                ) : (
+                  <button>
+                    <MdSearch size={25} />
+                  </button>
+                )}
+              </div>
+              <nav className="opciones-cinta mt-2">
+                <ul>
+                  <li className="cinta-opciones">
+                    <DropdownMenu />
+                  </li>
+                  <li className="cinta-opciones">
+                    <Link to="/ofertas">Ofertas</Link>
+                  </li>
+                  <li className="cinta-opciones">
+                    <Link to="/mas-vendidos">Más vendidos</Link>
+                  </li>
+                  {!customer ? (
+                    <li className="cinta-opciones">
+                      <a onClick={activarModal}>Iniciar sesión</a>
+                      {state.mostrarModal && (
+                        <ModalComponent
+                          show={state.mostrarModal}
+                          onClose={cerrarModal}
+                        />
+                      )}
+                    </li>
+                  ) : (
+                    <>
+                      <li className="cinta-opciones">
+                        <Link to="/purchase-history">Historial de compra</Link>
+                      </li>
+                      <li className="cinta-opciones">
+                        <Link onClick={cerrarSesion}>Cerrar sesión</Link>
+                      </li>
+                    </>
                   )}
-                </li>
-              ) : (
-                <>
-                  <li className="cinta-opciones">
-                    <Link to="/purchase-history">Historial de compra</Link>
-                  </li>
-                  <li className="cinta-opciones">
-                    <Link onClick={cerrarSesion}>Cerrar sesión</Link>
-                  </li>
-                </>
-              )}
-            </ul>
-          </nav>
-        </div>
-        <div className="columna" style={{ width: "25%" }}>
-          <div className="profile mb-2">
-            {!customer ? (
-              <Avatar
-                image="/images/user.png"
-                className="mr-1"
-                size="large"
-                shape="circle"
-              />
-            ) : customer && customer.imagen !== null ? (
-              <Avatar
-                image={customer.imagen}
-                className="mr-1"
-                size="large"
-                shape="circle"
-              />
-            ) : selectedSexo === "masculino" ? (
-              <Avatar
-                image="/images/user-masculino.png"
-                className="mr-1"
-                size="large"
-                shape="circle"
-              />
-            ) : (
-              <Avatar
-                image="/images/OIP (1).jpg"
-                className="mr-1"
-                size="large"
-                shape="circle"
-              />
-            )}
-
-            {customer ? (
-              <>
-                <div className="perfil">
-                  {/* <div className="row">
+                </ul>
+              </nav>
+            </div>
+            <div className="columna" style={{ width: "25%" }}>
+              <div className="profile mb-2">
+                <Avatar
+                  image={customer?.imagen}
+                  label={!customer?.imagen ? initials : undefined}
+                  icon="pi pi-user"
+                  size="large"
+                  style={customer?.imagen ? undefined : avatarStyle}
+                  shape="circle"
+                />
+                {customer ? (
+                  <>
+                    <div className="perfil">
+                      {/* <div className="row">
                     <span className="text-idUser">ID: {customer.sesion}</span>
                   </div> */}
-                  <div className="row">
-                    <Link className="text-user" to="/user-profile" pointer>
-                      <Chip label={`${customer.nombre} ${customer.aPaterno}`} className="fw-bold" />
-                    </Link>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <Link className="text-user" onClick={activarModal} pointer>
-                <Chip label={"Iniciar sesión"} className="fw-bold"/>
-              </Link>
-            )}
+                      <div className="row">
+                        <Link className="text-user" to="/user-profile" pointer>
+                          <Chip
+                            label={`${customer.nombre} ${customer.aPaterno}`}
+                            className="fw-bold"
+                          />
+                        </Link>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <Link className="text-user" onClick={activarModal} pointer>
+                    <Chip label={"Iniciar sesión"} className="fw-bold" />
+                  </Link>
+                )}
+              </div>
+              <ButtonCart />
+            </div>
+            <div className="d-flex item-responsive justify-content-between">
+              <ButtonCartResponsive />
+              <button
+                className="toggle-button"
+                onClick={toggleMenu}
+                aria-label="Toggle Menu"
+              >
+                {state.menuVisible ? (
+                  <MdClose size={25} />
+                ) : (
+                  <MdMenu size={25} />
+                )}
+              </button>
+            </div>
           </div>
-          <ButtonCart />
+          <div className="row">
+            <Breadcrumbs />
+          </div>
         </div>
-        <ButtonCartResponsive />
-        <button
-          className="toggle-button"
-          onClick={toggleMenu}
-          aria-label="Toggle Menu"
-        >
-          {state.menuVisible ? <MdClose size={25} /> : <MdMenu size={25} />}
-        </button>
       </header>
 
       {/* Overlay */}
@@ -325,7 +341,6 @@ function PublicHeader({ onSearch }) {
           setState((prevState) => ({ ...prevState, menuVisible: visible }))
         }
       />
-      <Breadcrumbs />
     </>
   );
 }

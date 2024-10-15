@@ -2,12 +2,13 @@ import React, { useEffect } from "react";
 import {
   useNavigate,
 } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useAlert } from "../context/AlertContext";
 import PublicLayout from "./PublicLayout";
 import { useAuth } from "../context/AuthContext";
 
 const GuardedLayout = ({ children }) => {
     const { token } = useAuth();
+    const showAlert = useAlert();
     const navigate = useNavigate();
   
     useEffect(() => {
@@ -15,7 +16,7 @@ const GuardedLayout = ({ children }) => {
         
         navigate("/");
         setTimeout(() => {
-          toast.error("Para la siguiente accion debe iniciar sesión.");//Verificar el porque no se muestra la alerta
+          showAlert("info","Para la siguiente accion debe iniciar sesión.");//Verificar el porque no se muestra la alerta
         }, 500);
       }
     }, [token]);
