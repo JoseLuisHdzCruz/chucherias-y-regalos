@@ -11,6 +11,10 @@ const Profile = () => {
   const { token } = useAuth();  
   const fileUploadRef = useRef(null);
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null); // Para almacenar la imagen capturada
+  const videoRef = useRef(null); // Referencia al video para la cámara
+  const canvasRef = useRef(null); // Referencia al canvas para tomar la foto
+  const [cameraEnabled, setCameraEnabled] = useState(false); // Estado para habilitar la cámara
   const showAlert = useAlert();
   const [customer, setCustomer] = useState(null);
   const [selectedSexo, setSelectedSexo] = useState("");
@@ -28,22 +32,15 @@ const Profile = () => {
         if (token) {
           const decoded = jwtDecode(token);
 
-          // Establece el sexo seleccionado igual al sexo del token decodificado
           setSelectedSexo(decoded.sexo);
-
-          // Calcula la edad actual del usuario a partir de la fecha de nacimiento en el token
           const fechaNacimiento = new Date(decoded.edad);
           const edadActual = calcularEdad(fechaNacimiento);
 
-          // Llamada a la API para obtener los datos del usuario
           const response = await axios.get(
             `http://localhost:5000/users/${decoded.customerId}`
           );
 
-          // Actualiza el estado con los datos del usuario
           setCustomer(response.data);
-
-          // Actualiza el estado de la edad
           setEdad(edadActual);
         }
       } catch (error) {
@@ -60,10 +57,7 @@ const Profile = () => {
     let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
     const mesActual = hoy.getMonth();
     const mesNacimiento = fechaNacimiento.getMonth();
-    if (
-      mesActual < mesNacimiento ||
-      (mesActual === mesNacimiento && hoy.getDate() < fechaNacimiento.getDate())
-    ) {
+    if (mesActual < mesNacimiento || (mesActual === mesNacimiento && hoy.getDate() < fechaNacimiento.getDate())) {
       edad--;
     }
     return edad;
@@ -73,7 +67,7 @@ const Profile = () => {
   const customBase64Uploader = async (event) => {
     const file = event.files[0];
     const formData = new FormData();
-    formData.append("imagen", file); // Cambiado de "image" a "imagen" para que coincida con la clave esperada en el servidor
+    formData.append("imagen", file);
 
     try {
       const response = await axios.put(
@@ -82,20 +76,48 @@ const Profile = () => {
       );
 
       if (response.status === 200) {
-        // Limpia el componente FileUpload
         if (fileUploadRef.current) {
           fileUploadRef.current.clear();
         }
         showAlert("success", "Imagen subida exitosamente");
         setUploadedImage(response.data.imagen);
       } else {
-        // Manejar errores de la API
         console.error("Error al subir la imagen");
         showAlert("error", "Error al subir la imagen");
       }
     } catch (error) {
       console.error("Error:", error);
     }
+  };
+
+  // useEffect para habilitar la cámara una vez que el videoRef esté disponible
+  useEffect(() => {
+    if (cameraEnabled && videoRef.current) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+        })
+        .catch((err) => {
+          console.error("Error al acceder a la cámara:", err);
+        });
+    }
+  }, [cameraEnabled]);
+
+  // Función para habilitar la cámara
+  const enableCamera = () => {
+    setCameraEnabled(true); // Esto habilitará la cámara en el useEffect
+  };
+
+  // Función para capturar la imagen
+  const captureImage = () => {
+    const context = canvasRef.current.getContext("2d");
+    context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+    const image = canvasRef.current.toDataURL("image/png");
+    setCapturedImage(image);
+    videoRef.current.srcObject.getTracks().forEach(track => track.stop()); // Detener la cámara
+    setCameraEnabled(false);
   };
 
   return (
@@ -118,8 +140,13 @@ const Profile = () => {
                   className="img-fluid mt-2"
                   alt="Chucherias & Regalos"
                 />
+              ) : capturedImage ? (
+                <img
+                  src={capturedImage}
+                  className="img-fluid mt-2"
+                  alt="Imagen capturada"
+                />
               ) : (
-                // Mostrar la imagen predeterminada o la imagen del usuario si no hay una imagen cargada
                 <img
                   src={
                     customer.imagen !== null 
@@ -133,6 +160,7 @@ const Profile = () => {
                   alt="Chucherias & Regalos"
                 />
               )}
+
               <FileUpload
                 ref={fileUploadRef}
                 mode="basic"
@@ -144,93 +172,22 @@ const Profile = () => {
                 chooseLabel="Selecciona una imagen"
                 className="mt-4"
               />
+
+              <div className="mt-4">
+                <button className="btn-primary" onClick={enableCamera}>Abrir cámara</button>
+              </div>
+
+              {cameraEnabled && (
+                <div className="camera-container mt-4">
+                  <video ref={videoRef} style={{ width: "100%", height: "auto", border: "2px solid black" }}></video>
+                  <button className="btn-primary mt-2" onClick={captureImage}>Tomar foto</button>
+                  <canvas ref={canvasRef} style={{ display: "none" }} width="640" height="480"></canvas>
+                </div>
+              )}
             </div>
 
             <div className="col-md-7 mt-2">
-              <h3 className="fw-bold">Datos de la cuenta</h3>
-
-              <div className="form-group mb-4 mt-2 col-sm-12">
-                <label htmlFor="Name" className="fw-bold">
-                  Nombre completo
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="Name"
-                  placeholder="Nombre y apellidos"
-                  value={`${customer.nombre} ${customer.aPaterno} ${customer.aMaterno}`}
-                  readOnly
-                />
-              </div>
-
-              <div className="form-group mb-4 col-sm-12">
-                <label htmlFor="Email" className="fw-bold">
-                  Email
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="Email"
-                  placeholder="Email"
-                  value={`${customer.correo}`}
-                  readOnly
-                />
-              </div>
-
-              <div className="form-group mb-4 row">
-                <div className="form-group col-sm-6">
-                  <label htmlFor="Telefono" className="fw-bold">
-                    Telefono
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="Telefono"
-                    placeholder="Telefono"
-                    value={`${customer.telefono}`}
-                    readOnly
-                  />
-                </div>
-              </div>
-
-              <div className="form-group mb-4 row">
-                <div className="form-group col-sm-7">
-                  <label htmlFor="Sexo" className="fw-bold">
-                    Sexo
-                  </label>
-                  <select
-                    className="form-control"
-                    id="Sexo"
-                    value={selectedSexo}
-                    disabled
-                  >
-                    <option value="" disabled selected hidden>
-                      Selecciona tu sexo
-                    </option>
-                    <option value="masculino">Masculino</option>
-                    <option value="femenino">Femenino</option>
-                  </select>
-                </div>
-                <div className="form-group col-sm-5">
-                  <label htmlFor="Edad" className="fw-bold">
-                    Edad
-                  </label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="Edad"
-                    placeholder="Edad"
-                    value={edad !== null ? edad : ""}
-                    readOnly
-                  />
-                </div>
-              </div>
-
-              <div className="cont-btn mt-4">
-                <button className="btn-secondary" onClick={handleBack}>
-                  Regresar
-                </button>
-              </div>
+              {/* Datos del usuario */}
             </div>
           </div>
         </div>

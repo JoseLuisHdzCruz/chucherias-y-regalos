@@ -2,14 +2,12 @@ import React, { useContext, useRef, useState } from "react";
 import {
   MdAdd,
   MdRemove,
-  MdRemoveShoppingCart,
-  MdShoppingCart
+  MdRemoveShoppingCart
 } from "react-icons/md";
 import { Link } from "react-router-dom";
 import PageTitle from "../../components/Public/PageTitle";
 import { CartContext } from "../../context/CartContext";
 import { Card } from "primereact/card";
-import { Chip } from "primereact/chip";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { Avatar } from "primereact/avatar";

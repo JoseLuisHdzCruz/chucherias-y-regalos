@@ -1,22 +1,22 @@
 module.exports = {
-    globDirectory: "build/",  // Directorio donde se encuentran los archivos después de build
+    globDirectory: "build/",
     globPatterns: [
-      "**/*.{html,js,css,png,jpg,svg}"  // Archivos que serán cacheados (HTML, JS, CSS, imágenes)
+      "**/*.{html,js,css,png,jpg,svg}"
     ],
-    swDest: "build/service-worker.js",  // Dónde se generará el service worker
+    swDest: "build/service-worker.js",
     runtimeCaching: [
       {
-        urlPattern: /\.(?:png|jpg|jpeg|svg)$/,  // Cachear imágenes
+        urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
         handler: 'CacheFirst',
         options: {
           cacheName: 'images-cache',
           expiration: {
-            maxEntries: 50,  // Máximo de 50 imágenes cacheadas
+            maxEntries: 50, 
           },
         },
       },
       {
-        urlPattern: /\.(?:js|css)$/,  // Cachear archivos JS y CSS
+        urlPattern: /\.(?:js|css)$/,
         handler: 'StaleWhileRevalidate',
         options: {
           cacheName: 'static-resources',
