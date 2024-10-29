@@ -19,7 +19,7 @@ const Empleados = ({ title }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/admin/get-employee');
+      const response = await axios.get('https://backend-c-r-production.up.railway.app/admin/get-employee');
       setEmployees(response.data);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -28,7 +28,7 @@ const Empleados = ({ title }) => {
 
   const fetchStatuses = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/products/status/getAll');
+      const response = await axios.get('https://backend-c-r-production.up.railway.app/products/status/getAll');
       setStatuses(response.data);
     } catch (error) {
       console.error('Error fetching statuses:', error);
@@ -38,7 +38,7 @@ const Empleados = ({ title }) => {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/admin/searchEmployee', {
+      const response = await axios.post('https://backend-c-r-production.up.railway.app/admin/searchEmployee', {
         correo: filterCorreo,
         statusId: filterStatus
       });

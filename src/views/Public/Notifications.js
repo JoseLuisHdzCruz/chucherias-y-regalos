@@ -28,7 +28,7 @@ const Notifications = () => {
   const fetchNotifications = (customerId) => {
     axios
       .get(
-        `http://localhost:5000/users/getAllNotifications/${customerId}`
+        `https://backend-c-r-production.up.railway.app/users/getAllNotifications/${customerId}`
       )
       .then((response) => {
         setNotifications(response.data);
@@ -40,7 +40,7 @@ const Notifications = () => {
   const markNotificationAsRead = (notificationId) => {
     axios
       .put(
-        `http://localhost:5000/users/notificaciones/${notificationId}`
+        `https://backend-c-r-production.up.railway.app/users/notificaciones/${notificationId}`
       )
       .then((response) => {
         fetchNotifications(decodedToken.customerId);

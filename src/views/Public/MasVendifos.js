@@ -18,7 +18,7 @@ function MasVendidos() {
   const [orderBy, setOrderBy] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/products/productos/mas-vendidos")
+    fetch("https://backend-c-r-production.up.railway.app/products/productos/mas-vendidos")
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.error("Error fetching products:", error));
@@ -35,7 +35,7 @@ function MasVendidos() {
 
   useEffect(() => {
     // Obtener categorías
-    fetch("http://localhost:5000/products/categories/getAll")
+    fetch("https://backend-c-r-production.up.railway.app/products/categories/getAll")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));

@@ -41,7 +41,7 @@ const EditEmployee = ({ title }) => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/admin/get-employee/${empleadoId}`
+          `https://backend-c-r-production.up.railway.app/admin/get-employee/${empleadoId}`
         );
         const {
             nombre,
@@ -88,7 +88,7 @@ const EditEmployee = ({ title }) => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const response = await axios.put(`http://localhost:5000/admin/update-employee/${empleadoId}`, values);
+      const response = await axios.put(`https://backend-c-r-production.up.railway.app/admin/update-employee/${empleadoId}`, values);
       console.log(response.data);
       toast.success('Empleado actualizado exitosamente!');
       setTimeout(() => {

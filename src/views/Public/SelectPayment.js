@@ -52,7 +52,7 @@ const SelectPayment = () => {
   const handlePagarEnSucursalClick = async () => {
     try {
       const customerId = decodedToken.customerId;
-      const response = await axios.post("http://localhost:5000/ventas/", {
+      const response = await axios.post("https://backend-c-r-production.up.railway.app/ventas/", {
         metodoPagoId: 1,
         customerId,
         venta,
@@ -92,7 +92,7 @@ const SelectPayment = () => {
       const customerId = decodedToken.customerId;
 
       const response = await axios.post(
-        "http://localhost:5000/order/create-order",
+        "https://backend-c-r-production.up.railway.app/order/create-order",
         {
           items,
           customerId,
@@ -136,7 +136,7 @@ const SelectPayment = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5000/ventas/create-checkout-session",
+        "https://backend-c-r-production.up.railway.app/ventas/create-checkout-session",
         {
           items,
           shipping,

@@ -29,7 +29,7 @@ function PublicFooter() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/admin/getNosotros/1"
+          "https://backend-c-r-production.up.railway.app/admin/getNosotros/1"
         );
         setData(response.data);
       } catch (error) {

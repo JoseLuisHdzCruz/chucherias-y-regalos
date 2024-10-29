@@ -47,7 +47,7 @@ const ProfileSecurity = () => {
   const fetchData = async (customerId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/users/${customerId}`
+        `https://backend-c-r-production.up.railway.app/users/${customerId}`
       );
 
       setPreguntaSecreta(response.data.preguntaSecreta);
@@ -71,7 +71,7 @@ const ProfileSecurity = () => {
         return;
       }
 
-      const response = await axios.put(`http://localhost:5000/users/updateUser/${decodedToken.customerId}`, {
+      const response = await axios.put(`https://backend-c-r-production.up.railway.app/users/updateUser/${decodedToken.customerId}`, {
         respuestaPSecreta: values.respuesta,
         preguntaSecreta,
       });

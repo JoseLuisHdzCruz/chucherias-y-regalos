@@ -24,7 +24,7 @@ function Home({ searchResults, searchTerm }) {
       setProducts(searchResults);
       setFirst(0); // Resetear el índice de paginación
     } else {
-      fetch("http://localhost:5000/products/")
+      fetch("https://backend-c-r-production.up.railway.app/products/")
         .then((response) => response.json())
         .then((data) => setProducts(data))
         .catch((error) => console.error("Error fetching products:", error));
@@ -33,7 +33,7 @@ function Home({ searchResults, searchTerm }) {
 
   useEffect(() => {
     // Obtener categorías
-    fetch("http://localhost:5000/products/categories/getAll")
+    fetch("https://backend-c-r-production.up.railway.app/products/categories/getAll")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));

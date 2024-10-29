@@ -39,7 +39,7 @@ const EditProduct = ({ title }) => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/products/${productId}`
+          `https://backend-c-r-production.up.railway.app/products/${productId}`
         );
         const {
           nombre,
@@ -89,7 +89,7 @@ const EditProduct = ({ title }) => {
 
       console.log("FormData:", formData);
 
-      await axios.put(`http://localhost:5000/products/${productId}`, formData, {
+      await axios.put(`https://backend-c-r-production.up.railway.app/products/${productId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

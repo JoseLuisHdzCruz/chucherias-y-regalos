@@ -19,7 +19,7 @@ const CustomerTable = () => {
         setMaxCustomers(predictResponse.data.max_customers);
 
         // Obtener la lista de usuarios
-        const usuariosResponse = await axios.get('http://localhost:5000/users/');
+        const usuariosResponse = await axios.get('https://backend-c-r-production.up.railway.app/users/');
         setUsuarios(usuariosResponse.data);
 
         // Habilitar el botón si hay usuarios en la tabla
@@ -51,7 +51,7 @@ const CustomerTable = () => {
       // Generar cupones para cada customerId en maxCustomers
       const responses = await Promise.all(
         maxCustomers.map(usuarioId => 
-          axios.post('http://localhost:5000/admin/cupones/', {
+          axios.post('https://backend-c-r-production.up.railway.app/admin/cupones/', {
             monto: parseFloat(monto), // Asegurarse de que el monto sea un número
             usuarioId,
           })
@@ -60,7 +60,7 @@ const CustomerTable = () => {
 
       // Verificar si todas las respuestas fueron exitosas
       const allSuccess = responses.every(response => response.status === 200);
-      const cuponesResponse = await axios.get('http://localhost:5000/admin/cupones/');
+      const cuponesResponse = await axios.get('https://backend-c-r-production.up.railway.app/admin/cupones/');
       setCupones(cuponesResponse.data);
 
       if (allSuccess) {

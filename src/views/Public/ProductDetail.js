@@ -29,7 +29,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     // Hacer la solicitud a la API para obtener los detalles del producto
-    fetch(`http://localhost:5000/products/${id}`)
+    fetch(`https://backend-c-r-production.up.railway.app/products/${id}`)
       .then((response) => response.json())
       .then((data) => setProduct(data))
       .catch((error) =>
@@ -39,7 +39,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     // Obtener categorías
-    fetch("http://localhost:5000/products/categories/getAll")
+    fetch("https://backend-c-r-production.up.railway.app/products/categories/getAll")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));

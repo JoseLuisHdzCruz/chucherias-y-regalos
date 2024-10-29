@@ -37,7 +37,7 @@ const SelectAddress = () => {
       const UserId = decodedToken.customerId;
 
       // Obtener sucursales
-      fetch("http://localhost:5000/address/get-sucursal")
+      fetch("https://backend-c-r-production.up.railway.app/address/get-sucursal")
         .then((response) => response.json())
         .then((data) => setSucursales(data))
         .catch((error) =>
@@ -45,7 +45,7 @@ const SelectAddress = () => {
         );
 
       // Obtener domicilios
-      fetch(`http://localhost:5000/address/get-domicilio/${UserId}`)
+      fetch(`https://backend-c-r-production.up.railway.app/address/get-domicilio/${UserId}`)
         .then((response) => response.json())
         .then((data) => setDomicilios(data))
         .catch((error) =>
@@ -71,7 +71,7 @@ const SelectAddress = () => {
       const selectedCPValue = event.target.dataset.cp;
       console.log(selectedCPValue);
       const response = await fetch(
-        `http://localhost:5000/address/get-colonias/${selectedCPValue}`
+        `https://backend-c-r-production.up.railway.app/address/get-colonias/${selectedCPValue}`
       );
       if (!response.ok) {
         throw new Error(

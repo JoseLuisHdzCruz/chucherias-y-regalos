@@ -34,7 +34,7 @@ function SidebarMenu({ activarModal, mostrarModal, cerrarModal, cerrarSesion, me
   };
 
   useEffect(() => {
-    fetch('http://localhost:5000/products/categories/getAll')
+    fetch('https://backend-c-r-production.up.railway.app/products/categories/getAll')
       .then(response => response.json())
       .then(data => {
         setCategories(data);

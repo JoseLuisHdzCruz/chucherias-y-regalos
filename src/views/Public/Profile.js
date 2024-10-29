@@ -37,7 +37,7 @@ const Profile = () => {
           const edadActual = calcularEdad(fechaNacimiento);
 
           const response = await axios.get(
-            `http://localhost:5000/users/${decoded.customerId}`
+            `https://backend-c-r-production.up.railway.app/users/${decoded.customerId}`
           );
 
           setCustomer(response.data);
@@ -74,7 +74,7 @@ const Profile = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/users/banner/${customer.customerId}`,
+        `https://backend-c-r-production.up.railway.app/users/banner/${customer.customerId}`,
         formData
       );
 
@@ -173,7 +173,7 @@ const Profile = () => {
                 ref={fileUploadRef}
                 mode="basic"
                 name="imagen"
-                url={`http://localhost:5000/users/usuario/${customer.customerId}/imagen`}
+                url={`https://backend-c-r-production.up.railway.app/users/usuario/${customer.customerId}/imagen`}
                 accept="image/*"
                 customUpload
                 uploadHandler={customBase64Uploader}

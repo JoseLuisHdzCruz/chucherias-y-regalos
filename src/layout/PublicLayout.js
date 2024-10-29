@@ -14,7 +14,7 @@ const PublicLayout = ({ children }) => {
     if (searchTerm !== "") {
       try {
         const response = await fetch(
-          `http://localhost:5000/products/search`,
+          `https://backend-c-r-production.up.railway.app/products/search`,
           {
             method: "POST",
             headers: {

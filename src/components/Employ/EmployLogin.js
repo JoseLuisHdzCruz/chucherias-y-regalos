@@ -22,7 +22,7 @@ const EmployLogin = () => {
       role
     };
     axios
-      .post("http://localhost:5000/admin/login", loginData)
+      .post("https://backend-c-r-production.up.railway.app/admin/login", loginData)
       .then((response) => {
         const { token } = response.data;
         setEmployAuthToken(token);

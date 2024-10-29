@@ -35,7 +35,7 @@ const SecretQuestion = () => {
       try {
         // Enviar una solicitud POST al backend con el correo en el cuerpo de la solicitud
         const response = await axios.post(
-          "http://localhost:5000/users/secretQuestion",
+          "https://backend-c-r-production.up.railway.app/users/secretQuestion",
           { correo: correo }
         );
         setPreguntaSecreta(response.data.preguntaSecreta); // Actualizar el estado con la pregunta secreta recibida del backend
@@ -51,7 +51,7 @@ const SecretQuestion = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       await axios.post(
-        "http://localhost:5000/users/secretAnswer",
+        "https://backend-c-r-production.up.railway.app/users/secretAnswer",
         {
           correo,
           respuesta: values.respuesta,

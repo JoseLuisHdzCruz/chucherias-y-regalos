@@ -27,7 +27,7 @@
 
       const fetchCartFromAPI = async (customerId) => {
         try {
-          const response = await axios.get(`http://localhost:5000/cart/${customerId}`);
+          const response = await axios.get(`https://backend-c-r-production.up.railway.app/cart/${customerId}`);
           const cartData = response.data.map((item) => ({
             productoId: item.productoId,
             nombre: item.producto,
@@ -98,7 +98,7 @@
             imagen: newProduct.imagen,
             customerId: decodedToken.customerId,
           };
-          await axios.post("http://localhost:5000/cart/", newCartItem);
+          await axios.post("https://backend-c-r-production.up.railway.app/cart/", newCartItem);
         } catch (error) {
           console.error("Error adding item to cart:", error);
         }
@@ -106,7 +106,7 @@
 
       const updateCartItem = async (productId, customerId, quantity) => {
         try {
-          await axios.put(`http://localhost:5000/cart/${customerId}/${productId}`, {
+          await axios.put(`https://backend-c-r-production.up.railway.app/cart/${customerId}/${productId}`, {
             cantidad: quantity,
           });
         } catch (error) {
@@ -130,7 +130,7 @@
             productoId: productId,
             customerId: decodedToken.customerId,
           };
-          await axios.delete("http://localhost:5000/cart/", { data: cartDelete });
+          await axios.delete("https://backend-c-r-production.up.railway.app/cart/", { data: cartDelete });
         } catch (error) {
           console.error("Error removing item from cart:", error);
         }
@@ -138,7 +138,7 @@
 
       const clearCart = async () => {
         try {
-          await axios.delete(`http://localhost:5000/cart/clear/${decodedToken.customerId}`);
+          await axios.delete(`https://backend-c-r-production.up.railway.app/cart/clear/${decodedToken.customerId}`);
           setCart([]);
         } catch (error) {
           console.error("Error clearing cart:", error);

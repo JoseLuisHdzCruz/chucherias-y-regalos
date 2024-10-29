@@ -24,7 +24,7 @@ const KeyVeriflyWhatsApp = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/users/findPhone/${correo}`)
+    fetch(`https://backend-c-r-production.up.railway.app/users/findPhone/${correo}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.telefono) {
@@ -47,7 +47,7 @@ const KeyVeriflyWhatsApp = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/users/keyCompare",
+        "https://backend-c-r-production.up.railway.app/users/keyCompare",
         {
           correo: correo,
           clave: clave,
@@ -91,7 +91,7 @@ const KeyVeriflyWhatsApp = () => {
       setIsResending(true);
 
       await axios.post(
-        "http://localhost:5000/users/sedKeyWhatsApp",
+        "https://backend-c-r-production.up.railway.app/users/sedKeyWhatsApp",
         {
           correo,
         }

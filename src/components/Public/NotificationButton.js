@@ -19,7 +19,7 @@ function NotificationButton() {
   useEffect(() => {
     if (decodedToken && decodedToken.customerId) {
       fetch(
-        `http://localhost:5000/users/getAllNotifications/${decodedToken.customerId}`
+        `https://backend-c-r-production.up.railway.app/users/getAllNotifications/${decodedToken.customerId}`
       )
         .then((response) => response.json())
         .then((data) => {

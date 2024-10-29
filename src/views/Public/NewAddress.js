@@ -61,7 +61,7 @@ const NewAddress = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/address/get-colonias/${codigo}`
+          `https://backend-c-r-production.up.railway.app/address/get-colonias/${codigo}`
         );
         if (!response.ok) {
           throw new Error(
@@ -91,7 +91,7 @@ const NewAddress = () => {
       console.log(id);
 
       // Si hay un ID en los parámetros de la URL, obtén los detalles de la dirección existente
-      fetch(`http://localhost:5000/address/get-domicilioById/${id}`)
+      fetch(`https://backend-c-r-production.up.railway.app/address/get-domicilioById/${id}`)
         .then((response) => response.json())
         .then((data) => {
           setAddressDetails(data);
@@ -107,7 +107,7 @@ const NewAddress = () => {
       if (id) {
         // Si hay un ID en los parámetros de la URL, actualiza la dirección existente
         await axios.put(
-          `http://localhost:5000/address/update-domicilio/${id}`,
+          `https://backend-c-r-production.up.railway.app/address/update-domicilio/${id}`,
           values
         );
         showAlert("success", "La dirección se actualizó correctamente");
@@ -118,7 +118,7 @@ const NewAddress = () => {
           ...values,
           customerId: decodedToken.customerId,
         };
-        await axios.post("http://localhost:5000/address/add-domicilio", data);
+        await axios.post("https://backend-c-r-production.up.railway.app/address/add-domicilio", data);
         showAlert("success", "La dirección se agregó correctamente");
       }
       setTimeout(() => {

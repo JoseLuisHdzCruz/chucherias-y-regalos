@@ -165,7 +165,7 @@ const Register = () => {
       console.log(values)
   
       const response = await axios.post(
-        "http://localhost:5000/users",
+        "https://backend-c-r-production.up.railway.app/users",
         values
       );
       console.log(response.data);

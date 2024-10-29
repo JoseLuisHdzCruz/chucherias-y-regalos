@@ -106,7 +106,7 @@ function PublicHeader({ onSearch }) {
 
           // Llamada a la API para obtener los datos del usuario
           const response = await axios.get(
-            `http://localhost:5000/users/${decoded.customerId}`
+            `https://backend-c-r-production.up.railway.app/users/${decoded.customerId}`
           );
 
           // Actualiza el estado con los datos del usuario
@@ -150,7 +150,7 @@ function PublicHeader({ onSearch }) {
       const fetchSessionData = async () => {
         try {
           const response = await fetch(
-            `http://localhost:5000/users/getSession/${customer.sesion}`
+            `https://backend-c-r-production.up.railway.app/users/getSession/${customer.sesion}`
           );
           const data = await response.json();
           setVerificacionRealizada(true);
@@ -172,7 +172,7 @@ function PublicHeader({ onSearch }) {
 
   const cerrarSesion = async () => {
     try {
-      // await axios.post("http://localhost:5000/users/logout", {
+      // await axios.post("https://backend-c-r-production.up.railway.app/users/logout", {
       //   sessionId: usuario.sesion,
       // });
 

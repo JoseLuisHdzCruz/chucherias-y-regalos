@@ -26,7 +26,7 @@ const ProductDetail = ({ title }) => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/products/${productId}`
+        `https://backend-c-r-production.up.railway.app/products/${productId}`
       );
       setProductData(response.data);
     } catch (error) {

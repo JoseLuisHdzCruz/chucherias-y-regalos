@@ -22,7 +22,7 @@ const ProfileAddress = () => {
   useEffect(() => {
     if (decodedToken && decodedToken.customerId) {
       fetch(
-        `http://localhost:5000/address/get-domicilio/${decodedToken.customerId}`
+        `https://backend-c-r-production.up.railway.app/address/get-domicilio/${decodedToken.customerId}`
       )
         .then((response) => response.json())
         .then((data) => {

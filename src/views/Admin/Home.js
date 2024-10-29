@@ -15,16 +15,16 @@ const Home = ({ title }) => {
       try {
         // Realiza las solicitudes a la API
         const productosResponse = await axios.get(
-          "http://localhost:5000/products"
+          "https://backend-c-r-production.up.railway.app/products"
         );
         const ventasResponse = await axios.get(
-          "http://localhost:5000/ventas"
+          "https://backend-c-r-production.up.railway.app/ventas"
         );
         const notificacionesResponse = await axios.get(
-          "http://localhost:5000/admin/notification/1"
+          "https://backend-c-r-production.up.railway.app/admin/notification/1"
         );
         const usuariosSuspendidosResponse = await axios.get(
-          "http://localhost:5000/users"
+          "https://backend-c-r-production.up.railway.app/users"
         );
 
         // Filtrar usuarios suspendidos excluyendo aquellos con statusId = 1
