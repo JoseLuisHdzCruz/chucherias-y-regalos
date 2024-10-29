@@ -26,7 +26,6 @@ module.exports = {
         },
       },
     },
-    // Cache para la lista de productos
     {
       urlPattern: /https:\/\/backend-c-r-production\.up\.railway\.app\/products\//,
       handler: 'NetworkFirst',
@@ -39,7 +38,6 @@ module.exports = {
         networkTimeoutSeconds: 3,
       },
     },
-    // Cache para el detalle de productos
     {
       urlPattern: /https:\/\/backend-c-r-production\.up\.railway\.app\/products\/\d+$/,
       handler: 'NetworkFirst',
@@ -51,7 +49,6 @@ module.exports = {
         },
       },
     },
-    // Cache para las categorías de productos
     {
       urlPattern: /https:\/\/backend-c-r-production\.up\.railway\.app\/products\/categories\/getAll/,
       handler: 'StaleWhileRevalidate',
@@ -63,7 +60,6 @@ module.exports = {
         },
       },
     },
-    // Cache para productos por categoría
     {
       urlPattern: /https:\/\/backend-c-r-production\.up\.railway\.app\/products\/categoria\/\d+/,
       handler: 'NetworkFirst',
@@ -75,7 +71,6 @@ module.exports = {
         },
       },
     },
-    // Cache para detalles de usuario
     {
       urlPattern: /https:\/\/backend-c-r-production\.up\.railway\.app\/users\/\d+/,
       handler: 'NetworkFirst',
@@ -84,6 +79,18 @@ module.exports = {
         expiration: {
           maxEntries: 10,
           maxAgeSeconds: 5 * 60,
+        },
+      },
+    },
+    // Cache para la información de "Nosotros"
+    {
+      urlPattern: /https:\/\/backend-c-r-production\.up\.railway\.app\/admin\/getNosotros\/1/,
+      handler: 'StaleWhileRevalidate',
+      options: {
+        cacheName: 'about-us-cache',
+        expiration: {
+          maxEntries: 5,
+          maxAgeSeconds: 24 * 60 * 60, // 1 día
         },
       },
     },
