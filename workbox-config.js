@@ -82,7 +82,6 @@ module.exports = {
         },
       },
     },
-    // Cache para la información de "Nosotros"
     {
       urlPattern: /https:\/\/backend-c-r-production\.up\.railway\.app\/admin\/getNosotros\/1/,
       handler: 'StaleWhileRevalidate',
