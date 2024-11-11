@@ -4,6 +4,9 @@ module.exports = {
     "**/*.{html,js,css,png,jpg,svg}"
   ],
   swDest: "build/service-worker.js",
+  importScripts: [
+    'cw.js',  // Este es tu archivo de configuración general de SW
+  ],
   runtimeCaching: [
     {
       urlPattern: /\.(?:png|jpg|jpeg|svg)$/,

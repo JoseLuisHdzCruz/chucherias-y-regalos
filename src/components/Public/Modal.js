@@ -69,7 +69,9 @@ const ModalComponent = ({ show, onClose }) => {
 
       // Decodificar el token para obtener los datos del usuario
       const user = jwtDecode(response.data.token);
-      console.log(user);
+
+      // Suscribir al usuario después del inicio de sesión
+      await subscribeUser(user.customerId);
 
       const mensaje = `Inicio de sesión exitoso. Bienvenid${
         user.sexo === "masculino" ? "o" : "a"
@@ -114,6 +116,25 @@ const ModalComponent = ({ show, onClose }) => {
       }
     } finally {
       setSubmitting(false);
+    }
+  };
+
+
+  // Función para suscribir al usuario
+  async function subscribeUser(customerId) {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+
+      if (subscription) {
+        await axios.post("https://backend-c-r-production.up.railway.app/users/subscription/update", {
+          subscription,
+          customerId,
+        });
+        console.log("Suscripción del usuario actualizada exitosamente");
+      }
+    } catch (error) {
+      console.error("Error al suscribir al usuario:", error);
     }
   };
 

@@ -6,19 +6,19 @@ import EmployRoutes from "./routes/EmployRoutes";
 import { AuthProvider } from "./context/AuthContext";
 import { PrimeReactProvider } from "primereact/api";
 import { AlertProvider } from "./context/AlertContext";
-import { requestNotificationPermission } from "./firebaseMessaging";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primereact/resources/primereact.min.css";
-
 import "primeicons/primeicons.css";
-
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 function App() {
   useEffect(() => {
-    // Solicita el permiso de notificación al cargar la aplicación
-    requestNotificationPermission();
+    // Registrar el Service Worker
+    serviceWorkerRegistration.register();
+
+    // serviceWorkerRegistration.subscribeToPushNotifications();
 
     // Agregar el script de integración de UserWay
     const userwayScript = document.createElement("script");
@@ -39,6 +39,7 @@ function App() {
       // document.head.removeChild(tidioScript);
     };
   }, []);
+
   return (
     <PrimeReactProvider>
       <AlertProvider>

@@ -8,7 +8,8 @@ import reportWebVitals from "./reportWebVitals";
 import "./modalConfig"; // Importa el archivo de configuración de react-modal
 import { AuthProvider } from "./context/AuthContext";
 import CartContextProvider from "./context/CartContext";
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration.js'
+import * as notification from './notification.js'
 
 
 // Crea el root para la app
@@ -26,6 +27,8 @@ root.render(
 
 // Registra el Service Worker para soportar PWA y caché offline
 serviceWorkerRegistration.register();
+// notification.requestNotificationPermission()
+notification.requestNotificationPermission()
 
 // Para medir el rendimiento de la aplicación
 reportWebVitals();

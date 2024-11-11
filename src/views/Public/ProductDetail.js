@@ -165,7 +165,6 @@ const ProductDetail = () => {
         </div>
         <ReviewsSection ProductReviews={product.ProductReviews} />
         <CarruselProductos className="mb-4" />{" "}
-        {/* Ajustado el margen inferior */}
       </div>
       <CartModal isOpen={isCartModalOpen} onClose={handleCloseCartModal} />
     </main>
