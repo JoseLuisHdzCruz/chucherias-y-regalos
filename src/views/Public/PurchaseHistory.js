@@ -23,7 +23,7 @@ const PurchaseHistory = () => {
   const showAlert = useAlert();
   const [user, setUser ] = useState(0);
   const [purchaseHistory, setPurchaseHistory] = useState([]);
-  const [first, setFirst] = useState(0); // Para PrimeReact Paginator
+  const [first, setFirst] = useState(0);
   const purchasesPerPage = 8;
   const [dataHistory, setDataHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,41 +41,21 @@ const PurchaseHistory = () => {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
   useEffect(() => {
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUser(decoded.customerId);
+    const initializeData = async () => {
+      if (token) {
+        const decoded = jwtDecode(token);
+        setUser(decoded.customerId);
 
-      // Verificar si el usuario ya ha sido encuestado
-      const fetchUserSurveyStatus = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/users/${decoded.customerId}`);
-          const userData = response.data;
-          
-          // Mostrar el modal si el usuario no ha sido encuestado
-          if (userData.encuestado === "no") {
-            setShowFeedbackModal(true);
-          }
-        } catch (error) {
-          console.error("Error fetching user survey status:", error);
-        }
-      };
-
-      fetchUserSurveyStatus();
-    }
-  }, [token]);
-
-  useEffect(() => {
-    if (user) {
-      const fetchPurchaseHistory = async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:5000/ventas/cliente/${user}`
+          // Fetch purchase history
+          const historyResponse = await axios.get(
+            `https://backend-c-r-production.up.railway.app/ventas/cliente/${decoded.customerId}`
           );
-          const historyData = response.data;
+          const historyData = historyResponse.data;
 
           const purchaseDetailsPromises = historyData.map(async (purchase) => {
             const detailResponse = await axios.get(
-              `http://localhost:5000/ventas/detalle/${purchase.ventaId}`
+              `https://backend-c-r-production.up.railway.app/ventas/detalle/${purchase.ventaId}`
             );
             return {
               ...purchase,
@@ -84,25 +64,35 @@ const PurchaseHistory = () => {
           });
 
           const purchaseDetails = await Promise.all(purchaseDetailsPromises);
-
           setPurchaseHistory(purchaseDetails);
           setDataHistory(purchaseDetails);
           setLoading(false);
-          setFirst(0); // Resetear a la primera página cuando hay resultados de búsqueda
+          setFirst(0);
+
+          // Check survey status if there is purchase history
+          if (purchaseDetails.length > 0) {
+            const userResponse = await axios.get(
+              `https://backend-c-r-production.up.railway.app/users/${decoded.customerId}`
+            );
+            const userData = userResponse.data;
+
+            if (userData.encuestado === "no") {
+              setShowFeedbackModal(true);
+            }
+          }
         } catch (error) {
-          console.error("Error fetching purchase history:", error);
+          console.error("Error fetching data:", error);
           setLoading(false);
         }
-      };
+      }
+    };
 
-      fetchPurchaseHistory();
-    }
-  }, [user]);
-
+    initializeData();
+  }, [token]);
   const openModal = async (purchase, ventaId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/ventas/${ventaId}`
+        `https://backend-c-r-production.up.railway.app/ventas/${ventaId}`
       );
       setSelectedPurchase(purchase);
       setVenta(response.data);
@@ -131,7 +121,7 @@ const PurchaseHistory = () => {
     try {
       console.log(folioVenta, cancelReason);
       // Aquí consumes la API para cambiar el estado de la venta al cancelarla
-      await axios.post(`http://localhost:5000/ventas/cancelar-venta`, {
+      await axios.post(`https://backend-c-r-production.up.railway.app/ventas/cancelar-venta`, {
         folio: folioVenta, // Folio de la venta
         reason: cancelReason, // Razón de la cancelación
       });
@@ -222,7 +212,7 @@ const PurchaseHistory = () => {
             onSubmit={async (values, { setSubmitting }) => {
               try {
                 const response = await axios.post(
-                  "http://localhost:5000/ventas/filtroVentas",
+                  "https://backend-c-r-production.up.railway.app/ventas/filtroVentas",
                   {
                     fechaInicial: values.fechaInicial,
                     fechaFinal: values.fechaFinal,
@@ -235,7 +225,7 @@ const PurchaseHistory = () => {
                 const purchaseDetailsPromises = filterHistory.map(
                   async (purchase) => {
                     const detailResponse = await axios.get(
-                      `http://localhost:5000/ventas/detalle/${purchase.ventaId}`
+                      `https://backend-c-r-production.up.railway.app/ventas/detalle/${purchase.ventaId}`
                     );
                     return { ...purchase, detalleVenta: detailResponse.data };
                   }

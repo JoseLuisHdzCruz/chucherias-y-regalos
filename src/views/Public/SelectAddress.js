@@ -132,8 +132,8 @@ const SelectAddress = () => {
       Object.values(cart).reduce(
         (total, item) => total + item.precioFinal * item.cantidad,
         0
-      ) + envio
-    ), // Total a pagar
+      ) + parseFloat(envio)
+    ).toFixed(2), // Total a pagar
     totalProductos: Object.values(cart)
       .reduce((total, item) => total + item.precioFinal * item.cantidad, 0)
       .toFixed(2), // Total de productos
@@ -407,7 +407,7 @@ const SelectAddress = () => {
                               (total, item) =>
                                 total + item.precioFinal * item.cantidad,
                               0
-                            ) + parseFloat(envio)
+                            ) + (envio ? parseFloat(envio): 0 ) 
                           ).toFixed(2)}
                         </strong>
                       </td>

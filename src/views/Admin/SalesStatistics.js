@@ -4,6 +4,7 @@ import { MdFilterAlt, MdDeleteForever } from "react-icons/md";
 import { Line, Bar, Pie } from "react-chartjs-2";
 import "chart.js/auto";
 import { Button, Modal } from 'react-bootstrap';
+import CustomerSatisfactionChart from "../../components/Admin/CustomerSatisfactionChart";
 
 const SalesStatistics = ({ title }) => {
   const [monthlySales, setMonthlySales] = useState([]);
@@ -208,6 +209,7 @@ const SalesStatistics = ({ title }) => {
       </section>
 
       <section className="content">
+        <CustomerSatisfactionChart />
         <div className="card">
           <div className="card-header">
             <h3 className="card-title">Reporte de Ventas Mensuales</h3>
