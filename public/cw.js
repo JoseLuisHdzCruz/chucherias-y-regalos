@@ -4,6 +4,7 @@ self.addEventListener('push', (event) => {
         self.registration.showNotification(data.title, {
             body: data.message,
             icon: 'https://chucherias-y-regalos.vercel.app/images/Imagen1-3n4j4J1C4-transformed%20(1).jpg',
+            image: data.image || undefined,
         })
     );
 });
