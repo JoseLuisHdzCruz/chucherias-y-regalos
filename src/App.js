@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import { SpeedInsights } from "@vercel/speed-insights/react"
+import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   useEffect(() => {
@@ -46,6 +47,7 @@ function App() {
       <AlertProvider>
         <AuthProvider>
           <SpeedInsights />
+          <Analytics />
           <Router>
             <Routes>
               <Route path="/*" element={<PublicRoutes />} />
