@@ -12,6 +12,7 @@ import "primeicons/primeicons.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 function App() {
   useEffect(() => {
@@ -44,6 +45,7 @@ function App() {
     <PrimeReactProvider>
       <AlertProvider>
         <AuthProvider>
+          <SpeedInsights />
           <Router>
             <Routes>
               <Route path="/*" element={<PublicRoutes />} />
