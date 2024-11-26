@@ -5,7 +5,8 @@ import { Card } from "react-bootstrap";
 
 const CustomerSatisfactionChart = () => {
   const [chartData, setChartData] = useState([]);
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState([]); 
+  const [usuariosEncuestados, setUsuariosEncuestados] = useState('');
 
   // Función para cargar las preguntas desde la API
   const loadQuestions = async () => {
@@ -23,6 +24,7 @@ const CustomerSatisfactionChart = () => {
       const response = await axios.get("https://backend-c-r-production.up.railway.app/feedback/"); // Ajusta la URL de tu API
       const feedbackData = response.data;
       processChartData(feedbackData);
+      setUsuariosEncuestados(feedbackData.length/3)
     } catch (error) {
       console.error("Error al cargar los datos de feedback:", error);
     }
@@ -83,6 +85,8 @@ const CustomerSatisfactionChart = () => {
   return (
     <Card>
       <h2 className="mt-2 ml-4">Satisfacción del Cliente</h2>
+      {/* <hr className="hr-primary" /> */}
+      <p className="mt-2 ml-4"><strong>Total de usuarios encuestados: </strong>  {usuariosEncuestados}</p>
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
         {chartData.map(({ questionId, data }, index) => {
           // Buscar la pregunta correspondiente usando el questionId como número

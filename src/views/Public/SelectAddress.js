@@ -132,12 +132,12 @@ const SelectAddress = () => {
       Object.values(cart).reduce(
         (total, item) => total + item.precioFinal * item.cantidad,
         0
-      ) + parseFloat(envio)
+      ) + parseFloat(envio?envio:0)
     ).toFixed(2), // Total a pagar
     totalProductos: Object.values(cart)
       .reduce((total, item) => total + item.precioFinal * item.cantidad, 0)
       .toFixed(2), // Total de productos
-    totalEnvio: envio, // Total del envío
+    totalEnvio: envio ? envio : 0, // Total del envío
     totalIVA: totalIVA.toFixed(2), // Total del IVA
     sucursalesId: sucursalSeleccionada ? selectedSucursalId : null,
     domicilioId: direccionSeleccionada ? selectedDomicilioId : null,

@@ -45,6 +45,7 @@ const SelectPayment = () => {
     const ventaJSON = localStorage.getItem("Venta");
     if (ventaJSON) {
       const item = JSON.parse(ventaJSON);
+      console.log(item)
       setVenta(item);
     }
   }, []);
