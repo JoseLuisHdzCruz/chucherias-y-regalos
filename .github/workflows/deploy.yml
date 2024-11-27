@@ -15,9 +15,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Paso 2: Desplegar en Vercel
+      # Paso 2: Instalar dotenv-cli para cargar variables del archivo .env.production
+      - name: Install dotenv-cli
+        run: npm install -g dotenv-cli
+
+      # Paso 3: Cargar variables de .env.production y desplegar en Vercel
       - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: npx vercel --prod --token $VERCEL_TOKEN --project $VERCEL_PROJECT_ID
+        run: dotenv -e .env.production npx vercel --prod --token $VERCEL_TOKEN --project $VERCEL_PROJECT_ID
