@@ -8,10 +8,6 @@ on:
 jobs:
   deploy:
     name: Deploy
-    env:
-      VERCEL_TOKEN: pwY5hKK6jBuzft5E4VUpfK4g
-      VERCEL_PROJECT_ID: prj_AcmPpztlox7kv9yTdbNy8eBS3Saw
-      
     runs-on: ubuntu-latest
 
     steps:
@@ -19,6 +15,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Paso 2: Desplegar en Vercel (sin usar Org ID)
+      # Paso 2: Desplegar en Vercel
       - name: Deploy to Vercel
-        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --project ${{ secrets.VERCEL_PROJECT_ID }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: npx vercel --prod --token $VERCEL_TOKEN --project $VERCEL_PROJECT_ID
