@@ -1,0 +1,9 @@
+{
+    "version": 2,
+    "name": "chucherias-y-regalos",
+    "env": {
+      "VERCEL_TOKEN": "tu_token_aqui",
+      "VERCEL_PROJECT_ID": "tu_project_id_aqui"
+    }
+  }
+  

@@ -3,7 +3,7 @@ name: Deploy to Vercel
 on:
   push:
     branches:
-      - main  # Cambia esta rama si es necesario
+      - main  # O la rama que quieras que dispare el despliegue
 
 jobs:
   deploy:
@@ -11,10 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Paso 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Paso 2: Desplegar en Vercel con valores directamente
       - name: Deploy to Vercel
-        run: npx vercel --prod --token pwY5hKK6jBuzft5E4VUpfK4g --project prj_AcmPpztlox7kv9yTdbNy8eBS3Saw
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: npx vercel --prod --token $VERCEL_TOKEN --project $VERCEL_PROJECT_ID
