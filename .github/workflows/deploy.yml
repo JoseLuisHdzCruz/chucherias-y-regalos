@@ -19,20 +19,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Paso 2: Configurar Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-
-      # Paso 3: Instalar dependencias
-      - name: Install dependencies
-        run: npm install
-
-      # Paso 4: Crear build para producción
-      - name: Build project
-        run: npm run build
-
-      # Paso 5: Desplegar en Vercel (sin usar Org ID)
+      # Paso 2: Desplegar en Vercel (sin usar Org ID)
       - name: Deploy to Vercel
         run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --project ${{ secrets.VERCEL_PROJECT_ID }}
